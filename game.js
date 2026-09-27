@@ -23,7 +23,7 @@
   const names = ['idle','run_01','run_02','run_03','run_04','jump_start','jump_air','jump_land','hit','fall','down','gameover'];
   const pandaImages = {}, obstacleImages = {};
   for (const name of names) {
-    const image = new Image(); image.src = 'assets/game/panda/' + name + '.png'; image.onload = draw;
+    const image = new Image(); image.src = 'assets/game/panda/' + name + '.png?v=2'; image.onload = draw;
     pandaImages[name] = image;
   }
   for (const name of Object.keys(kinds)) {
