@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>FPパンダ｜FP2級 問題集</title><link rel="stylesheet" href="style.css"><link rel="stylesheet" href="multi.css"><link rel="stylesheet" href="app.css"><link rel="stylesheet" href="record.css">
+  <title>FPパンダ｜FP2級 問題集</title><link rel="stylesheet" href="style.css"><link rel="stylesheet" href="multi.css"><link rel="stylesheet" href="app.css"><link rel="stylesheet" href="record.css"><link rel="stylesheet" href="game.css">
   <meta name="theme-color" content="#f6cd29"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="apple-mobile-web-app-title" content="FPパンダ">
   <link rel="icon" type="image/png" sizes="192x192" href="assets/icon-192.png"><link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png"><link rel="manifest" href="manifest.webmanifest">
 </head>
@@ -34,7 +34,7 @@
   <div class="sidebar-bottom">FP2級 · OIC<br><span>問題集アプリ</span></div>
 </aside>
 <main>
-  <header class="topbar"><div class="mobile-brand"><svg><use href="#leaf"/></svg>FPパンダ</div><span class="breadcrumb">ホーム <span>/ 今日の学習</span></span><span class="preview-label">FP2級 問題集</span></header>
+  <header class="topbar"><div class="mobile-brand"><svg><use href="#leaf"/></svg>FPパンダ</div><span class="breadcrumb">ホーム <span>/ 今日の学習</span></span><div class="topbar-actions"><button id="game-entry" class="game-entry" type="button" hidden aria-label="電卓ダッシュを開く" title="ひみつの電卓ダッシュ">🎋</button><span class="preview-label">FP2級 問題集</span></div></header>
   <div id="home-view">
   <section class="hero" aria-labelledby="welcome">
     <div class="hero-copy"><span class="eyebrow"><span></span> LITTLE BY LITTLE, EVERY DAY.</span><h1 id="welcome">今日の一歩を、<br>パンダといっしょに。</h1><p>5問だけでも、ちゃんと前進。<br class="mobile-only">今日も自分のペースで始めよう。</p><div class="hero-caption"><svg><use href="#leaf"/></svg>めざせ、FP2級合格。</div></div>
@@ -61,6 +61,7 @@
 <nav class="mobile-nav" aria-label="モバイルメニュー"><button class="active" data-action="home"><svg><use href="#home"/></svg>ホーム</button><button data-action="record"><svg><use href="#chart"/></svg>記録</button></nav>
 <dialog id="study-dialog" aria-labelledby="dialog-title"><button class="close" aria-label="閉じる">×</button><span class="eyebrow" id="dialog-eyebrow">LET'S STUDY</span><h2 id="dialog-title"></h2><div id="dialog-content"></div></dialog>
 <dialog id="figure-dialog" aria-label="図を拡大表示"><button class="close" aria-label="図を閉じる">×</button><img alt=""></dialog>
+<dialog id="dash-dialog" aria-labelledby="dash-title"><button class="dash-close" id="dash-close" type="button" aria-label="ゲームを閉じる">×</button><span class="eyebrow">SECRET PANDA GAME</span><h2 id="dash-title">電卓ダッシュ</h2><p class="dash-lead">パンダと笹の道を走ろう。障害物が来たらジャンプ！</p><div class="dash-scores"><span>距離 <strong id="dash-score">0</strong> m</span><span>ベスト <strong id="dash-best">0</strong> m</span></div><div class="dash-stage"><canvas id="dash-canvas" width="800" height="300" aria-label="パンダが障害物をジャンプで避けるゲーム"></canvas><div class="dash-overlay" id="dash-overlay" role="status">スタートを押してね</div></div><div class="dash-actions"><button id="dash-start" type="button">スタート</button><button id="dash-jump" type="button" disabled>ジャンプ</button></div><p class="dash-help">スマホは画面タップ、PCはスペースキー・↑キーでもジャンプ</p></dialog>
 <div id="toast" role="status" aria-live="polite"></div>
-<script src="data.js"></script><script src="app.js"></script>
+<script src="data.js"></script><script src="app.js"></script><script src="game.js"></script>
 </body></html>

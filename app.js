@@ -32,6 +32,7 @@ $('#panda-button').onclick=async()=>{
   $('#panda-speech').textContent=mood.speech;
   button.setAttribute('aria-label',`パンダの表情を変える（現在: ${mood.name}）`);
   preloadPandaMood((next+1)%pandaMoods.length);
+  window.pandaDashTap?.();
  }catch{button.title='画像を読み込めませんでした。もう一度タップしてください';}
  finally{button.disabled=false;}
 };
