@@ -186,6 +186,10 @@
   start.onclick=begin;jumpButton.onclick=jump;
   canvas.onpointerdown=e=>{e.preventDefault();jump()};
   jumpButton.onpointerdown=e=>{e.preventDefault();jump()};
+  for(const target of [jumpButton,canvas]){
+    target.addEventListener('contextmenu',e=>e.preventDefault());
+    target.addEventListener('selectstart',e=>e.preventDefault());
+  }
   window.addEventListener('pointerup',releaseJump);
   window.addEventListener('pointercancel',releaseJump);
   window.addEventListener('keyup',e=>{if(e.code==='Space'||e.code==='ArrowUp')releaseJump()});
