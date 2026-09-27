@@ -9,6 +9,32 @@ const chapters = [
   {n:6,name:'相続・事業承継',icon:'leaf',color:'#8c839a',tint:'#f0ebf3'}
 ];
 const $ = selector => document.querySelector(selector);
+const pandaMoods=[
+ {name:'喜び',image:'assets/panda.png',speech:'今日もいっしょに\nがんばろう！'},
+ {name:'考える',image:'assets/panda-thinking.png',speech:'うーん…\n考え中！'},
+ {name:'応援',image:'assets/panda-cheering.png',speech:'いっしょに\nがんばろう！'},
+ {name:'驚き',image:'assets/panda-surprised.png',speech:'えっ！？\nびっくり！'},
+ {name:'リラックス',image:'assets/panda-relaxed.png',speech:'ちょっと\nひと休み〜'}
+];
+let pandaMoodIndex=0;
+const pandaImageCache=new Map();
+function preloadPandaMood(index){
+ if(!pandaImageCache.has(index)){const image=new Image();image.src=pandaMoods[index].image;pandaImageCache.set(index,image);}
+ return pandaImageCache.get(index);
+}
+preloadPandaMood(1);
+$('#panda-button').onclick=async()=>{
+ const button=$('#panda-button'),next=(pandaMoodIndex+1)%pandaMoods.length,mood=pandaMoods[next];
+ button.disabled=true;
+ try{
+  const image=preloadPandaMood(next);await image.decode();
+  pandaMoodIndex=next;$('#panda-image').src=image.src;$('#panda-image').alt=`${mood.name}の表情のファイナンシャルパンダ`;
+  $('#panda-speech').textContent=mood.speech;
+  button.setAttribute('aria-label',`パンダの表情を変える（現在: ${mood.name}）`);
+  preloadPandaMood((next+1)%pandaMoods.length);
+ }catch{button.title='画像を読み込めませんでした。もう一度タップしてください';}
+ finally{button.disabled=false;}
+};
 const dialog = $('#study-dialog');
 const content = $('#dialog-content');
 const progressKey = 'fp2-app-progress-v1';
