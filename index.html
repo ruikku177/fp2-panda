@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>FPパンダ｜FP2級 問題集</title><link rel="stylesheet" href="style.css"><link rel="stylesheet" href="multi.css"><link rel="stylesheet" href="app.css"><link rel="stylesheet" href="record.css"><link rel="stylesheet" href="game.css?v=2">
+  <title>FPパンダ｜FP2級 問題集</title><link rel="stylesheet" href="style.css"><link rel="stylesheet" href="multi.css"><link rel="stylesheet" href="app.css"><link rel="stylesheet" href="record.css"><link rel="stylesheet" href="game.css?v=4">
   <meta name="theme-color" content="#f6cd29"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="apple-mobile-web-app-title" content="FPパンダ">
   <link rel="icon" type="image/png" sizes="192x192" href="assets/icon-192.png"><link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png"><link rel="manifest" href="manifest.webmanifest">
 </head>
@@ -40,6 +40,7 @@
     <div class="hero-copy"><span class="eyebrow"><span></span> LITTLE BY LITTLE, EVERY DAY.</span><h1 id="welcome">今日の一歩を、<br>パンダといっしょに。</h1><p>5問だけでも、ちゃんと前進。<br class="mobile-only">今日も自分のペースで始めよう。</p><div class="hero-caption"><svg><use href="#leaf"/></svg>めざせ、FP2級合格。</div></div>
     <button class="panda-area" id="panda-button" type="button" aria-label="パンダの表情を変える" title="タップで表情が変わる"><span class="panda-speech" id="panda-speech" aria-live="polite">今日もいっしょに<br>がんばろう！</span><span class="panda-circle" aria-hidden="true"></span><img src="assets/panda.png" alt="喜んでいるファイナンシャルパンダ" width="300" height="300" class="panda" id="panda-image"></button>
   </section>
+  <div class="dash-invite" id="dash-invite" hidden><span>🎋 パンダのひみつの特訓</span><button id="dash-invite-open" type="button">遊びに行く <span aria-hidden="true">→</span></button></div>
   <section class="continue-card" id="continue-card" aria-label="学習を始める"><div class="continue-icon"><svg><use href="#book"/></svg></div><div class="continue-copy"><span id="continue-kicker">はじめの一歩</span><h2 id="continue-title"></h2><p id="continue-detail"></p></div><button class="continue-button" data-action="continue"><span id="continue-button-label">章から選ぶ</span><svg><use href="#arrow"/></svg></button></section>
   <div class="lower-grid"><section class="chapters"><div class="material-tabs" role="group" aria-label="教材を選ぶ"><button data-material="supplement" aria-pressed="true">補助問題</button><button data-material="mock" aria-pressed="false">模擬試験</button><button data-material="past" aria-pressed="false">過去問</button></div><div class="section-heading"><div><span class="eyebrow">YOUR CHAPTERS</span><h2 id="material-heading">章から選ぶ</h2></div><button id="multi-toggle" aria-pressed="false">複数選択</button></div><div class="chapter-grid" id="chapter-grid"></div><div id="multi-bar" hidden><span id="multi-summary" role="status"></span><button id="multi-start" disabled>章を選んでください</button></div><div id="material-placeholder" hidden></div></section>
   <aside class="study-side"><section class="record-card"><div class="card-heading"><h2>今週の積み重ね</h2><svg><use href="#leaf"/></svg></div><div class="week" id="week" aria-label="今週の学習記録"></div><p class="streak"><strong id="streak-count">0</strong> 日連続で学習中</p><div class="stats"><div><strong id="today-count">0<small>問</small></strong><span>今日解いた問題</span></div><div><strong id="accuracy-count">—<small>%</small></strong><span>選択式の正答率</span></div></div></section>
@@ -63,5 +64,5 @@
 <dialog id="figure-dialog" aria-label="図を拡大表示"><button class="close" aria-label="図を閉じる">×</button><img alt=""></dialog>
 <dialog id="dash-dialog" aria-labelledby="dash-title"><button class="dash-close" id="dash-close" type="button" aria-label="ゲームを閉じる">×</button><span class="eyebrow">SECRET PANDA GAME</span><h2 id="dash-title">電卓ダッシュ</h2><p class="dash-lead">パンダと笹の道を走ろう。障害物が来たらジャンプ！</p><div class="dash-scores"><span>距離 <strong id="dash-score">00000</strong> m</span><span>ベスト <strong id="dash-best">00000</strong> m</span></div><div class="dash-stage"><canvas id="dash-canvas" width="800" height="300" tabindex="0" aria-label="パンダが障害物をジャンプで避けるゲーム"></canvas><div class="dash-overlay" id="dash-overlay" role="status">スタートを押してね</div></div><div class="dash-actions"><button id="dash-start" type="button">スタート</button><button id="dash-jump" type="button" disabled>ジャンプ</button></div><p class="dash-help">短押しで低く、長押しで高くジャンプ。スマホは画面・ボタン、PCはスペース・↑キー</p></dialog>
 <div id="toast" role="status" aria-live="polite"></div>
-<script src="data.js"></script><script src="app.js"></script><script src="game.js?v=6"></script>
+<script src="data.js"></script><script src="app.js"></script><script src="game.js?v=8"></script>
 </body></html>

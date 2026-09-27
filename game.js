@@ -3,12 +3,15 @@
   const canvas = document.querySelector('#dash-canvas');
   const ctx = canvas.getContext('2d');
   const entry = document.querySelector('#game-entry');
+  const invite = document.querySelector('#dash-invite');
+  const inviteButton = document.querySelector('#dash-invite-open');
+  const speech = document.querySelector('#panda-speech');
   const overlay = document.querySelector('#dash-overlay');
   const start = document.querySelector('#dash-start');
   const jumpButton = document.querySelector('#dash-jump');
   const scoreLabel = document.querySelector('#dash-score');
   const bestLabel = document.querySelector('#dash-best');
-  const keys = { unlock:'fp-panda-dash-unlocked-v1', taps:'fp-panda-dash-taps-v1', best:'fp-panda-dash-best-v1' };
+  const keys = { unlock:'fp-panda-dash-unlocked-v1', taps:'fp-panda-dash-taps-v1', best:'fp-panda-dash-best-v1', introSeen:'fp-panda-dash-intro-seen-v1' };
   const C = { speed:225, acceleration:3.2, maxSpeed:450, jump:-670, jumpRelease:-440, gravity:1450, size:94,
     reaction:.7, recovery:.25, runFrame:.1, playerHit:[22,20,30,7] };
   // Hit insets: left, right, top, bottom. Decorative leaves and stones do not collide.
@@ -34,11 +37,13 @@
   const read = key => { try { return Math.max(0, Number(localStorage.getItem(key)) || 0); } catch { return 0; } };
   const save = (key,value) => { try { localStorage.setItem(key,String(value)); } catch {} };
   const digits = value => String(Math.floor(value)).padStart(5,'0');
-  let unlocked = read(keys.unlock) === 1, taps = read(keys.taps), best = read(keys.best);
+  let unlocked = read(keys.unlock) === 1, taps = read(keys.taps), best = read(keys.best), introSeen = read(keys.introSeen) === 1;
   let W=800,H=300,ground=251,state='START',frame=0,lastTime=0,elapsed=0,distance=0,spawnIn=1,deathTime=0,runTime=0;
   let obstacles=[];
   const player={x:105,y:ground-C.size,w:C.size,h:C.size,vy:0,jumpTime:0,landTime:0,peak:0};
   entry.hidden=!unlocked;
+  invite.hidden=!unlocked||introSeen;
+  if(unlocked&&!introSeen){speech.textContent='……見つかっちゃった！\nひみつの特訓へ行く？';speech.classList.add('dash-discovered')}
   scoreLabel.textContent=digits(0); bestLabel.textContent=digits(best);
 
   function fit() {
@@ -57,6 +62,7 @@
   window.addEventListener('resize',()=>{if(dialog.open)fit()});
   function open(found=false) {
     if(dialog.open)return;
+    if(unlocked&&!introSeen){introSeen=true;save(keys.introSeen,1);invite.hidden=true;speech.classList.remove('dash-discovered')}
     state='START'; canvas.dataset.state=state;
     overlay.textContent=found?'ひみつの特訓、見つかっちゃった！\nスタートを押してね':'スタートを押してね';
     overlay.hidden=false; dialog.showModal(); fit(); start.focus();
@@ -66,10 +72,12 @@
     taps=Math.min(15,taps+1); save(keys.taps,taps);
     if(taps<15)return;
     unlocked=true; save(keys.unlock,1); entry.hidden=false;
-    document.querySelector('#panda-speech').textContent='……見つかっちゃった！\nひみつの特訓へ！';
-    open(true);
+    speech.textContent='……見つかっちゃった！\nひみつの特訓へ行く？';
+    speech.classList.add('dash-discovered');
+    invite.hidden=false;
   };
   entry.onclick=()=>open();
+  inviteButton.onclick=()=>open(true);
   function speed() {
     const visible=W-(player.x+player.w-C.playerHit[1]);
     return Math.min(C.maxSpeed,C.speed+elapsed*C.acceleration,Math.max(125,visible/C.reaction));
