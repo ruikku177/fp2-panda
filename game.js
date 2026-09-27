@@ -11,7 +11,7 @@
   const unlockKey='fp-panda-dash-unlocked-v1';
   const tapsKey='fp-panda-dash-taps-v1';
   const bestKey='fp-panda-dash-best-v1';
-  const W=800,H=300,ground=250;
+  let W=800,H=300,ground=250;
   const panda=new Image();panda.src='assets/panda.png';panda.onload=draw;
   const readNumber=key=>{try{return Math.max(0,Number(localStorage.getItem(key))||0);}catch{return 0;}};
   const save=(key,value)=>{try{localStorage.setItem(key,String(value));}catch{}};
@@ -24,12 +24,28 @@
   entry.hidden=!unlocked;
   bestLabel.textContent=best;
 
+  function fitCanvas(){
+    const bounds=canvas.getBoundingClientRect();
+    if(!bounds.width||!bounds.height)return;
+    const oldW=W,oldGround=ground,feetAboveGround=oldGround-player.y-player.h;
+    W=Math.round(bounds.width);H=Math.round(bounds.height);ground=H-49;
+    const ratio=Math.min(window.devicePixelRatio||1,2);
+    canvas.width=Math.round(W*ratio);canvas.height=Math.round(H*ratio);
+    ctx.setTransform(ratio,0,0,ratio,0,0);
+    player.x=Math.max(47,Math.min(105,W*.16));
+    player.y=ground-player.h-feetAboveGround;
+    obstacles.forEach(obstacle=>obstacle.x+=W-oldW);
+    draw();
+  }
+  window.addEventListener('resize',()=>{if(dialog.open)fitCanvas();});
+  const nextSpawnDelay=()=>Math.random()<.38?1.05+Math.random()*.38:1.65+Math.random()*.95;
+
   function openGame(found=false){
     if(dialog.open)return;
     overlay.textContent=found?'ひみつの特訓、見つかっちゃった！\nスタートを押してね':'スタートを押してね';
     overlay.hidden=false;
     dialog.showModal();
-    draw();
+    fitCanvas();
     startButton.focus();
   }
   window.pandaDashTap=()=>{
@@ -44,7 +60,8 @@
 
   function startGame(){
     cancelAnimationFrame(frameId);
-    running=true;lastTime=0;distance=0;spawnIn=1.1;obstacles=[];
+    fitCanvas();
+    running=true;lastTime=0;distance=0;spawnIn=.7+Math.random()*.7;obstacles=[];
     player.y=ground-player.h;player.velocity=0;
     scoreLabel.textContent='0';overlay.hidden=true;
     startButton.disabled=true;startButton.textContent='走行中';jumpButton.disabled=false;
@@ -76,7 +93,7 @@
     if(spawnIn<=0){
       const rock=Math.random()<.5;
       obstacles.push({x:W+10,w:rock?42:59,h:rock?36:28,type:rock?'rock':'bamboo'});
-      spawnIn=Math.max(.95,1.45-distance/8000)+Math.random()*.35;
+      spawnIn=nextSpawnDelay();
     }
     obstacles.forEach(obstacle=>obstacle.x-=speed*dt);
     obstacles=obstacles.filter(obstacle=>obstacle.x+obstacle.w>0);
@@ -89,7 +106,7 @@
     const sky=ctx.createLinearGradient(0,0,0,H);
     sky.addColorStop(0,'#eef6e7');sky.addColorStop(1,'#dcebd0');
     ctx.fillStyle=sky;ctx.fillRect(0,0,W,H);
-    ctx.fillStyle='#fff8d5';ctx.beginPath();ctx.arc(680,65,31,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle='#fff8d5';ctx.beginPath();ctx.arc(W-65,Math.min(75,H*.18),31,0,Math.PI*2);ctx.fill();
     const offset=(distance*.18)%120;
     for(let x=-120-offset;x<W+120;x+=120){
       ctx.fillStyle='#c0d9ae';ctx.fillRect(x+27,72,12,ground-72);
@@ -99,7 +116,7 @@
     ctx.fillStyle='#c0d9a4';ctx.fillRect(0,ground,W,H-ground);
     ctx.fillStyle='#85a76f';ctx.fillRect(0,ground,W,5);
     const groundOffset=distance%48;
-    ctx.fillStyle='#9fbc88';for(let x=-groundOffset;x<W;x+=48)ctx.fillRect(x,275,25,3);
+    ctx.fillStyle='#9fbc88';for(let x=-groundOffset;x<W;x+=48)ctx.fillRect(x,ground+25,25,3);
     obstacles.forEach(obstacle=>{
       if(obstacle.type==='rock'){
         ctx.fillStyle='#857e6d';ctx.beginPath();ctx.moveTo(obstacle.x,ground);ctx.lineTo(obstacle.x+6,ground-20);ctx.lineTo(obstacle.x+20,ground-obstacle.h);ctx.lineTo(obstacle.x+35,ground-28);ctx.lineTo(obstacle.x+obstacle.w,ground);ctx.closePath();ctx.fill();
