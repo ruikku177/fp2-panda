@@ -23,9 +23,10 @@ let multiMode = false;
 const selectedChapters = new Set();
 try{const saved=JSON.parse(localStorage.getItem('fp-panda-multi-chapters'));if(Array.isArray(saved))saved.filter(n=>questions.some(q=>q.chapter===n)).forEach(n=>selectedChapters.add(n));}catch{}
 let material='supplement';
+let calendarMonth=new Date(new Date().getFullYear(),new Date().getMonth(),1);
 const targetNames={all:'すべて',unseen:'未着手',review:'要復習',favorite:'お気に入り',solved:'解けた'};
 const byId = new Map(questions.map(q=>[q.id,q]));
-function saveProgress(){localStorage.setItem(progressKey,JSON.stringify(progress));renderHome();}
+function saveProgress(){localStorage.setItem(progressKey,JSON.stringify(progress));renderHome();if(!$('#record-view').hidden)renderRecord();}
 function saveSession(){if(session)localStorage.setItem(sessionKey,JSON.stringify(session));else localStorage.removeItem(sessionKey);renderContinue();}
 function stateOf(q){return progress.results[q.id]?.state || 'unseen';}
 function localDate(date=new Date()){return `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}-${String(date.getDate()).padStart(2,'0')}`;}
@@ -119,11 +120,54 @@ function renderContinue(){
  const q=byId.get(session.ids[Math.min(session.index,session.ids.length-1)]);if(!q)return;
  card.setAttribute('aria-label','前回の続き');$('#continue-kicker').textContent='前回の続き';$('#continue-button-label').textContent='続きから解く';$('#continue-title').textContent=`第${q.chapter}章 ${q.chapterName}`;$('#continue-detail').textContent=`次は 問${q.number} · ${session.index+1} / ${session.ids.length}問`;
 }
-function showHome(){ $('#quiz-view').hidden=true;$('#home-view').hidden=false;$('.mobile-nav').hidden=false;$('.breadcrumb').textContent='ホーム';renderHome();window.scrollTo(0,0);}
+function placeWeekCard(){
+ const card=$('.record-card'),mobile=window.matchMedia('(max-width:900px)').matches;
+ const destination=mobile?$('#record-week-slot'):$('.study-side');
+ if(card.parentElement!==destination)destination.prepend(card);
+}
+window.matchMedia('(max-width:900px)').addEventListener('change',placeWeekCard);
+placeWeekCard();
+function setActiveNav(action){document.querySelectorAll('.nav-item,.mobile-nav button').forEach(button=>button.classList.toggle('active',button.dataset.action===action));}
+function renderCalendar(){
+ const year=calendarMonth.getFullYear(),month=calendarMonth.getMonth();
+ $('#calendar-month').textContent=`${year}年${month+1}月`;
+ $('#calendar-next').disabled=year===new Date().getFullYear()&&month===new Date().getMonth();
+ const first=new Date(year,month,1),days=new Date(year,month+1,0).getDate();
+ let html='<div class="calendar-grid" role="grid" aria-label="月ごとの学習日">';
+ for(const day of ['日','月','火','水','木','金','土'])html+=`<span class="calendar-day-name">${day}</span>`;
+ for(let i=0;i<first.getDay();i++)html+='<span class="calendar-empty"></span>';
+ for(let day=1;day<=days;day++){
+  const key=localDate(new Date(year,month,day)),count=progress.daily[key]||0;
+  const level=count>=20?3:count>=5?2:count>0?1:0;
+  html+=`<span class="calendar-day level-${level}${key===localDate()?' is-today':''}" role="gridcell" aria-label="${month+1}月${day}日 ${count}問"><b>${day}</b>${count?`<small>${count}問</small>`:''}</span>`;
+ }
+ $('#record-calendar').innerHTML=html+'</div><p class="calendar-note">色が濃いほど、たくさん解いた日です。</p>';
+}
+function renderRecord(){
+ const solved=questions.filter(q=>stateOf(q)==='solved').length;
+ const review=questions.filter(q=>stateOf(q)==='review');
+ const recovered=questions.filter(q=>(progress.results[q.id]?.recovered||0)>0).length;
+ $('#record-overview').innerHTML=`<div><strong>${solved+review.length}<small>問</small></strong><span>学習済み</span></div><div><strong>${review.length}<small>問</small></strong><span>要復習</span></div><div><strong>${recovered}<small>問</small></strong><span>解き直して正解</span></div>`;
+ $('#record-chapters').innerHTML=chapters.map(c=>{
+  const pool=questions.filter(q=>q.chapter===c.n);
+  if(!pool.length)return `<div class="record-chapter pending"><div class="record-chapter-label"><span>第${c.n}章 ${c.name}</span><small>未収録</small></div></div>`;
+  const done=pool.filter(q=>stateOf(q)==='solved').length,needs=pool.filter(q=>stateOf(q)==='review').length,unseen=pool.length-done-needs;
+  return `<button class="record-chapter" data-record-chapter="${c.n}" aria-label="第${c.n}章 ${c.name}。解けた${done}問、要復習${needs}問、未着手${unseen}問。問題を選ぶ"><div class="record-chapter-label"><span>第${c.n}章 ${c.name}</span><small>${done+needs} / ${pool.length}問</small></div><div class="record-segments"><i class="segment-solved" style="width:${done/pool.length*100}%"></i><i class="segment-review" style="width:${needs/pool.length*100}%"></i></div><div class="record-chapter-counts"><span>解けた ${done}</span><span>要復習 ${needs}</span><span>未着手 ${unseen}</span></div></button>`;
+ }).join('');
+ const focus=review.sort((a,b)=>(progress.results[b.id]?.wrongCount||0)-(progress.results[a.id]?.wrongCount||0)||(progress.results[b.id]?.updatedAt||0)-(progress.results[a.id]?.updatedAt||0));
+ $('#record-focus').innerHTML=focus.length?`<p class="focus-summary">要復習の問題が${focus.length}問あります。</p><div class="focus-list">${focus.slice(0,5).map(q=>`<button data-focus-chapter="${q.chapter}"><span>第${q.chapter}章 · 問${q.number}</span><small>${q.chapterName}</small><span aria-hidden="true">→</span></button>`).join('')}</div><button class="focus-all" id="record-review-all">まとめて復習する →</button>`:'<p class="focus-empty">いま要復習の問題はありません。今日もパンダと一歩ずつ。</p>';
+ renderCalendar();
+}
+function showHome(){ $('#quiz-view').hidden=true;$('#record-view').hidden=true;$('#home-view').hidden=false;$('.mobile-nav').hidden=false;$('.breadcrumb').textContent='ホーム';setActiveNav('home');renderHome();window.scrollTo(0,0);}
+function showRecord(){ $('#quiz-view').hidden=true;$('#home-view').hidden=true;$('#record-view').hidden=false;$('.mobile-nav').hidden=false;$('.breadcrumb').textContent='学習の記録';setActiveNav('record');renderHome();renderRecord();window.scrollTo(0,0);}
+$('#calendar-prev').onclick=()=>{calendarMonth=new Date(calendarMonth.getFullYear(),calendarMonth.getMonth()-1,1);renderCalendar();};
+$('#calendar-next').onclick=()=>{if(!$('#calendar-next').disabled){calendarMonth=new Date(calendarMonth.getFullYear(),calendarMonth.getMonth()+1,1);renderCalendar();}};
+$('#record-chapters').onclick=event=>{const button=event.target.closest('[data-record-chapter]');if(button)openSettings([Number(button.dataset.recordChapter)]);};
+$('#record-focus').onclick=event=>{const button=event.target.closest('[data-focus-chapter]');if(button)openSettings([Number(button.dataset.focusChapter)],'review');else if(event.target.closest('#record-review-all'))openSettings([...new Set(questions.map(q=>q.chapter))],'review');};
 function currentQuestion(){return session&&byId.get(session.ids[session.index]);}
 function showQuestion(){
  const q=currentQuestion();if(!q){finishSession();return;}
- $('#home-view').hidden=true;$('#quiz-view').hidden=false;$('.mobile-nav').hidden=true;$('.breadcrumb').textContent='問題を解く';
+ $('#home-view').hidden=true;$('#record-view').hidden=true;$('#quiz-view').hidden=false;$('.mobile-nav').hidden=true;$('.breadcrumb').textContent='問題を解く';
  $('#quiz-progress').textContent=`${session.index+1} / ${session.ids.length}問`;
  $('#quiz-track-fill').style.width=`${(session.index+1)/session.ids.length*100}%`;
  $('#quiz-source').textContent=`補助問題 · 第${q.chapter}章 ${q.chapterName}`;
@@ -156,7 +200,8 @@ function showQuestion(){
 function recordResult(q,correct,selected=null){
  const previous=session.responses[q.id];if(previous)return;
  const response={correct,selected};session.responses[q.id]=response;
- progress.results[q.id]={state:correct?'solved':'review',updatedAt:Date.now()};
+ const old=progress.results[q.id]||{};
+ progress.results[q.id]={state:correct?'solved':'review',updatedAt:Date.now(),attempts:(old.attempts||0)+1,wrongCount:(old.wrongCount||0)+(correct?0:1),recovered:(old.recovered||0)+(correct&&old.state==='review'?1:0)};
  const today=localDate();progress.daily[today]=(progress.daily[today]||0)+1;
  if(q.format==='choice'||q.format==='multi-select'){progress.choiceTotal=(progress.choiceTotal||0)+1;if(correct)progress.choiceCorrect=(progress.choiceCorrect||0)+1;}
  saveProgress();saveSession();displayResult(q,response);$('#quiz-next').disabled=false;
@@ -204,8 +249,7 @@ document.querySelectorAll('[data-action]').forEach(button=>button.onclick=()=>{
  if(action==='home'){showHome();return;}
  if(action==='continue'){if(session)showQuestion();else $('.chapters').scrollIntoView({behavior:'smooth',block:'start'});return;}
  if(action==='record'){
-  const reviewed=questions.filter(q=>stateOf(q)==='review').length,solved=questions.filter(q=>stateOf(q)==='solved').length;
-  showDialog('学習の記録',`<div class="record-line">学習済み<b>${reviewed+solved}問</b></div><div class="record-line">解けた<b>${solved}問</b></div><div class="record-line">要復習<b>${reviewed}問</b></div><div class="record-line">お気に入り<b>${Object.keys(progress.favorites).length}問</b></div>`);return;
+  showRecord();return;
  }
  if(action==='review'||action==='favorites'){
   const target=action==='review'?'review':'favorite';

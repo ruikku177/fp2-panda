@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>FPパンダ｜FP2級 問題集</title><link rel="stylesheet" href="style.css"><link rel="stylesheet" href="multi.css"><link rel="stylesheet" href="app.css">
+  <title>FPパンダ｜FP2級 問題集</title><link rel="stylesheet" href="style.css"><link rel="stylesheet" href="multi.css"><link rel="stylesheet" href="app.css"><link rel="stylesheet" href="record.css">
   <meta name="theme-color" content="#f6cd29"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="apple-mobile-web-app-title" content="FPパンダ">
   <link rel="icon" type="image/png" sizes="192x192" href="assets/icon-192.png"><link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png"><link rel="manifest" href="manifest.webmanifest">
 </head>
@@ -48,6 +48,14 @@
   </aside></div>
   <footer>今日の「わかった」が、明日の自信に。<svg><use href="#leaf"/></svg></footer>
   </div>
+  <section id="record-view" hidden aria-labelledby="record-title">
+    <div class="record-intro"><span class="eyebrow">YOUR STUDY RECORD</span><h1 id="record-title">学習の記録</h1><p>積み重ねた分だけ、少しずつ前へ。</p></div>
+    <div id="record-week-slot"></div>
+    <div class="record-overview" id="record-overview"></div>
+    <section class="record-panel" aria-labelledby="chapter-progress-title"><div class="record-panel-heading"><h2 id="chapter-progress-title">章ごとの進み具合</h2><span>補助問題</span></div><div id="record-chapters"></div></section>
+    <section class="record-panel" aria-labelledby="calendar-title"><div class="record-panel-heading"><h2 id="calendar-title">学習カレンダー</h2><div class="calendar-controls"><button id="calendar-prev" aria-label="前の月">‹</button><span id="calendar-month"></span><button id="calendar-next" aria-label="次の月">›</button></div></div><div id="record-calendar"></div></section>
+    <section class="record-panel" aria-labelledby="focus-title"><div class="record-panel-heading"><h2 id="focus-title">これからの復習</h2></div><div id="record-focus"></div></section>
+  </section>
   <section id="quiz-view" class="quiz-view" hidden aria-live="polite"><div class="quiz-top"><button id="quiz-back">← ホーム</button><span id="quiz-progress"></span></div><div class="quiz-track"><i id="quiz-track-fill"></i></div><div class="quiz-card"><div class="quiz-heading"><span id="quiz-source"></span><button id="quiz-favorite" aria-label="お気に入りに追加" aria-pressed="false"><svg><use href="#star"/></svg></button></div><h2 id="quiz-title"></h2><div id="quiz-question" class="rich-content"></div><div id="quiz-answer-area"></div><div id="quiz-result" hidden></div></div><div class="quiz-controls"><button id="quiz-prev">前の問題</button><button id="quiz-next" disabled>次の問題 →</button></div></section>
 </main></div>
 <nav class="mobile-nav" aria-label="モバイルメニュー"><button class="active" data-action="home"><svg><use href="#home"/></svg>ホーム</button><button data-action="record"><svg><use href="#chart"/></svg>記録</button></nav>
