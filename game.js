@@ -9,7 +9,7 @@
   const scoreLabel = document.querySelector('#dash-score');
   const bestLabel = document.querySelector('#dash-best');
   const keys = { unlock:'fp-panda-dash-unlocked-v1', taps:'fp-panda-dash-taps-v1', best:'fp-panda-dash-best-v1' };
-  const C = { speed:225, acceleration:3.2, maxSpeed:450, jump:-670, gravity:1450, size:94,
+  const C = { speed:225, acceleration:3.2, maxSpeed:450, jump:-670, jumpRelease:-440, gravity:1450, size:94,
     reaction:.7, recovery:.25, runFrame:.1, playerHit:[22,20,30,7] };
   // Hit insets: left, right, top, bottom. Decorative leaves and stones do not collide.
   const kinds = {
@@ -37,7 +37,7 @@
   let unlocked = read(keys.unlock) === 1, taps = read(keys.taps), best = read(keys.best);
   let W=800,H=300,ground=251,state='START',frame=0,lastTime=0,elapsed=0,distance=0,spawnIn=1,deathTime=0,runTime=0;
   let obstacles=[];
-  const player={x:105,y:ground-C.size,w:C.size,h:C.size,vy:0,jumpTime:0,landTime:0};
+  const player={x:105,y:ground-C.size,w:C.size,h:C.size,vy:0,jumpTime:0,landTime:0,peak:0};
   entry.hidden=!unlocked;
   scoreLabel.textContent=digits(0); bestLabel.textContent=digits(best);
 
@@ -90,14 +90,19 @@
     cancelAnimationFrame(frame); fit();
     state='PLAYING'; canvas.dataset.state=state;
     lastTime=0;elapsed=0;distance=0;runTime=0;deathTime=0;spawnIn=.9+Math.random()*.45;obstacles=[];
-    player.y=ground-player.h;player.vy=0;player.jumpTime=0;player.landTime=0;
+    player.y=ground-player.h;player.vy=0;player.jumpTime=0;player.landTime=0;player.peak=0;
     scoreLabel.textContent=digits(0);overlay.hidden=true;
     start.disabled=true;start.textContent='走行中';jumpButton.disabled=false;
     canvas.focus();frame=requestAnimationFrame(tick);
   }
   function jump(){
     if(state!=='PLAYING'||player.y<ground-player.h-.5||player.vy!==0)return;
-    player.vy=C.jump;player.jumpTime=0;player.landTime=0;
+    player.vy=C.jump;player.jumpTime=0;player.landTime=0;player.peak=0;
+  }
+  function releaseJump(){
+    // Letting go while rising cuts the remaining upward speed. A tap makes a low jump;
+    // holding until near the apex keeps the original full-height trajectory.
+    if(state==='PLAYING'&&player.vy<C.jumpRelease)player.vy=C.jumpRelease;
   }
   function finish(message) {
     const score=Math.floor(distance/10);
@@ -123,6 +128,7 @@
     elapsed+=dt;runTime+=dt;const v=speed();distance+=v*dt;scoreLabel.textContent=digits(distance/10);
     if(player.vy!==0||player.y<ground-player.h){
       player.vy+=C.gravity*dt;player.y=Math.min(ground-player.h,player.y+player.vy*dt);player.jumpTime+=dt;
+      player.peak=Math.max(player.peak,ground-player.y-player.h);
       if(player.y>=ground-player.h){player.y=ground-player.h;player.vy=0;player.landTime=.12}
     }else if(player.landTime>0)player.landTime=Math.max(0,player.landTime-dt);
     spawnIn-=dt;
@@ -159,17 +165,23 @@
     background();
     for(const o of obstacles){
       const k=kinds[o.name],image=obstacleImages[o.name];
-      if(image.complete&&image.naturalWidth)ctx.drawImage(image,o.x,ground-k.h,k.w,k.h);
+      const visualY=ground-k.h+(o.name==='puddle'?9:0);
+      if(image.complete&&image.naturalWidth)ctx.drawImage(image,o.x,visualY,k.w,k.h);
       else{ctx.fillStyle=o.name==='puddle'?'#66bce1':o.name==='rock'?'#857e6d':'#4d8e56';
-        ctx.beginPath();ctx.roundRect(o.x+5,ground-k.h+8,k.w-10,k.h-8,9);ctx.fill()}
+        ctx.beginPath();ctx.roundRect(o.x+5,visualY+8,k.w-10,k.h-8,9);ctx.fill()}
     }
-    const name=sprite(),image=pandaImages[name];canvas.dataset.sprite=name;
+    const name=sprite(),image=pandaImages[name];canvas.dataset.sprite=name;canvas.dataset.jumpPeak=String(Math.round(player.peak));
     if(image.complete&&image.naturalWidth)ctx.drawImage(image,player.x,player.y,player.w,player.h);
     else if(oldPanda.complete&&oldPanda.naturalWidth)ctx.drawImage(oldPanda,player.x,player.y,player.w,player.h);
     else{ctx.fillStyle='#fffefa';ctx.beginPath();ctx.arc(player.x+45,player.y+45,34,0,Math.PI*2);ctx.fill()}
   }
   start.onclick=begin;jumpButton.onclick=jump;
   canvas.onpointerdown=e=>{e.preventDefault();jump()};
+  jumpButton.onpointerdown=e=>{e.preventDefault();jump()};
+  window.addEventListener('pointerup',releaseJump);
+  window.addEventListener('pointercancel',releaseJump);
+  window.addEventListener('keyup',e=>{if(e.code==='Space'||e.code==='ArrowUp')releaseJump()});
+  window.addEventListener('blur',releaseJump);
   dialog.addEventListener('keydown',e=>{
     if((e.code==='Space'||e.code==='ArrowUp')&&state==='PLAYING'){e.preventDefault();if(!e.repeat)jump()}
     else if((e.code==='Space'||e.code==='Enter')&&(state==='START'||state==='GAME_OVER')){e.preventDefault();if(!e.repeat)begin()}
