@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 300" role="img" aria-labelledby="title desc">
+  <title id="title">第1章 問38 介護サービス利用者負担の模式図</title>
+  <desc id="desc">在宅サービス29万円のうち、左側が区分支給限度基準額を超える全額自己負担、右側が利用限度額の範囲。利用限度額内の一部を負担割合に応じて自己負担する。利用者負担額合計は左の限度額超過分と限度額内の自己負担分の合計。</desc>
+  <style>text{font-family:'Yu Gothic','Noto Sans JP',sans-serif;fill:#172633} .hd{font-size:22px;font-weight:700}.lab{font-size:18px}.box{stroke:#385473;stroke-width:2}.line{stroke:#385473;stroke-width:2}</style>
+  <rect width="1000" height="300" fill="#f8fafc"/>
+  <text class="hd" x="20" y="36">介護（在宅）サービス利用時の自己負担額</text>
+  <path class="line" d="M20 83 H430 M20 76 v14 M430 76 v14"/><text class="lab" x="105" y="69">利用者負担額合計</text>
+  <path class="line" d="M20 122 H230 M230 122 H980 M20 115 v14 M230 115 v14 M980 115 v14"/>
+  <text class="lab" x="47" y="109">限度額超過分</text><text class="lab" x="485" y="109">利用限度額（区分支給限度基準額）</text>
+  <rect class="box" x="20" y="145" width="210" height="75" fill="#ffe3dc"/>
+  <rect class="box" x="230" y="145" width="200" height="75" fill="#fff0cf"/>
+  <rect class="box" x="430" y="145" width="550" height="75" fill="#e3effa"/>
+  <text class="lab" x="73" y="177">自己負担</text><text class="lab" x="77" y="202">（全額）</text>
+  <text class="lab" x="279" y="177">自己負担</text><text class="lab" x="262" y="202">（負担割合分）</text>
+  <text class="lab" x="565" y="185">公的介護保険の給付対象</text>
+  <path class="line" d="M20 240 H980 M20 233 v14 M980 233 v14"/>
+  <text class="lab" x="293" y="270">29万円の在宅サービス利用（1か月当たり）</text>
+</svg>

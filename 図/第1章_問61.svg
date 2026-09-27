@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 640" role="img" aria-labelledby="title desc">
+  <title id="title">第1章 問61 由紀恵さんが受給できる遺族給付の組み合わせ</title>
+  <desc id="desc">義博さん死亡時に由紀恵さん35歳、涼太さん8歳。由紀恵さんが***歳、涼太さんがイ歳到達年度の末日、由紀恵さんがア歳となる時点が示され、遺族給付の期間をウ、エ、***で問う原本の空欄図。</desc>
+  <style>text{font-family:'Yu Gothic','Noto Sans JP',sans-serif;fill:#172633}.head{font-size:24px;font-weight:700}.lab{font-size:20px}.age{font-size:21px;font-weight:700}.box{fill:#fff;stroke:#425a72;stroke-width:2}.bar{fill:#e3eef8;stroke:#2c587d;stroke-width:2}.bar2{fill:#fef1d9;stroke:#8b672e;stroke-width:2}.guide{stroke:#7a8da1;stroke-width:2;stroke-dasharray:6 6}.arrow{stroke:#263e55;stroke-width:2.5;fill:none}</style>
+  <defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#263e55"/></marker></defs>
+  <rect width="1100" height="640" fill="#f8fafc"/>
+  <text class="head" x="28" y="45">由紀恵さんが受給できる遺族給付の組み合わせ</text>
+  <text class="lab" x="42" y="97">義博さん死亡</text><path class="arrow" d="M112 106 V129" marker-end="url(#arrow)"/>
+  <text class="lab" x="42" y="160">［由紀恵さん］</text>
+  <rect class="box" x="72" y="182" width="112" height="54"/><text class="age" x="97" y="218">35歳</text>
+  <path class="arrow" d="M184 209 H516" marker-end="url(#arrow)"/><rect class="box" x="516" y="182" width="125" height="54"/><text class="age" x="538" y="218">***歳</text>
+  <path class="arrow" d="M641 209 H963" marker-end="url(#arrow)"/><rect class="box" x="963" y="182" width="100" height="54"/><text class="age" x="985" y="218">（ア）</text>
+  <text class="lab" x="42" y="291">［涼太さん］</text>
+  <rect class="box" x="72" y="307" width="112" height="54"/><text class="age" x="103" y="343">8歳</text>
+  <path class="arrow" d="M184 334 H516" marker-end="url(#arrow)"/><rect class="box" x="516" y="307" width="305" height="54"/><text class="lab" x="548" y="342">（イ）到達年度の末日</text>
+  <path class="guide" d="M128 236 V272 M128 361 V565 M578 236 V300 M578 361 V565 M1013 236 V565"/>
+  <rect class="bar" x="578" y="406" width="435" height="60"/><text class="age" x="775" y="445">（ウ）</text>
+  <rect class="bar2" x="128" y="478" width="930" height="60"/><text class="age" x="567" y="517">（エ）</text>
+  <rect class="bar" x="128" y="545" width="450" height="60"/><text class="age" x="336" y="584">***</text>
+</svg>

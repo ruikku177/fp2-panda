@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 420" role="img" aria-labelledby="title desc">
+  <title id="title">第2章 問14 収入保障保険の年金受取総額の模式図</title>
+  <desc id="desc">2020年6月1日契約、2027年6月1日が35歳、2045年6月1日が53歳。死亡時期が遅くなるほど年金受取総額は小さくなり、最後の5年間は保証期間分の高さで一定。</desc>
+  <style>text{font-family:'Yu Gothic','Noto Sans JP',sans-serif;fill:#1b293b} .box{fill:#fff;stroke:#aabaca;stroke-width:2} .bar{fill:#dbe7f4;stroke:#3d5d80;stroke-width:1.5} .axis{stroke:#27384c;stroke-width:2} .dash{stroke:#597693;stroke-width:2;stroke-dasharray:5 5} .age{font-size:22px;font-weight:700} .date{font-size:19px} .label{font-size:22px}</style>
+  <rect width="1100" height="420" fill="#f8fafc"/>
+  <rect class="box" x="30" y="25" width="1040" height="340" rx="8"/>
+  <text class="label" x="72" y="100">年金</text><text class="label" x="72" y="133">受取総額</text>
+  <path class="axis" d="M145 275 H1012"/>
+  <g class="bar">
+    <rect x="150" y="60" width="31" height="215"/><rect x="181" y="68" width="31" height="207"/><rect x="212" y="76" width="31" height="199"/><rect x="243" y="84" width="31" height="191"/><rect x="274" y="92" width="31" height="183"/><rect x="305" y="100" width="31" height="175"/><rect x="336" y="108" width="31" height="167"/><rect x="367" y="116" width="31" height="159"/><rect x="398" y="124" width="31" height="151"/><rect x="429" y="132" width="31" height="143"/>
+    <rect x="767" y="222" width="31" height="53"/><rect x="798" y="230" width="31" height="45"/><rect x="829" y="238" width="31" height="37"/><rect x="860" y="246" width="31" height="29"/><rect x="891" y="246" width="31" height="29"/><rect x="922" y="246" width="31" height="29"/><rect x="953" y="246" width="31" height="29"/><rect x="984" y="246" width="31" height="29"/>
+  </g>
+  <path class="dash" d="M461 164 H755"/>
+  <path class="axis" d="M165 275 v13 M382 275 v13 M1010 275 v13"/>
+  <text class="age" x="143" y="316">28歳</text><text class="age" x="359" y="316">35歳</text><text class="age" x="981" y="316">53歳</text>
+  <text class="date" x="112" y="342">2020年6月1日</text><text class="date" x="329" y="342">2027年6月1日</text><text class="date" x="930" y="342">2045年6月1日</text>
+  <path class="axis" d="M165 360 q0 25 25 25 H985 q25 0 25-25" fill="none"/>
+  <text class="date" x="422" y="407">保険期間25年（保証期間5年）</text>
+</svg>

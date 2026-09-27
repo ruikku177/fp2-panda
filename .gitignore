@@ -1,0 +1,9 @@
+# 原本教材・照合画像・一時ファイルは公開しない
+*.pdf
+*.jpg
+*.jpeg
+*.heic
+*.png
+!assets/panda.png
+__pycache__/
+tmp/
