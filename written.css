@@ -1,0 +1,19 @@
+.written-answer-form{margin-top:24px;padding:20px;background:#f7f9f2;border:1px solid #dfe7d8;border-radius:14px}
+.written-intro{font-size:12px;line-height:1.7;color:#62735f;margin:0 0 15px}
+.written-field-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}
+.written-field{display:grid;gap:7px;min-width:0;font-size:12px;font-weight:650;color:#3f5c42}
+.written-input-row{display:flex;align-items:center;gap:7px;background:#fffefa;border:1px solid #d8e2d1;border-radius:9px;padding:0 11px}
+.written-input-row:focus-within{border-color:#78956e;outline:2px solid #dbe9d4}
+.written-field input{width:100%;min-width:0;padding:12px 0;border:0;outline:0;background:transparent;color:var(--ink);font:inherit;font-size:15px;font-weight:500}
+.written-field input::placeholder{font-size:11px;font-weight:400;color:#a0aa9a}
+.written-field input:disabled{color:#617362}
+.written-unit{flex-shrink:0;color:#7d8d79;font-size:12px;font-weight:400}
+.written-submit{width:100%;margin-top:17px;padding:14px 18px;background:var(--green);border-radius:10px;color:#fff;font-size:13px;font-weight:700}
+.written-submit:hover:not(:disabled){background:#244c36}.written-submit:disabled{opacity:.55;cursor:default}
+.written-pending-note{font-size:11px;line-height:1.8;color:#866a43;background:#f7f0e3;border-left:3px solid #c8a66b;border-radius:0 8px 8px 0;padding:10px 12px;margin:13px 0}
+.written-breakdown{display:grid;gap:8px;margin:17px 0;padding:0 0 16px;border-bottom:1px solid #dae5d3}
+.written-breakdown-row{display:grid;grid-template-columns:minmax(90px,.55fr) minmax(0,1fr);gap:4px 10px;padding:9px 11px;border-radius:8px;background:#fffefa;font-size:11px;line-height:1.6}
+.written-breakdown-row strong{font-size:11px}.written-breakdown-row span{overflow-wrap:anywhere}.written-breakdown-row small{grid-column:2;font-size:10px;color:#6e8068;overflow-wrap:anywhere}
+.written-breakdown-row.is-correct{border-left:3px solid #70a06a}.written-breakdown-row.is-wrong{border-left:3px solid #c89174}.written-breakdown-row.is-pending{border-left:3px solid #c8a66b}
+.summary-pending{text-align:center;color:#8a714a;font-size:12px;line-height:1.7;margin:0 0 22px}
+@media(max-width:570px){.written-answer-form{padding:17px 14px}.written-field-grid{grid-template-columns:1fr}.written-breakdown-row{grid-template-columns:1fr}.written-breakdown-row small{grid-column:1}}

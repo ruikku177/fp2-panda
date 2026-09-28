@@ -215,6 +215,8 @@ function showQuestion(){
   const prompt=document.createElement('p');prompt.textContent='適切な記述をすべて選んでください';group.append(prompt);
   q.options.forEach(label=>{const button=document.createElement('button');button.className='multi-answer-choice';button.dataset.label=label;button.textContent=`（${label}）`;button.setAttribute('aria-pressed',String(selected.has(label)));button.onclick=()=>{selected.has(label)?selected.delete(label):selected.add(label);button.setAttribute('aria-pressed',String(selected.has(label)));group.querySelector('.multi-answer-submit').disabled=!selected.size;};group.append(button);});
   const submit=document.createElement('button');submit.className='multi-answer-submit';submit.textContent='解答する';submit.disabled=!selected.size;submit.onclick=()=>{if(session.responses[q.id])return;const picked=[...selected].sort(),expected=[...q.answerKeys].sort();recordResult(q,JSON.stringify(picked)===JSON.stringify(expected),picked);};group.append(submit);answerArea.append(group);
+ }else if(window.FP_WRITTEN?.specs[q.id]){
+  answerArea.append(createWrittenForm(q));
  }else{
   const button=document.createElement('button');button.className='reveal-button';button.textContent='答えと解説を見る';button.onclick=()=>revealSelfCheck(q);answerArea.append(button);
  }
@@ -225,14 +227,42 @@ function showQuestion(){
  $('#quiz-next').textContent=session.index===session.ids.length-1?'結果を見る →':'次の問題 →';
  window.scrollTo(0,0);
 }
-function recordResult(q,correct,selected=null){
+function createWrittenForm(q){
+ const spec=window.FP_WRITTEN.specs[q.id],form=document.createElement('form');form.className='written-answer-form';form.noValidate=true;
+ const heading=document.createElement('p');heading.className='written-intro';heading.textContent='答えを入力してから確認しましょう。空欄のままでも提出できます。';form.append(heading);
+ if(spec.pending){const note=document.createElement('p');note.className='written-pending-note';note.textContent='この問題は解答の一部が要確認のため、入力後も自動採点しません。';form.append(note);}
+ const grid=document.createElement('div');grid.className='written-field-grid';
+ spec.fields.forEach((field,index)=>{
+  const label=document.createElement('label');label.className='written-field';
+  const title=document.createElement('span');title.textContent=field.label;label.append(title);
+  const row=document.createElement('span');row.className='written-input-row';
+  const input=document.createElement('input');input.type='text';input.autocomplete='off';input.inputMode=field.kind==='number'?'numeric':'text';input.dataset.writtenIndex=String(index);input.setAttribute('aria-label',field.label);
+  if(field.kind==='number')input.placeholder='数字を入力';else if(field.kind==='letters')input.placeholder='記号を入力';else input.placeholder='答えを入力';
+  row.append(input);
+  if(field.unit){const unit=document.createElement('span');unit.className='written-unit';unit.textContent=field.unit;row.append(unit);}
+  label.append(row);grid.append(label);
+ });
+ form.append(grid);
+ const submit=document.createElement('button');submit.type='submit';submit.className='written-submit';submit.textContent=spec.pending?'入力した答えを確認する':'解答する';form.append(submit);
+ form.onsubmit=event=>{
+  event.preventDefault();if(session.responses[q.id])return;
+  const values=[...form.querySelectorAll('[data-written-index]')].map(input=>input.value);
+  const outcome=window.FP_WRITTEN.grade(q.id,values);
+  recordResult(q,outcome.correct,{type:'written',values,fields:outcome.fields},outcome.pending);
+ };
+ return form;
+}
+function recordResult(q,correct,selected=null,pending=false){
  const previous=session.responses[q.id];if(previous)return;
- const response={correct,selected};session.responses[q.id]=response;
- const old=progress.results[q.id]||{};
- progress.results[q.id]={state:correct?'solved':'review',updatedAt:Date.now(),attempts:(old.attempts||0)+1,wrongCount:(old.wrongCount||0)+(correct?0:1),recovered:(old.recovered||0)+(correct&&old.state==='review'?1:0)};
- const today=localDate();progress.daily[today]=(progress.daily[today]||0)+1;
- if(q.format==='choice'||q.format==='multi-select'){progress.choiceTotal=(progress.choiceTotal||0)+1;if(correct)progress.choiceCorrect=(progress.choiceCorrect||0)+1;}
- saveProgress();saveSession();displayResult(q,response);$('#quiz-next').disabled=false;
+ const response={correct,selected,pending};session.responses[q.id]=response;
+ if(!pending){
+  const old=progress.results[q.id]||{};
+  progress.results[q.id]={state:correct?'solved':'review',updatedAt:Date.now(),attempts:(old.attempts||0)+1,wrongCount:(old.wrongCount||0)+(correct?0:1),recovered:(old.recovered||0)+(correct&&old.state==='review'?1:0)};
+  const today=localDate();progress.daily[today]=(progress.daily[today]||0)+1;
+  if(q.format==='choice'||q.format==='multi-select'){progress.choiceTotal=(progress.choiceTotal||0)+1;if(correct)progress.choiceCorrect=(progress.choiceCorrect||0)+1;}
+  saveProgress();
+ }
+ saveSession();displayResult(q,response);$('#quiz-next').disabled=false;
 }
 function answerChoice(q,number){if(session.responses[q.id])return;recordResult(q,String(number)===q.answer,number);}
 function revealSelfCheck(q){
@@ -247,9 +277,27 @@ function answerAreaHide(){const button=$('#quiz-answer-area .reveal-button');if(
 function displayResult(q,response){
  const result=$('#quiz-result');result.hidden=false;
  result.innerHTML=`<p class="result-label"></p><p class="official-answer"></p><div class="rich-content explanation"></div>`;
- result.querySelector('.result-label').textContent=response.correct?'正解！':'要復習';
- result.querySelector('.official-answer').textContent=`正解: ${q.answer}`;
+ result.querySelector('.result-label').textContent=response.pending?'判定保留':response.correct?'正解！':'要復習';
+ result.querySelector('.official-answer').textContent=`${response.pending?'登録済み解答（要確認）':'正解'}: ${q.answer}`;
  result.querySelector('.explanation').innerHTML=q.explanation;
+ if(response.selected?.type==='written'){
+  const grid=document.createElement('div');grid.className='written-breakdown';
+  response.selected.fields.forEach(field=>{
+   const row=document.createElement('div');row.className=`written-breakdown-row ${field.correct===true?'is-correct':field.correct===false?'is-wrong':'is-pending'}`;
+   const title=document.createElement('strong');title.textContent=field.label;
+   const entered=document.createElement('span');entered.textContent=`入力: ${field.entered||'（空欄）'}`;
+   row.append(title,entered);
+   if(field.expected){const expected=document.createElement('small');expected.textContent=`答え: ${field.expected}`;row.append(expected);}
+   grid.append(row);
+  });
+  result.insertBefore(grid,result.querySelector('.explanation'));
+  if(response.pending){const note=document.createElement('p');note.className='written-pending-note';note.textContent='第1章・問30（ウ）は正解未確定です。登録済み解答を参考表示していますが、正誤・学習記録・結果の得点には反映しません。';result.insertBefore(note,result.querySelector('.explanation'));}
+  $('#quiz-answer-area').querySelectorAll('input,.written-submit').forEach(control=>control.disabled=true);
+  $('#quiz-answer-area').querySelectorAll('input').forEach((input,index)=>{input.value=response.selected.values[index]||'';});
+ }
+ if(q.format==='self-check' && window.FP_WRITTEN?.specs[q.id] && response.selected?.type!=='written'){
+  $('#quiz-answer-area').querySelectorAll('input,.written-submit').forEach(control=>control.disabled=true);
+ }
  if(q.format==='choice'){
   document.querySelectorAll('.answer-choice').forEach(button=>{const n=button.dataset.option;button.disabled=true;if(n===q.answer)button.classList.add('correct');if(response.selected===Number(n)&&!response.correct)button.classList.add('incorrect');});
  }else if(q.format==='multi-select'){
@@ -258,9 +306,9 @@ function displayResult(q,response){
  }else answerAreaHide();
 }
 function finishSession(){
- const answered=Object.values(session?.responses||{}),correct=answered.filter(r=>r.correct).length,total=session?.ids.length||0;
+ const answered=Object.values(session?.responses||{}),correct=answered.filter(r=>r.correct===true).length,total=session?.ids.length||0,pending=answered.filter(r=>r.pending).length,graded=total-pending;
  $('#quiz-view').hidden=false;$('#quiz-source').textContent='学習のまとめ';$('#quiz-title').textContent='おつかれさま！';
- $('#quiz-question').innerHTML=`<p class="summary-score">${correct} / ${total}<small>問 正解・自己判定</small></p>`;
+ $('#quiz-question').innerHTML=`<p class="summary-score">${correct} / ${graded}<small>問 正解・自己判定${pending?`（全${total}問中）`:''}</small></p>${pending?`<p class="summary-pending">判定保留 ${pending}問は採点対象に含めていません。</p>`:''}`;
  $('#quiz-answer-area').innerHTML='';$('#quiz-result').hidden=false;
  $('#quiz-result').innerHTML='<p class="dialog-note">間違えた問題はホームの「復習する」から解き直せます。</p><button class="dialog-primary" id="finish-home">ホームへ戻る</button>';
  $('#finish-home').onclick=()=>{session=null;saveSession();showHome();};
