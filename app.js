@@ -10,11 +10,12 @@ const chapters = [
 ];
 const $ = selector => document.querySelector(selector);
 const pandaMoods=[
- {name:'喜び',image:'assets/panda.png',speech:'今日もいっしょに\nがんばろう！'},
- {name:'考える',image:'assets/panda-thinking.png',speech:'うーん…\n考え中！'},
- {name:'応援',image:'assets/panda-cheering.png',speech:'いっしょに\nがんばろう！'},
- {name:'驚き',image:'assets/panda-surprised.png',speech:'えっ！？\nびっくり！'},
- {name:'リラックス',image:'assets/panda-relaxed.png',speech:'ちょっと\nひと休み〜'}
+ {name:'通常',image:'assets/fp-panda-v2/normal.png',speech:'今日もいっしょに\nがんばろう！'},
+ {name:'喜び',image:'assets/fp-panda-v2/happy.png',speech:'やったパンダ！\nその調子！'},
+ {name:'考える',image:'assets/fp-panda-v2/thinking.png',speech:'うーん…\n考え中！'},
+ {name:'応援',image:'assets/fp-panda-v2/cheering.png',speech:'いっしょに\nがんばろう！'},
+ {name:'驚き',image:'assets/fp-panda-v2/surprised.png',speech:'えっ！？\nびっくり！'},
+ {name:'リラックス',image:'assets/fp-panda-v2/relaxed.png',speech:'ちょっと\nひと休み〜'}
 ];
 let pandaMoodIndex=0;
 const pandaImageCache=new Map();

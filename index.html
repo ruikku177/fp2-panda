@@ -5,7 +5,7 @@
   <title>FPパンダ｜FP2級 問題集</title><link rel="stylesheet" href="style.css"><link rel="stylesheet" href="multi.css"><link rel="stylesheet" href="app.css"><link rel="stylesheet" href="written.css?v=1"><link rel="stylesheet" href="record.css"><link rel="stylesheet" href="study.css?v=2"><link rel="stylesheet" href="game.css?v=5">
   <meta name="theme-color" content="#f6cd29"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="apple-mobile-web-app-title" content="FPパンダ">
   <link rel="icon" type="image/png" sizes="192x192" href="assets/icon-192.png"><link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png"><link rel="manifest" href="manifest.webmanifest">
-  <link rel="stylesheet" href="home.css?v=1">
+  <link rel="stylesheet" href="home.css?v=panda2">
 </head>
 <body>
 <svg class="symbols" xmlns="http://www.w3.org/2000/svg"><defs>
@@ -42,16 +42,16 @@
       <div class="home-brand-row"><div><h1 id="home-brand">FPパンダ<span aria-hidden="true">☘</span></h1><p>FP2級の学習を、もっと楽しく。</p></div><button class="home-calendar" data-action="record" aria-label="学習カレンダーを見る"><svg><use href="#calendar"/></svg></button></div>
       <div class="home-today"><span id="home-year"></span><time id="home-date"></time></div>
       <div class="home-window" aria-hidden="true"><span></span></div>
-      <button class="home-panda" id="panda-button" type="button" aria-label="パンダの表情を変える" title="タップで表情が変わる"><span id="panda-speech" aria-live="polite">今日もいっしょに<br>がんばろう！</span><img src="assets/panda.png" alt="喜んでいるファイナンシャルパンダ" width="300" height="300" id="panda-image"></button>
+      <button class="home-panda" id="panda-button" type="button" aria-label="パンダの表情を変える（現在: 通常）" title="タップで表情が変わる"><span class="panda-speech" id="panda-speech" aria-live="polite">今日もいっしょに<br>がんばろう！</span><img src="assets/fp-panda-v2/normal.png" alt="通常の表情のファイナンシャルパンダ" width="260" height="280" id="panda-image"></button>
     </section>
     <button class="home-start" data-action="continue"><span class="home-play" aria-hidden="true">▶</span><span><strong>学習を始める</strong><small id="home-start-detail"></small></span><span class="home-chevron" aria-hidden="true">›</span></button>
     <div class="dash-invite" id="dash-invite" hidden><span>🎋 パンダのひみつの特訓</span><button id="dash-invite-open" type="button">遊びに行く <span aria-hidden="true">→</span></button></div>
     <section class="home-todos home-panel" aria-labelledby="home-todo-title">
       <div class="home-section-head"><h2 id="home-todo-title">今日のやること</h2><span id="home-todo-total"></span></div>
       <div class="home-todo-grid">
-        <button id="continue-card" class="home-todo home-todo-continue" data-action="continue" disabled><span class="home-todo-art"><img src="assets/panda-thinking.png" alt="" width="72" height="72"><span aria-hidden="true">›</span></span><strong>前回の続き</strong><span class="home-todo-description" id="continue-title">まだありません</span><span class="home-todo-count" id="continue-detail">—</span></button>
-        <button id="home-review" class="home-todo home-todo-review" data-action="review" disabled><span class="home-todo-art"><img src="assets/panda-surprised.png" alt="" width="72" height="72"><span aria-hidden="true">›</span></span><strong>要復習</strong><span class="home-todo-description">間違えた問題</span><span class="home-todo-count"><b id="review-count">0</b><small>問</small></span></button>
-        <button id="home-favorites" class="home-todo home-todo-favorite" data-action="favorites" disabled><span class="home-todo-art"><img src="assets/panda-cheering.png" alt="" width="72" height="72"><span aria-hidden="true">›</span></span><strong>お気に入り</strong><span class="home-todo-description">保存した問題</span><span class="home-todo-count"><b id="home-favorite-count">0</b><small>問</small></span></button>
+        <button id="continue-card" class="home-todo home-todo-continue" data-action="continue" disabled><span class="home-todo-art"><img src="assets/fp-panda-v2/thinking.png" alt="" width="72" height="72"><span aria-hidden="true">›</span></span><strong>前回の続き</strong><span class="home-todo-description" id="continue-title">まだありません</span><span class="home-todo-count" id="continue-detail">—</span></button>
+        <button id="home-review" class="home-todo home-todo-review" data-action="review" disabled><span class="home-todo-art"><img src="assets/fp-panda-v2/surprised.png" alt="" width="72" height="72"><span aria-hidden="true">›</span></span><strong>要復習</strong><span class="home-todo-description">間違えた問題</span><span class="home-todo-count"><b id="review-count">0</b><small>問</small></span></button>
+        <button id="home-favorites" class="home-todo home-todo-favorite" data-action="favorites" disabled><span class="home-todo-art"><img src="assets/fp-panda-v2/cheering.png" alt="" width="72" height="72"><span aria-hidden="true">›</span></span><strong>お気に入り</strong><span class="home-todo-description">保存した問題</span><span class="home-todo-count"><b id="home-favorite-count">0</b><small>問</small></span></button>
       </div>
     </section>
     <section class="chapters home-panel" id="home-chapters" aria-label="分野と進捗">
@@ -64,7 +64,7 @@
       </div>
       <div id="home-summary" role="tabpanel" aria-labelledby="home-summary-tab" hidden></div>
     </section>
-    <section class="home-week home-panel" aria-labelledby="home-week-title"><div class="home-section-head"><h2 id="home-week-title">今週の学習記録</h2><button data-action="record" aria-label="学習記録を詳しく見る">今週 <strong id="home-week-count">0</strong>問 <span aria-hidden="true">›</span></button></div><div id="home-week-days"></div><div class="home-week-bottom"><p id="home-week-message">ひとつずつ、積み重ねていこう。</p><img src="assets/panda-cheering.png" alt="応援するFPパンダ" width="64" height="64"></div></section>
+    <section class="home-week home-panel" aria-labelledby="home-week-title"><div class="home-section-head"><h2 id="home-week-title">今週の学習記録</h2><button data-action="record" aria-label="学習記録を詳しく見る">今週 <strong id="home-week-count">0</strong>問 <span aria-hidden="true">›</span></button></div><div id="home-week-days"></div><div class="home-week-bottom"><p id="home-week-message">ひとつずつ、積み重ねていこう。</p><img src="assets/fp-panda-v2/cheering.png" alt="応援するFPパンダ" width="64" height="64"></div></section>
     <footer>今日の「わかった」が、明日の自信に。</footer>
   </div>
   <section id="record-view" hidden aria-labelledby="record-title">
@@ -96,5 +96,5 @@
 <dialog id="figure-dialog" aria-label="図を拡大表示"><button class="close" aria-label="図を閉じる">×</button><img alt=""></dialog>
 <dialog id="dash-dialog" aria-labelledby="dash-title"><button class="dash-close" id="dash-close" type="button" aria-label="ゲームを閉じる">×</button><span class="eyebrow">SECRET PANDA GAME</span><h2 id="dash-title">電卓ダッシュ</h2><p class="dash-lead">パンダと笹の道を走ろう。障害物が来たらジャンプ！</p><div class="dash-scores"><span>距離 <strong id="dash-score">00000</strong> m</span><span>ベスト <strong id="dash-best">00000</strong> m</span></div><div class="dash-stage"><canvas id="dash-canvas" width="800" height="300" tabindex="0" aria-label="パンダが障害物をジャンプで避けるゲーム"></canvas><div class="dash-overlay" id="dash-overlay" role="status">スタートを押してね</div></div><div class="dash-actions"><button id="dash-start" type="button">スタート</button><button id="dash-jump" type="button" disabled>ジャンプ</button></div><p class="dash-help">短押しで低く、長押しで高くジャンプ。スマホは画面・ボタン、PCはスペース・↑キー</p></dialog>
 <div id="toast" role="status" aria-live="polite"></div>
-<script src="data.js"></script><script src="written.js?v=1"></script><script src="home.js?v=1"></script><script src="app.js?v=home1"></script><script src="study.js?v=2"></script><script src="game.js?v=9"></script>
+<script src="data.js"></script><script src="written.js?v=1"></script><script src="home.js?v=1"></script><script src="app.js?v=panda2"></script><script src="study.js?v=2"></script><script src="game.js?v=9"></script>
 </body></html>
