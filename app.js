@@ -185,8 +185,9 @@ function renderRecord(){
  $('#record-focus').innerHTML=focus.length?`<p class="focus-summary">要復習の問題が${focus.length}問あります。</p><div class="focus-list">${focus.slice(0,5).map(q=>`<button data-focus-chapter="${q.chapter}"><span>第${q.chapter}章 · 問${q.number}</span><small>${q.chapterName}</small><span aria-hidden="true">→</span></button>`).join('')}</div><button class="focus-all" id="record-review-all">まとめて復習する →</button>`:'<p class="focus-empty">いま要復習の問題はありません。今日もパンダと一歩ずつ。</p>';
  renderCalendar();
 }
-function showHome(){ $('#quiz-view').hidden=true;$('#record-view').hidden=true;$('#home-view').hidden=false;$('.mobile-nav').hidden=false;$('.breadcrumb').textContent='ホーム';setActiveNav('home');renderHome();window.scrollTo(0,0);}
-function showRecord(){ $('#quiz-view').hidden=true;$('#home-view').hidden=true;$('#record-view').hidden=false;$('.mobile-nav').hidden=false;$('.breadcrumb').textContent='学習の記録';setActiveNav('record');renderHome();renderRecord();window.scrollTo(0,0);}
+function showHome(){ $('#quiz-view').hidden=true;$('#record-view').hidden=true;$('#study-view').hidden=true;$('#home-view').hidden=false;$('.mobile-nav').hidden=false;$('.breadcrumb').textContent='ホーム';setActiveNav('home');renderHome();window.scrollTo(0,0);}
+function showRecord(){ $('#quiz-view').hidden=true;$('#home-view').hidden=true;$('#study-view').hidden=true;$('#record-view').hidden=false;$('.mobile-nav').hidden=false;$('.breadcrumb').textContent='学習の記録';setActiveNav('record');renderHome();renderRecord();window.scrollTo(0,0);}
+function showStudy(){ $('#quiz-view').hidden=true;$('#home-view').hidden=true;$('#record-view').hidden=true;$('#study-view').hidden=false;$('.mobile-nav').hidden=false;$('.breadcrumb').textContent='パンダと勉強';setActiveNav('study');showStudyDomains();window.scrollTo(0,0);}
 $('#calendar-prev').onclick=()=>{calendarMonth=new Date(calendarMonth.getFullYear(),calendarMonth.getMonth()-1,1);renderCalendar();};
 $('#calendar-next').onclick=()=>{if(!$('#calendar-next').disabled){calendarMonth=new Date(calendarMonth.getFullYear(),calendarMonth.getMonth()+1,1);renderCalendar();}};
 $('#record-chapters').onclick=event=>{const button=event.target.closest('[data-record-chapter]');if(button)openSettings([Number(button.dataset.recordChapter)]);};
@@ -194,7 +195,7 @@ $('#record-focus').onclick=event=>{const button=event.target.closest('[data-focu
 function currentQuestion(){return session&&byId.get(session.ids[session.index]);}
 function showQuestion(){
  const q=currentQuestion();if(!q){finishSession();return;}
- $('#home-view').hidden=true;$('#record-view').hidden=true;$('#quiz-view').hidden=false;$('.mobile-nav').hidden=true;$('.breadcrumb').textContent='問題を解く';
+ $('#home-view').hidden=true;$('#record-view').hidden=true;$('#study-view').hidden=true;$('#quiz-view').hidden=false;$('.mobile-nav').hidden=true;$('.breadcrumb').textContent='問題を解く';
  $('#quiz-progress').textContent=`${session.index+1} / ${session.ids.length}問`;
  $('#quiz-track-fill').style.width=`${(session.index+1)/session.ids.length*100}%`;
  $('#quiz-source').textContent=`補助問題 · 第${q.chapter}章 ${q.chapterName}`;
@@ -274,6 +275,7 @@ $('#figure-dialog .close').onclick=()=>$('#figure-dialog').close();
 document.querySelectorAll('[data-action]').forEach(button=>button.onclick=()=>{
  const action=button.dataset.action;
  if(action==='home'){showHome();return;}
+ if(action==='study'){showStudy();return;}
  if(action==='continue'){if(session)showQuestion();else $('.chapters').scrollIntoView({behavior:'smooth',block:'start'});return;}
  if(action==='record'){
   showRecord();return;

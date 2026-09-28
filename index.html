@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>FPパンダ｜FP2級 問題集</title><link rel="stylesheet" href="style.css"><link rel="stylesheet" href="multi.css"><link rel="stylesheet" href="app.css"><link rel="stylesheet" href="record.css"><link rel="stylesheet" href="game.css?v=5">
+  <title>FPパンダ｜FP2級 問題集</title><link rel="stylesheet" href="style.css"><link rel="stylesheet" href="multi.css"><link rel="stylesheet" href="app.css"><link rel="stylesheet" href="record.css"><link rel="stylesheet" href="study.css?v=1"><link rel="stylesheet" href="game.css?v=5">
   <meta name="theme-color" content="#f6cd29"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="apple-mobile-web-app-title" content="FPパンダ">
   <link rel="icon" type="image/png" sizes="192x192" href="assets/icon-192.png"><link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png"><link rel="manifest" href="manifest.webmanifest">
 </head>
@@ -26,6 +26,7 @@
   <span class="nav-label">MY STUDY</span>
   <nav aria-label="メインメニュー">
     <button class="nav-item active" data-action="home"><svg><use href="#home"/></svg>ホーム<span class="dot"></span></button>
+    <button class="nav-item" data-action="study"><svg><use href="#book"/></svg>パンダと勉強</button>
     <button class="nav-item" data-action="review"><svg><use href="#repeat"/></svg>復習する<span class="nav-count">8</span></button>
     <button class="nav-item" data-action="record"><svg><use href="#chart"/></svg>学習の記録</button>
     <button class="nav-item" data-action="favorites"><svg><use href="#star"/></svg>お気に入り</button>
@@ -57,12 +58,26 @@
     <section class="record-panel" aria-labelledby="calendar-title"><div class="record-panel-heading"><h2 id="calendar-title">学習カレンダー</h2><div class="calendar-controls"><button id="calendar-prev" aria-label="前の月">‹</button><span id="calendar-month"></span><button id="calendar-next" aria-label="次の月">›</button></div></div><div id="record-calendar"></div></section>
     <section class="record-panel" aria-labelledby="focus-title"><div class="record-panel-heading"><h2 id="focus-title">これからの復習</h2></div><div id="record-focus"></div></section>
   </section>
+  <section id="study-view" hidden aria-labelledby="study-title">
+    <div id="study-domains">
+      <div class="study-hero"><div class="study-hero-copy"><span class="eyebrow">LEARN WITH PANDA</span><h1 id="study-title">知ることから、<br>はじめよう。</h1><p>「なぜそうなる？」が分かると、<br>問題を解くのがもっと楽しくなる。</p></div><img src="assets/panda.png" alt="ファイナンシャルパンダ" width="260" height="260"><span class="study-hero-speech">気になる分野から<br>始めていいパンダ！</span></div>
+      <div class="section-heading study-heading"><div><span class="eyebrow">6 FIELDS</span><h2>分野を選ぶ</h2></div><span>好きな順番で学べます</span></div>
+      <div class="study-domain-grid" id="study-domain-grid"></div>
+    </div>
+    <div id="study-themes" hidden>
+      <button class="study-back" type="button" id="study-back">← 6分野に戻る</button>
+      <div class="study-chapter-intro"><span class="eyebrow" id="study-chapter-no"></span><h1 id="study-chapter-title"></h1><p id="study-chapter-desc"></p></div>
+      <div class="study-chapter-summary"><span class="study-summary-icon"><svg><use href="#book"/></svg></span><div><strong>この分野の学習</strong><small>レッスンはこれから追加します</small></div><span>教材作成中</span></div>
+      <div class="section-heading study-heading"><div><span class="eyebrow">TOPICS</span><h2>テーマを選ぶ</h2></div></div>
+      <div id="study-topic-list" class="study-topic-list"></div>
+    </div>
+  </section>
   <section id="quiz-view" class="quiz-view" hidden aria-live="polite"><div class="quiz-top"><button id="quiz-back">← ホーム</button><span id="quiz-progress"></span></div><div class="quiz-track"><i id="quiz-track-fill"></i></div><div class="quiz-card"><div class="quiz-heading"><span id="quiz-source"></span><button id="quiz-favorite" aria-label="お気に入りに追加" aria-pressed="false"><svg><use href="#star"/></svg></button></div><h2 id="quiz-title"></h2><div id="quiz-question" class="rich-content"></div><div id="quiz-answer-area"></div><div id="quiz-result" hidden></div></div><div class="quiz-controls"><button id="quiz-prev">前の問題</button><button id="quiz-next" disabled>次の問題 →</button></div></section>
 </main></div>
-<nav class="mobile-nav" aria-label="モバイルメニュー"><button class="active" data-action="home"><svg><use href="#home"/></svg>ホーム</button><button data-action="record"><svg><use href="#chart"/></svg>記録</button></nav>
+<nav class="mobile-nav" aria-label="モバイルメニュー"><button class="active" data-action="home"><svg><use href="#home"/></svg>ホーム</button><button data-action="study"><svg><use href="#book"/></svg>パンダと勉強</button><button data-action="record"><svg><use href="#chart"/></svg>記録</button></nav>
 <dialog id="study-dialog" aria-labelledby="dialog-title"><button class="close" aria-label="閉じる">×</button><span class="eyebrow" id="dialog-eyebrow">LET'S STUDY</span><h2 id="dialog-title"></h2><div id="dialog-content"></div></dialog>
 <dialog id="figure-dialog" aria-label="図を拡大表示"><button class="close" aria-label="図を閉じる">×</button><img alt=""></dialog>
 <dialog id="dash-dialog" aria-labelledby="dash-title"><button class="dash-close" id="dash-close" type="button" aria-label="ゲームを閉じる">×</button><span class="eyebrow">SECRET PANDA GAME</span><h2 id="dash-title">電卓ダッシュ</h2><p class="dash-lead">パンダと笹の道を走ろう。障害物が来たらジャンプ！</p><div class="dash-scores"><span>距離 <strong id="dash-score">00000</strong> m</span><span>ベスト <strong id="dash-best">00000</strong> m</span></div><div class="dash-stage"><canvas id="dash-canvas" width="800" height="300" tabindex="0" aria-label="パンダが障害物をジャンプで避けるゲーム"></canvas><div class="dash-overlay" id="dash-overlay" role="status">スタートを押してね</div></div><div class="dash-actions"><button id="dash-start" type="button">スタート</button><button id="dash-jump" type="button" disabled>ジャンプ</button></div><p class="dash-help">短押しで低く、長押しで高くジャンプ。スマホは画面・ボタン、PCはスペース・↑キー</p></dialog>
 <div id="toast" role="status" aria-live="polite"></div>
-<script src="data.js"></script><script src="app.js"></script><script src="game.js?v=9"></script>
+<script src="data.js"></script><script src="app.js"></script><script src="study.js?v=1"></script><script src="game.js?v=9"></script>
 </body></html>
