@@ -10,3 +10,10 @@
 @media(max-width:1100px){.study-domain-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:570px){.study-hero{min-height:258px;padding:25px 19px;border-radius:20px}.study-hero h1{font-size:23px;line-height:1.65;margin-top:15px}.study-hero p{font-size:10px;max-width:194px}.study-hero .eyebrow{font-size:7px;letter-spacing:.1em}.study-hero>img{width:164px;height:164px;right:-4px;bottom:-4px}.study-hero-speech{right:6px;top:17px;font-size:8px;padding:7px 9px}.study-heading{margin-top:28px}.study-heading>span{font-size:9px}.study-domain-grid{gap:11px}.study-domain{min-height:160px;padding:15px 14px}.study-domain strong{font-size:12px;min-height:40px}.study-domain-no,.study-domain-bottom{font-size:9px}.study-domain-icon{width:30px;height:30px}.study-chapter-intro h1{font-size:25px}.study-chapter-intro p{font-size:11px}.study-chapter-summary{padding:16px}.study-topic>button{padding:16px 14px;gap:10px}.study-topic-no{font-size:20px}.study-topic-title{font-size:12px}.study-topic-status{font-size:9px}.study-topic-detail{padding-left:44px;padding-right:13px}.mobile-nav button[data-action=study]{min-width:110px}}
 @media(max-width:360px){.study-hero>img{width:143px;height:143px}.study-hero-speech{font-size:7px}.study-hero h1{font-size:21px}.study-hero p{max-width:175px}}
+.study-lesson-list{list-style:none;margin:0;padding:4px 0 0;border-top:1px solid #edf0e9}
+.study-lesson{display:flex;align-items:baseline;gap:11px;padding:11px 8px;border-bottom:1px solid #f0f2ec}
+.study-lesson:last-child{border-bottom:0}
+.study-lesson-no{font-family:Georgia,serif;font-size:12px;color:#9caf98}
+.study-lesson-title{flex:1;font-size:12px;line-height:1.6;color:#405440}
+.study-lesson-status{font-size:10px;color:#9a9f92;white-space:nowrap}
+@media(max-width:570px){.study-lesson{gap:8px;padding:10px 4px}.study-lesson-title{font-size:11px}.study-lesson-status{font-size:9px}}
