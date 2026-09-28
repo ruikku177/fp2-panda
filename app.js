@@ -63,7 +63,8 @@ function availableCount(n){return questions.filter(q=>q.chapter===n).length;}
 
 $('#chapter-grid').innerHTML=chapters.map(c=>{
  const count=availableCount(c.n),seen=questions.filter(q=>q.chapter===c.n&&stateOf(q)!=='unseen').length;
- return `<button class="chapter ${count?'':'pending'}" style="--icon:${c.color};--tint:${c.tint}" data-chapter="${c.n}"><div class="chapter-top"><span class="chapter-icon"><svg><use href="#${c.icon}"/></svg></span><span class="chapter-no">CHAPTER 0${c.n}</span><span class="selection-check" aria-hidden="true">✓</span></div><h3>${c.name}</h3><div class="chapter-meta"><span>${count?`${count}問 収録`:'教材追加を待っています'}</span>${count?`<b data-seen="${c.n}">${seen}問 学習済み</b>`:''}</div><div class="track"><i data-track="${c.n}" style="width:${count?seen/count*100:0}%"></i></div></button>`;
+ const colors=['#4aa881','#3e9ed5','#9284bd','#bc916e','#b7a34c','#a18966'],tints=['#e7f5e9','#e9f3fb','#f0ecf9','#fbefdf','#fbf3d9','#f5eddf'];
+ return `<button class="chapter ${count?'':'pending'}" style="--icon:${colors[c.n-1]};--tint:${tints[c.n-1]}" data-chapter="${c.n}"><span class="home-chapter-no">${String(c.n).padStart(2,'0')}</span><span class="home-chapter-name">${c.name}</span>${count?`<span class="track" aria-hidden="true"><i data-track="${c.n}" style="width:${seen/count*100}%"></i></span><span class="home-chapter-progress" data-seen="${c.n}" aria-label="学習済み${seen}問、収録${count}問">${seen} / ${count}</span>`:'<span class="home-chapter-unavailable"><svg aria-hidden="true"><use href="#lock"/></svg>未収録</span>'}<span class="home-chapter-arrow" aria-hidden="true">›</span><span class="selection-check" aria-hidden="true">✓</span></button>`;
 }).join('');
 
 function renderSelection(){
@@ -98,7 +99,8 @@ function renderMaterial(){
  const supplement=material==='supplement',mock=material==='mock';
  $('#chapter-grid').hidden=!supplement;$('#multi-toggle').hidden=!supplement;
  $('#material-placeholder').hidden=supplement;
- $('#material-heading').textContent=supplement?'章から選ぶ':mock?'受験回から選ぶ':'実施回から選ぶ';
+ $('#material-heading').textContent=supplement?'分野を選ぶ':mock?'受験回から選ぶ':'実施回から選ぶ';
+ $('#home-progress-note').hidden=!supplement;
  if(!supplement){
   $('#material-placeholder').innerHTML=`<p class="material-note">${mock?'模擬試験':'過去問'}はまだ未収録です。</p><div class="material-card" aria-label="未収録の教材"><span class="chapter-icon"><svg><use href="#book"/></svg></span><span class="example-label">追加予定</span><h3>${mock?'模擬試験':'過去問'}</h3><p>教材を受け取った後に表示します</p><span class="material-badge">未収録</span></div>`;
  }
@@ -130,31 +132,30 @@ function openSettings(chapterNumbers,target='all'){
 }
 
 function renderHome(){
- for(const c of chapters){const count=availableCount(c.n);if(!count)continue;const seen=questions.filter(q=>q.chapter===c.n&&stateOf(q)!=='unseen').length;const label=$(`[data-seen="${c.n}"]`),track=$(`[data-track="${c.n}"]`);if(label)label.textContent=`${seen}問 学習済み`;if(track)track.style.width=`${seen/count*100}%`;}
+ for(const c of chapters){const count=availableCount(c.n);if(!count)continue;const seen=questions.filter(q=>q.chapter===c.n&&stateOf(q)!=='unseen').length;const label=$(`[data-seen="${c.n}"]`),track=$(`[data-track="${c.n}"]`);if(label){label.textContent=`${seen} / ${count}`;label.setAttribute('aria-label',`学習済み${seen}問、収録${count}問`);}if(track)track.style.width=`${seen/count*100}%`;}
  const review=questions.filter(q=>stateOf(q)==='review').length;
  $('#review-count').textContent=review;$('.nav-count').textContent=review;
  const today=localDate();$('#today-count').innerHTML=`${progress.daily[today]||0}<small>問</small>`;
  const total=progress.choiceTotal||0;$('#accuracy-count').innerHTML=`${total?Math.round((progress.choiceCorrect||0)/total*100):'—'}<small>${total?'%':''}</small>`;
- const week=$('#week');week.innerHTML='';const days=['日','月','火','水','木','金','土'];
- for(let offset=6;offset>=0;offset--){const date=new Date();date.setHours(12,0,0,0);date.setDate(date.getDate()-offset);const key=localDate(date),active=Boolean(progress.daily[key]);const span=document.createElement('span');span.textContent=days[date.getDay()];const mark=document.createElement('b');mark.textContent=active?'✓':'·';if(active)mark.className=offset===0?'today':'done';span.append(mark);week.append(span);}
+
  let streak=0;for(let offset=0;offset<365;offset++){const date=new Date();date.setHours(12,0,0,0);date.setDate(date.getDate()-offset);if(!progress.daily[localDate(date)]){if(offset===0)continue;break;}streak++;}$('#streak-count').textContent=streak;
- $('.review-card button').disabled=!review;$('.favorite-link').disabled=!Object.keys(progress.favorites).length;
+ renderHomeOverview();
  renderContinue();
 }
-function renderContinue(){
- const card=$('#continue-card');
- if(!session||!session.ids.length){card.setAttribute('aria-label','学習を始める');$('#continue-kicker').textContent='はじめの一歩';$('#continue-title').textContent='さあ、学習をはじめよう';$('#continue-detail').textContent='章を選んで問題に挑戦しよう';$('#continue-button-label').textContent='章から選ぶ';return;}
- const q=byId.get(session.ids[Math.min(session.index,session.ids.length-1)]);if(!q)return;
- card.setAttribute('aria-label','前回の続き');$('#continue-kicker').textContent='前回の続き';$('#continue-button-label').textContent='続きから解く';$('#continue-title').textContent=`第${q.chapter}章 ${q.chapterName}`;$('#continue-detail').textContent=`次は 問${q.number} · ${session.index+1} / ${session.ids.length}問`;
-}
+function renderContinue(){renderHomeContinue();}
 function placeWeekCard(){
- const card=$('.record-card'),mobile=window.matchMedia('(max-width:900px)').matches;
- const destination=mobile?$('#record-week-slot'):$('.study-side');
+ const card=$('.record-card'),destination=$('#record-week-slot');
  if(card.parentElement!==destination)destination.prepend(card);
 }
-window.matchMedia('(max-width:900px)').addEventListener('change',placeWeekCard);
 placeWeekCard();
-function setActiveNav(action){document.querySelectorAll('.nav-item,.mobile-nav button').forEach(button=>button.classList.toggle('active',button.dataset.action===action));}
+function setActiveNav(action){
+ document.body.classList.toggle('home-screen',action==='home'||action==='questions');
+ document.querySelectorAll('.nav-item,.mobile-nav button').forEach(button=>{
+  const active=button.dataset.action===action;button.classList.toggle('active',active);
+  if(active)button.setAttribute('aria-current','page');else button.removeAttribute('aria-current');
+ });
+}
+
 function renderCalendar(){
  const year=calendarMonth.getFullYear(),month=calendarMonth.getMonth();
  $('#calendar-month').textContent=`${year}年${month+1}月`;
@@ -194,6 +195,7 @@ $('#record-chapters').onclick=event=>{const button=event.target.closest('[data-r
 $('#record-focus').onclick=event=>{const button=event.target.closest('[data-focus-chapter]');if(button)openSettings([Number(button.dataset.focusChapter)],'review');else if(event.target.closest('#record-review-all'))openSettings([...new Set(questions.map(q=>q.chapter))],'review');};
 function currentQuestion(){return session&&byId.get(session.ids[session.index]);}
 function showQuestion(){
+ document.body.classList.remove('home-screen');
  const q=currentQuestion();if(!q){finishSession();return;}
  $('#home-view').hidden=true;$('#record-view').hidden=true;$('#study-view').hidden=true;$('#quiz-view').hidden=false;$('.mobile-nav').hidden=true;$('.breadcrumb').textContent='問題を解く';
  $('#quiz-progress').textContent=`${session.index+1} / ${session.ids.length}問`;
@@ -324,16 +326,24 @@ document.querySelectorAll('[data-action]').forEach(button=>button.onclick=()=>{
  const action=button.dataset.action;
  if(action==='home'){showHome();return;}
  if(action==='study'){showStudy();return;}
- if(action==='continue'){if(session)showQuestion();else $('.chapters').scrollIntoView({behavior:'smooth',block:'start'});return;}
+ if(action==='continue'){
+  const remaining=homeRemainingIds();
+  if(remaining.length){session.index=session.ids.indexOf(remaining[0]);saveSession();showQuestion();}
+  else{showHome();setHomePanel('fields');$('.chapters').scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});}
+  return;
+ }
+ if(action==='questions'){showHome();setHomePanel('fields');setActiveNav('questions');$('.chapters').scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});return;}
  if(action==='record'){
   showRecord();return;
  }
  if(action==='review'||action==='favorites'){
   const target=action==='review'?'review':'favorite';
-  if(!questions.some(q=>target==='review'?stateOf(q)==='review':progress.favorites[q.id]))return;
-  openSettings([1,2],target);
+  if(!questions.some(q=>target==='review'?stateOf(q)==='review':progress.favorites[q.id])){
+   showDialog(action==='review'?'要復習の問題はありません':'お気に入りはまだありません','<p class="dialog-note">'+(action==='review'?'間違えた問題がここに集まります。':'問題の星マークを押すと、ここから解き直せます。')+'</p><button class="dialog-primary" data-close>閉じる</button>');return;
+  }
+  openSettings([...new Set(questions.map(q=>q.chapter))],target);
  }
 });
 dialog.querySelector('.close').onclick=()=>dialog.close();
 dialog.onclick=event=>{if(event.target.closest('[data-close]'))dialog.close();};
-renderMaterial();renderHome();
+setActiveNav('home');renderMaterial();renderHome();
