@@ -101,3 +101,5 @@ body.home-screen{background:var(--fp-paper)}
 @media(max-width:375px){.home-screen main{padding-left:16px;padding-right:16px}.home-panel{padding:13px}.home-todo-grid{gap:7px}.home-todo{padding-left:7px;padding-right:7px}.home-todo>strong{font-size:14px}.home-todo-description{font-size:10px}#home-date{font-size:39px}.home-panda{right:-9px}#home-view #panda-speech{width:142px;right:166px}.home-todo-art>span{width:19px;height:19px}.home-todo-art img{width:46px}.mobile-nav button,.mobile-nav button[data-action=study]{font-size:9px}.home-section-head h2{font-size:17px}}
 @media(max-width:900px){.home-room{left:-18px;right:-18px;top:-12px;bottom:-78px;background-size:100% 100%}.home-panda{right:35px}}
 @media(max-width:375px){.home-room{left:-16px;right:-16px}}
+/* Keep the weekday clear while bringing both the panda and speech fully on-screen. */
+@media(max-width:420px){.home-hero{min-height:340px}.home-panda{right:-5px}}
