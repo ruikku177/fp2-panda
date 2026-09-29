@@ -187,9 +187,9 @@ function renderRecord(){
  $('#record-focus').innerHTML=focus.length?`<p class="focus-summary">要復習の問題が${focus.length}問あります。</p><div class="focus-list">${focus.slice(0,5).map(q=>`<button data-focus-chapter="${q.chapter}"><span>第${q.chapter}章 · 問${q.number}</span><small>${q.chapterName}</small><span aria-hidden="true">→</span></button>`).join('')}</div><button class="focus-all" id="record-review-all">まとめて復習する →</button>`:'<p class="focus-empty">いま要復習の問題はありません。今日もパンダと一歩ずつ。</p>';
  renderCalendar();
 }
-function showHome(){ $('#quiz-view').hidden=true;$('#record-view').hidden=true;$('#study-view').hidden=true;$('#home-view').hidden=false;$('.mobile-nav').hidden=false;$('.breadcrumb').textContent='ホーム';setActiveNav('home');renderHome();window.scrollTo(0,0);}
-function showRecord(){ $('#quiz-view').hidden=true;$('#home-view').hidden=true;$('#study-view').hidden=true;$('#record-view').hidden=false;$('.mobile-nav').hidden=false;$('.breadcrumb').textContent='学習の記録';setActiveNav('record');renderHome();renderRecord();window.scrollTo(0,0);}
-function showStudy(){ $('#quiz-view').hidden=true;$('#home-view').hidden=true;$('#record-view').hidden=true;$('#study-view').hidden=false;$('.mobile-nav').hidden=false;$('.breadcrumb').textContent='パンダと勉強';setActiveNav('study');showStudyDomains();window.scrollTo(0,0);}
+function showHome(){ document.body.classList.remove('quiz-reading-mode');$('#quiz-view').hidden=true;$('#record-view').hidden=true;$('#study-view').hidden=true;$('#home-view').hidden=false;$('.mobile-nav').hidden=false;$('.breadcrumb').textContent='ホーム';setActiveNav('home');renderHome();window.scrollTo(0,0);}
+function showRecord(){ document.body.classList.remove('quiz-reading-mode');$('#quiz-view').hidden=true;$('#home-view').hidden=true;$('#study-view').hidden=true;$('#record-view').hidden=false;$('.mobile-nav').hidden=false;$('.breadcrumb').textContent='学習の記録';setActiveNav('record');renderHome();renderRecord();window.scrollTo(0,0);}
+function showStudy(){ document.body.classList.remove('quiz-reading-mode');$('#quiz-view').hidden=true;$('#home-view').hidden=true;$('#record-view').hidden=true;$('#study-view').hidden=false;$('.mobile-nav').hidden=false;$('.breadcrumb').textContent='パンダと勉強';setActiveNav('study');showStudyDomains();window.scrollTo(0,0);}
 $('#calendar-prev').onclick=()=>{calendarMonth=new Date(calendarMonth.getFullYear(),calendarMonth.getMonth()-1,1);renderCalendar();};
 $('#calendar-next').onclick=()=>{if(!$('#calendar-next').disabled){calendarMonth=new Date(calendarMonth.getFullYear(),calendarMonth.getMonth()+1,1);renderCalendar();}};
 $('#record-chapters').onclick=event=>{const button=event.target.closest('[data-record-chapter]');if(button)openSettings([Number(button.dataset.recordChapter)]);};
@@ -198,9 +198,22 @@ function currentQuestion(){return session&&byId.get(session.ids[session.index]);
 function showQuestion(){
  document.body.classList.remove('home-screen');
  const q=currentQuestion();if(!q){finishSession();return;}
+ const choiceLayout=q.format==='choice';
+ document.body.classList.toggle('quiz-reading-mode',choiceLayout);
+ $('#quiz-view').classList.toggle('quiz-choice-redesign',choiceLayout);
  $('#home-view').hidden=true;$('#record-view').hidden=true;$('#study-view').hidden=true;$('#quiz-view').hidden=false;$('.mobile-nav').hidden=true;$('.breadcrumb').textContent='問題を解く';
- $('#quiz-progress').textContent=`${session.index+1} / ${session.ids.length}問`;
+ $('#quiz-progress').textContent=`${session.index+1} / ${session.ids.length}${choiceLayout?'':'問'}`;
  $('#quiz-track-fill').style.width=`${(session.index+1)/session.ids.length*100}%`;
+ const paws=$('#quiz-paws');paws.replaceChildren();
+ if(choiceLayout){
+  const count=Math.min(session.ids.length,10),filled=Math.ceil((session.index+1)/session.ids.length*count);
+  paws.style.setProperty('--paw-count',String(count));
+  for(let index=0;index<count;index++){
+   const paw=document.createElement('span');paw.className=`quiz-paw${index<filled?' is-complete':''}`;
+   paw.innerHTML='<svg viewBox="0 0 32 32" aria-hidden="true"><use href="#paw"></use></svg>';
+   paws.append(paw);
+  }
+ }
  $('#quiz-source').textContent=`補助問題 · 第${q.chapter}章 ${q.chapterName}`;
  $('#quiz-title').textContent=`問${q.number}`;
  $('#quiz-question').innerHTML=q.body;
@@ -309,6 +322,7 @@ function displayResult(q,response){
  }else answerAreaHide();
 }
 function finishSession(){
+ document.body.classList.remove('quiz-reading-mode');$('#quiz-view').classList.remove('quiz-choice-redesign');
  const answered=Object.values(session?.responses||{}),correct=answered.filter(r=>r.correct===true).length,total=session?.ids.length||0,pending=answered.filter(r=>r.pending).length,graded=total-pending;
  $('#quiz-view').hidden=false;$('#quiz-source').textContent='学習のまとめ';$('#quiz-title').textContent='おつかれさま！';
  $('#quiz-question').innerHTML=`<p class="summary-score">${correct} / ${graded}<small>問 正解・自己判定${pending?`（全${total}問中）`:''}</small></p>${pending?`<p class="summary-pending">判定保留 ${pending}問は採点対象に含めていません。</p>`:''}`;
