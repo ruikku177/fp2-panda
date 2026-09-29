@@ -198,14 +198,14 @@ function currentQuestion(){return session&&byId.get(session.ids[session.index]);
 function showQuestion(){
  document.body.classList.remove('home-screen');
  const q=currentQuestion();if(!q){finishSession();return;}
- const choiceLayout=q.format==='choice';
- document.body.classList.toggle('quiz-reading-mode',choiceLayout);
- $('#quiz-view').classList.toggle('quiz-choice-redesign',choiceLayout);
+ const readingLayout=q.format==='choice'||q.format==='multi-select'||Boolean(window.FP_WRITTEN?.specs[q.id]);
+ document.body.classList.toggle('quiz-reading-mode',readingLayout);
+ $('#quiz-view').classList.toggle('quiz-reading-layout',readingLayout);
  $('#home-view').hidden=true;$('#record-view').hidden=true;$('#study-view').hidden=true;$('#quiz-view').hidden=false;$('.mobile-nav').hidden=true;$('.breadcrumb').textContent='問題を解く';
- $('#quiz-progress').textContent=`${session.index+1} / ${session.ids.length}${choiceLayout?'':'問'}`;
+ $('#quiz-progress').textContent=`${session.index+1} / ${session.ids.length}${readingLayout?'':'問'}`;
  $('#quiz-track-fill').style.width=`${(session.index+1)/session.ids.length*100}%`;
  const paws=$('#quiz-paws');paws.replaceChildren();
- if(choiceLayout){
+ if(readingLayout){
   const count=Math.min(session.ids.length,10),filled=Math.ceil((session.index+1)/session.ids.length*count);
   paws.style.setProperty('--paw-count',String(count));
   for(let index=0;index<count;index++){
@@ -237,6 +237,7 @@ function showQuestion(){
   const button=document.createElement('button');button.className='reveal-button';button.textContent='答えと解説を見る';button.onclick=()=>revealSelfCheck(q);answerArea.append(button);
  }
  $('#quiz-result').hidden=true;
+ $('#quiz-result').classList.remove('is-correct','is-review','is-pending');
  if(response)displayResult(q,response);
  $('#quiz-prev').disabled=session.index===0;
  $('#quiz-next').disabled=!response;
@@ -292,7 +293,10 @@ function revealSelfCheck(q){
 function answerAreaHide(){const button=$('#quiz-answer-area .reveal-button');if(button)button.hidden=true;}
 function displayResult(q,response){
  const result=$('#quiz-result');result.hidden=false;
- result.innerHTML=`<p class="result-label"></p><p class="official-answer"></p><div class="rich-content explanation"></div>`;
+ const status=response.pending?'pending':response.correct?'correct':'review';
+ result.classList.remove('is-correct','is-review','is-pending');result.classList.add(`is-${status}`);
+ const mood=status==='correct'?'happy':status==='review'?'thinking':null;
+ result.innerHTML=`<div class="result-head"><p class="result-label"></p>${mood?`<img class="result-panda" src="assets/fp-panda-v3/${mood}.png" alt="">`:''}</div><p class="official-answer"></p><div class="rich-content explanation"></div>`;
  result.querySelector('.result-label').textContent=response.pending?'判定保留':response.correct?'正解！':'要復習';
  result.querySelector('.official-answer').textContent=`${response.pending?'登録済み解答（要確認）':'正解'}: ${q.answer}`;
  result.querySelector('.explanation').innerHTML=q.explanation;
@@ -322,7 +326,8 @@ function displayResult(q,response){
  }else answerAreaHide();
 }
 function finishSession(){
- document.body.classList.remove('quiz-reading-mode');$('#quiz-view').classList.remove('quiz-choice-redesign');
+ document.body.classList.remove('quiz-reading-mode');$('#quiz-view').classList.remove('quiz-reading-layout');
+ $('#quiz-result').classList.remove('is-correct','is-review','is-pending');
  const answered=Object.values(session?.responses||{}),correct=answered.filter(r=>r.correct===true).length,total=session?.ids.length||0,pending=answered.filter(r=>r.pending).length,graded=total-pending;
  $('#quiz-view').hidden=false;$('#quiz-source').textContent='学習のまとめ';$('#quiz-title').textContent='おつかれさま！';
  $('#quiz-question').innerHTML=`<p class="summary-score">${correct} / ${graded}<small>問 正解・自己判定${pending?`（全${total}問中）`:''}</small></p>${pending?`<p class="summary-pending">判定保留 ${pending}問は採点対象に含めていません。</p>`:''}`;
