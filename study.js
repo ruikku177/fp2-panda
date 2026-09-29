@@ -102,16 +102,17 @@ const studyLessonCount = studyThemes.reduce((total, theme) => total + theme.less
 
 $('#study-domain-grid').innerHTML = chapters.map(chapter =>
   `<button type="button" class="study-domain" data-study-chapter="${chapter.n}" style="--study-icon:${chapter.color};--study-tint:${chapter.tint}">
-    <span class="study-domain-top"><span class="study-domain-icon"><svg><use href="#${chapter.icon}"/></svg></span><span class="study-domain-no">CHAPTER 0${chapter.n}</span></span>
-    <strong>${chapter.name}</strong>
-    <span class="study-domain-bottom"><span>教材作成中</span><span aria-hidden="true">→</span></span>
-    <span class="study-domain-track" aria-hidden="true"></span>
+    <span class="study-domain-no">${String(chapter.n).padStart(2,'0')}</span>
+    <span class="study-domain-icon"><svg aria-hidden="true"><use href="#${chapter.icon}"/></svg></span>
+    <span class="study-domain-copy"><strong>${chapter.name}</strong><small>${chapter.n === 1 ? `9テーマ・${studyLessonCount}レッスン` : '教材作成中'}</small></span>
+    <span class="study-domain-arrow" aria-hidden="true">›</span>
   </button>`
 ).join('');
 
 function showStudyDomains(){
   $('#study-domains').hidden = false;
   $('#study-themes').hidden = true;
+  $('#study-back').hidden = true;
   $('.breadcrumb').textContent = 'パンダと勉強';
   window.scrollTo(0,0);
 }
@@ -121,18 +122,21 @@ function showStudyChapter(number){
   if(!chapter) return;
   $('#study-domains').hidden = true;
   $('#study-themes').hidden = false;
+  $('#study-back').hidden = false;
+  $('.study-chapter-intro').classList.toggle('is-pending', number !== 1);
   $('#study-chapter-no').textContent = `CHAPTER 0${number}`;
   $('#study-chapter-title').textContent = chapter.name;
   $('#study-chapter-desc').textContent = number === 1
     ? '身近なお金から、人生設計のしくみをつかもう。'
     : 'この分野の学習テーマは、教材を作りながら追加します。';
   $('#study-summary-detail').textContent = number === 1
-    ? `9テーマ・${studyLessonCount}レッスンの目次を公開中`
-    : 'レッスンはこれから追加します';
+    ? `9テーマ・${studyLessonCount}レッスン`
+    : '教材作成中';
   $('#study-summary-status').textContent = '教材作成中';
+  $('#study-topics-heading').textContent = number === 1 ? `テーマ一覧（全${studyThemes.length}テーマ）` : 'この分野の教材';
   $('#study-topic-list').innerHTML = number === 1
-    ? studyThemes.map((theme,index) => `<div class="study-topic"><button type="button" data-study-topic="${index}" aria-expanded="false" aria-controls="study-lessons-${index}"><span class="study-topic-no">${String(index+1).padStart(2,'0')}</span><span class="study-topic-title">${theme.title}</span><span class="study-topic-status">${theme.lessons.length}レッスン</span><span class="study-topic-arrow" aria-hidden="true">›</span></button><div class="study-topic-detail" id="study-lessons-${index}" hidden><ol class="study-lesson-list">${theme.lessons.map((lesson, lessonIndex) => `<li class="study-lesson"><span class="study-lesson-no">${String(lessonIndex+1).padStart(2,'0')}</span><span class="study-lesson-title">${lesson}</span><span class="study-lesson-status">教材作成中</span></li>`).join('')}</ol></div></div>`).join('')
-    : '<div class="study-empty"><span>🐼</span><strong>教材を作成中です</strong><p>学習テーマが決まり次第、ここに並べていきます。</p></div>';
+    ? studyThemes.map((theme,index) => `<div class="study-topic"><button type="button" data-study-topic="${index}" aria-expanded="false" aria-controls="study-lessons-${index}"><span class="study-topic-no">${String(index+1).padStart(2,'0')}</span><span class="study-topic-title">${theme.title}</span><span class="study-topic-status">${theme.lessons.length}レッスン</span><span class="study-topic-arrow" aria-hidden="true">›</span></button><div class="study-topic-detail" id="study-lessons-${index}" hidden><div class="study-topic-pending"><span aria-hidden="true">ⓘ</span><p>このテーマの教材は現在準備中です。<br>レッスン内容は順次追加していきます。</p></div><h3>レッスン一覧</h3><ol class="study-lesson-list">${theme.lessons.map((lesson, lessonIndex) => `<li class="study-lesson"><span class="study-lesson-no">${String(lessonIndex+1).padStart(2,'0')}</span><span class="study-lesson-title">${lesson}</span></li>`).join('')}</ol></div></div>`).join('')
+    : '<div class="study-empty"><img src="assets/fp-panda-v3/normal.png" alt="勉強中のFPパンダ" width="128" height="121"><strong>教材を準備中です</strong><p>この分野も順次追加していきます。</p></div>';
   $('.breadcrumb').textContent = `パンダと勉強 / 第${number}章`;
   window.scrollTo(0,0);
 }

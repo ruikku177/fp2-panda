@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="result-screen.css?v=1">
   <link rel="stylesheet" href="settings-redesign.css?v=1">
   <link rel="stylesheet" href="record-redesign.css?v=1">
+  <link rel="stylesheet" href="study-redesign.css?v=1">
 </head>
 <body>
 <svg class="symbols" xmlns="http://www.w3.org/2000/svg"><defs>
@@ -83,17 +84,16 @@
     <section class="record-panel" aria-labelledby="calendar-title"><div class="record-panel-heading"><h2 id="calendar-title">学習カレンダー</h2><div class="calendar-controls"><button id="calendar-prev" aria-label="前の月">‹</button><span id="calendar-month"></span><button id="calendar-next" aria-label="次の月">›</button></div></div><div id="record-calendar"></div></section>
     <section class="record-panel" aria-labelledby="focus-title"><div class="record-panel-heading"><h2 id="focus-title">復習する問題</h2></div><div id="record-focus"></div></section>
   </section>
-  <section id="study-view" hidden aria-labelledby="study-title">
+  <section id="study-view" hidden aria-label="パンダと勉強">
+    <div class="study-page-head"><button class="study-back" type="button" id="study-back" hidden aria-label="6分野に戻る">←</button><strong>パンダと勉強</strong></div>
     <div id="study-domains">
-      <div class="study-hero"><div class="study-hero-copy"><span class="eyebrow">LEARN WITH PANDA</span><h1 id="study-title">知ることから、<br>はじめよう。</h1><p>「なぜそうなる？」が分かると、<br>問題を解くのがもっと楽しくなる。</p></div><img src="assets/panda.png" alt="ファイナンシャルパンダ" width="260" height="260"><span class="study-hero-speech">気になる分野から<br>始めていいパンダ！</span></div>
-      <div class="section-heading study-heading"><div><span class="eyebrow">6 FIELDS</span><h2>分野を選ぶ</h2></div><span>好きな順番で学べます</span></div>
+      <div class="study-hero"><div class="study-hero-copy"><h1 id="study-title">知ることから、<br>はじめよう。</h1><p>基礎を学んで、<br>FPの全体像をつかもう！</p></div><img src="assets/fp-panda-v3/normal.png" alt="本を開いて学ぶFPパンダ" width="328" height="309"><span class="study-leaf study-leaf-one" aria-hidden="true">✦</span><span class="study-leaf study-leaf-two" aria-hidden="true">✦</span></div>
+      <div class="section-heading study-heading"><h2><svg aria-hidden="true"><use href="#book"/></svg>分野を選ぶ</h2></div>
       <div class="study-domain-grid" id="study-domain-grid"></div>
     </div>
     <div id="study-themes" hidden>
-      <button class="study-back" type="button" id="study-back">← 6分野に戻る</button>
-      <div class="study-chapter-intro"><span class="eyebrow" id="study-chapter-no"></span><h1 id="study-chapter-title"></h1><p id="study-chapter-desc"></p></div>
-      <div class="study-chapter-summary"><span class="study-summary-icon"><svg><use href="#book"/></svg></span><div><strong>この分野の学習</strong><small id="study-summary-detail">レッスンはこれから追加します</small></div><span id="study-summary-status">教材作成中</span></div>
-      <div class="section-heading study-heading"><div><span class="eyebrow">TOPICS</span><h2>テーマを選ぶ</h2></div></div>
+      <div class="study-chapter-intro"><div class="study-chapter-copy"><span class="study-chapter-badge" id="study-chapter-no"></span><h1 id="study-chapter-title"></h1><p id="study-chapter-desc"></p><small id="study-summary-detail"></small><span id="study-summary-status" hidden>教材作成中</span></div><img src="assets/fp-panda-v3/thinking.png" alt="勉強中のFPパンダ" width="276" height="292"></div>
+      <div class="section-heading study-heading"><h2><svg aria-hidden="true"><use href="#book"/></svg><span id="study-topics-heading">テーマ一覧（全9テーマ）</span></h2></div>
       <div id="study-topic-list" class="study-topic-list"></div>
     </div>
   </section>
@@ -105,5 +105,5 @@
 <dialog id="session-list-dialog" aria-labelledby="session-list-title"><div class="session-list-head"><h2 id="session-list-title">今回の問題一覧</h2><button id="session-list-close" type="button" aria-label="問題一覧を閉じる">×</button></div><div id="session-list-items"></div></dialog>
 <dialog id="dash-dialog" aria-labelledby="dash-title"><button class="dash-close" id="dash-close" type="button" aria-label="ゲームを閉じる">×</button><span class="eyebrow">SECRET PANDA GAME</span><h2 id="dash-title">電卓ダッシュ</h2><p class="dash-lead">パンダと笹の道を走ろう。障害物が来たらジャンプ！</p><div class="dash-scores"><span>距離 <strong id="dash-score">00000</strong> m</span><span>ベスト <strong id="dash-best">00000</strong> m</span></div><div class="dash-stage"><canvas id="dash-canvas" width="800" height="300" tabindex="0" aria-label="パンダが障害物をジャンプで避けるゲーム"></canvas><div class="dash-overlay" id="dash-overlay" role="status">スタートを押してね</div></div><div class="dash-actions"><button id="dash-start" type="button">スタート</button><button id="dash-jump" type="button" disabled>ジャンプ</button></div><p class="dash-help">短押しで低く、長押しで高くジャンプ。スマホは画面・ボタン、PCはスペース・↑キー</p></dialog>
 <div id="toast" role="status" aria-live="polite"></div>
-<script src="data.js"></script><script src="written.js?v=1"></script><script src="home.js?v=record1"></script><script src="app.js?v=record1"></script><script src="study.js?v=2"></script><script src="game.js?v=9"></script>
+<script src="data.js"></script><script src="written.js?v=1"></script><script src="home.js?v=record1"></script><script src="app.js?v=record1"></script><script src="study.js?v=3"></script><script src="game.js?v=9"></script>
 </body></html>
