@@ -47,6 +47,7 @@ let progress = load(progressKey,defaultProgress());
 if(!progress.results || !progress.favorites || !progress.daily)progress=defaultProgress();
 let session = load(sessionKey,null);
 if(session && (!Array.isArray(session.ids) || !session.ids.every(id=>questions.some(q=>q.id===id))))session=null;
+let sessionActiveSince=null;
 let multiMode = false;
 const selectedChapters = new Set();
 try{const saved=JSON.parse(localStorage.getItem('fp-panda-multi-chapters'));if(Array.isArray(saved))saved.filter(n=>questions.some(q=>q.chapter===n)).forEach(n=>selectedChapters.add(n));}catch{}
@@ -56,6 +57,15 @@ const targetNames={all:'すべて',unseen:'未着手',review:'要復習',favorit
 const byId = new Map(questions.map(q=>[q.id,q]));
 function saveProgress(){localStorage.setItem(progressKey,JSON.stringify(progress));renderHome();if(!$('#record-view').hidden)renderRecord();}
 function saveSession(){if(session)localStorage.setItem(sessionKey,JSON.stringify(session));else localStorage.removeItem(sessionKey);renderContinue();}
+function pauseSessionClock(){
+ if(session && sessionActiveSince!==null){
+  const prior=Number.isFinite(session.activeMs)?session.activeMs:Math.max(0,sessionActiveSince-Number(session.createdAt||sessionActiveSince));
+  session.activeMs=prior+Math.max(0,Date.now()-sessionActiveSince);sessionActiveSince=null;saveSession();
+ }
+}
+function resumeSessionClock(){if(session && !session.finishedAt && sessionActiveSince===null && !document.hidden)sessionActiveSince=Date.now();}
+document.addEventListener('visibilitychange',()=>{if(document.hidden)pauseSessionClock();else if(!$('#quiz-view').hidden && !$('#quiz-view').classList.contains('is-session-result'))resumeSessionClock();});
+window.addEventListener('pagehide',pauseSessionClock);
 function stateOf(q){return progress.results[q.id]?.state || 'unseen';}
 function localDate(date=new Date()){return `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}-${String(date.getDate()).padStart(2,'0')}`;}
 function showDialog(heading,html){$('#dialog-title').textContent=heading;content.innerHTML=html;dialog.showModal();}
@@ -126,7 +136,7 @@ function openSettings(chapterNumbers,target='all'){
  $('#filter-start').onclick=()=>{
   const selected=pool(),count=$('#filter-count').value,order=$('#filter-order').value;
   if(order==='random')shuffle(selected);
-  session={ids:selected.slice(0,count==='all'?selected.length:Number(count)).map(q=>q.id),index:0,responses:{},createdAt:Date.now(),scope:[...scope],target,order};
+  session={ids:selected.slice(0,count==='all'?selected.length:Number(count)).map(q=>q.id),index:0,responses:{},createdAt:Date.now(),activeMs:0,scope:[...scope],target,order,count};
   saveSession();dialog.close();showQuestion();
  };
  refresh();
@@ -187,9 +197,9 @@ function renderRecord(){
  $('#record-focus').innerHTML=focus.length?`<p class="focus-summary">要復習の問題が${focus.length}問あります。</p><div class="focus-list">${focus.slice(0,5).map(q=>`<button data-focus-chapter="${q.chapter}"><span>第${q.chapter}章 · 問${q.number}</span><small>${q.chapterName}</small><span aria-hidden="true">→</span></button>`).join('')}</div><button class="focus-all" id="record-review-all">まとめて復習する →</button>`:'<p class="focus-empty">いま要復習の問題はありません。今日もパンダと一歩ずつ。</p>';
  renderCalendar();
 }
-function showHome(){ document.body.classList.remove('quiz-reading-mode');$('#quiz-view').hidden=true;$('#record-view').hidden=true;$('#study-view').hidden=true;$('#home-view').hidden=false;$('.mobile-nav').hidden=false;$('.breadcrumb').textContent='ホーム';setActiveNav('home');renderHome();window.scrollTo(0,0);}
-function showRecord(){ document.body.classList.remove('quiz-reading-mode');$('#quiz-view').hidden=true;$('#home-view').hidden=true;$('#study-view').hidden=true;$('#record-view').hidden=false;$('.mobile-nav').hidden=false;$('.breadcrumb').textContent='学習の記録';setActiveNav('record');renderHome();renderRecord();window.scrollTo(0,0);}
-function showStudy(){ document.body.classList.remove('quiz-reading-mode');$('#quiz-view').hidden=true;$('#home-view').hidden=true;$('#record-view').hidden=true;$('#study-view').hidden=false;$('.mobile-nav').hidden=false;$('.breadcrumb').textContent='パンダと勉強';setActiveNav('study');showStudyDomains();window.scrollTo(0,0);}
+function showHome(){ pauseSessionClock();document.body.classList.remove('quiz-reading-mode','session-result-mode');$('#quiz-view').hidden=true;$('#record-view').hidden=true;$('#study-view').hidden=true;$('#home-view').hidden=false;$('.mobile-nav').hidden=false;$('.breadcrumb').textContent='ホーム';setActiveNav('home');renderHome();window.scrollTo(0,0);}
+function showRecord(){ pauseSessionClock();document.body.classList.remove('quiz-reading-mode','session-result-mode');$('#quiz-view').hidden=true;$('#home-view').hidden=true;$('#study-view').hidden=true;$('#record-view').hidden=false;$('.mobile-nav').hidden=false;$('.breadcrumb').textContent='学習の記録';setActiveNav('record');renderHome();renderRecord();window.scrollTo(0,0);}
+function showStudy(){ pauseSessionClock();document.body.classList.remove('quiz-reading-mode','session-result-mode');$('#quiz-view').hidden=true;$('#home-view').hidden=true;$('#record-view').hidden=true;$('#study-view').hidden=false;$('.mobile-nav').hidden=false;$('.breadcrumb').textContent='パンダと勉強';setActiveNav('study');showStudyDomains();window.scrollTo(0,0);}
 $('#calendar-prev').onclick=()=>{calendarMonth=new Date(calendarMonth.getFullYear(),calendarMonth.getMonth()-1,1);renderCalendar();};
 $('#calendar-next').onclick=()=>{if(!$('#calendar-next').disabled){calendarMonth=new Date(calendarMonth.getFullYear(),calendarMonth.getMonth()+1,1);renderCalendar();}};
 $('#record-chapters').onclick=event=>{const button=event.target.closest('[data-record-chapter]');if(button)openSettings([Number(button.dataset.recordChapter)]);};
@@ -198,6 +208,9 @@ function currentQuestion(){return session&&byId.get(session.ids[session.index]);
 function showQuestion(){
  document.body.classList.remove('home-screen');
  const q=currentQuestion();if(!q){finishSession();return;}
+ document.body.classList.remove('session-result-mode');
+ $('#quiz-view').classList.remove('is-session-result');$('#session-result').hidden=true;
+ resumeSessionClock();
  const readingLayout=q.format==='choice'||q.format==='multi-select'||Boolean(window.FP_WRITTEN?.specs[q.id]);
  document.body.classList.toggle('quiz-reading-mode',readingLayout);
  $('#quiz-view').classList.toggle('quiz-reading-layout',readingLayout);
@@ -326,16 +339,71 @@ function displayResult(q,response){
  }else answerAreaHide();
 }
 function finishSession(){
- document.body.classList.remove('quiz-reading-mode');$('#quiz-view').classList.remove('quiz-reading-layout');
- $('#quiz-result').classList.remove('is-correct','is-review','is-pending');
- const answered=Object.values(session?.responses||{}),correct=answered.filter(r=>r.correct===true).length,total=session?.ids.length||0,pending=answered.filter(r=>r.pending).length,graded=total-pending;
- $('#quiz-view').hidden=false;$('#quiz-source').textContent='学習のまとめ';$('#quiz-title').textContent='おつかれさま！';
- $('#quiz-question').innerHTML=`<p class="summary-score">${correct} / ${graded}<small>問 正解・自己判定${pending?`（全${total}問中）`:''}</small></p>${pending?`<p class="summary-pending">判定保留 ${pending}問は採点対象に含めていません。</p>`:''}`;
- $('#quiz-answer-area').innerHTML='';$('#quiz-result').hidden=false;
- $('#quiz-result').innerHTML='<p class="dialog-note">間違えた問題はホームの「復習する」から解き直せます。</p><button class="dialog-primary" id="finish-home">ホームへ戻る</button>';
- $('#finish-home').onclick=()=>{session=null;saveSession();showHome();};
- $('#quiz-prev').disabled=true;$('#quiz-next').disabled=true;
+ if(!session || !session.ids.length || session.ids.some(id=>!session.responses[id]))return;
+ pauseSessionClock();
+ if(!session.finishedAt){session.finishedAt=Date.now();saveSession();}
+ document.body.classList.remove('home-screen','quiz-reading-mode');document.body.classList.add('session-result-mode');
+ $('#quiz-view').classList.remove('quiz-reading-layout');$('#quiz-view').classList.add('is-session-result');
+ $('#home-view').hidden=true;$('#record-view').hidden=true;$('#study-view').hidden=true;
+ $('#quiz-view').hidden=false;$('#session-result').hidden=false;$('.mobile-nav').hidden=true;
+ const responses=session.ids.map(id=>session.responses[id]),total=responses.length,pending=responses.filter(r=>r.pending).length,graded=total-pending;
+ const correct=responses.filter(r=>!r.pending&&r.correct===true).length;
+ const wrongIds=session.ids.filter(id=>{const r=session.responses[id];return !r.pending&&r.correct===false;});
+ const rate=graded?Math.round(correct/graded*100):null;
+ $('#result-complete').textContent=`${total}問の問題が終了しました`;
+ $('#result-rate').innerHTML=rate===null?'—':`${rate}<small>%</small>`;
+ $('#result-ring').style.setProperty('--score-angle',`${rate===null?0:rate*3.6}deg`);
+ $('#result-fraction').textContent=graded?`${correct} / ${graded}問`:'採点対象 0問';
+ $('#result-correct').textContent=`${correct}問`;
+ $('#result-incorrect').textContent=`${wrongIds.length}問`;
+ const elapsed=Number.isFinite(session.activeMs)?session.activeMs:Math.max(0,session.finishedAt-Number(session.createdAt||session.finishedAt));
+ const seconds=Math.floor(elapsed/1000),hours=Math.floor(seconds/3600),minutes=Math.floor(seconds%3600/60);
+ $('#result-time').textContent=hours?`${hours}時間${minutes}分`:`${minutes}分${String(seconds%60).padStart(2,'0')}秒`;
+ $('#result-pending-note').hidden=!pending;
+ $('#result-pending-note').textContent=pending?`判定保留 ${pending}問は採点対象から除外しています（全${total}問中、採点対象${graded}問）。`:'';
+ $('#result-review').hidden=!wrongIds.length;
+ $('#result-review-label').textContent=`間違えた${wrongIds.length}問を復習する`;
+ $('#result-list').classList.toggle('is-primary',!wrongIds.length);
+ window.scrollTo(0,0);
 }
+function closeSessionResult(){session=null;saveSession();showHome();}
+function startResultReview(){
+ const ids=session.ids.filter(id=>{const r=session.responses[id];return !r.pending&&r.correct===false;});
+ if(!ids.length)return;
+ session={ids,index:0,responses:{},createdAt:Date.now(),activeMs:0,scope:[...new Set(ids.map(id=>byId.get(id).chapter))],target:'all',order:'sequential',count:'all'};
+ saveSession();showQuestion();
+}
+function retrySessionConditions(){
+ const scope=Array.isArray(session.scope)&&session.scope.length?session.scope:[...new Set(session.ids.map(id=>byId.get(id).chapter))];
+ const target=targetNames[session.target]?session.target:'all';
+ const pool=questions.filter(q=>scope.includes(q.chapter)&&(target==='all'||(target==='favorite'?Boolean(progress.favorites[q.id]):stateOf(q)===target)));
+ if(!pool.length){showDialog('この条件の問題はありません','<p class="dialog-note">現在の学習状態では、同じ対象条件に該当する問題がありません。ホームで条件を変更してください。</p><button class="dialog-primary" data-close>閉じる</button>');return;}
+ const order=session.order==='sequential'?'sequential':'random',count=session.count??session.ids.length;
+ if(order==='random')shuffle(pool);
+ const ids=pool.slice(0,count==='all'?pool.length:Number(count)).map(q=>q.id);
+ session={ids,index:0,responses:{},createdAt:Date.now(),activeMs:0,scope:[...scope],target,order,count};
+ saveSession();showQuestion();
+}
+function showSessionQuestionList(){
+ const items=$('#session-list-items');items.replaceChildren();
+ session.ids.forEach((id,index)=>{
+  const q=byId.get(id),response=session.responses[id],status=response.pending?'判定保留':response.correct?'正解':'不正解';
+  const row=document.createElement('div');row.className='session-list-item';
+  const title=document.createElement('strong');title.textContent=`${index+1}. 第${q.chapter}章・問${q.number}`;
+  const badge=document.createElement('span');badge.className=`session-list-status ${response.pending?'is-pending':response.correct?'is-correct':'is-wrong'}`;badge.textContent=`${response.pending?'△':response.correct?'✓':'×'} ${status}`;
+  const body=document.createElement('div');body.innerHTML=q.body;
+  const preview=(body.textContent||'').replace(/\s+/g,' ').trim();
+  const excerpt=document.createElement('small');excerpt.textContent=`${q.chapterName}｜${preview.slice(0,72)}${preview.length>72?'…':''}`;
+  row.append(title,badge,excerpt);items.append(row);
+ });
+ $('#session-list-dialog').showModal();
+}
+$('#result-close').onclick=closeSessionResult;
+$('#result-home').onclick=closeSessionResult;
+$('#result-review').onclick=startResultReview;
+$('#result-retry').onclick=retrySessionConditions;
+$('#result-list').onclick=showSessionQuestionList;
+$('#session-list-close').onclick=()=>$('#session-list-dialog').close();
 $('#quiz-favorite').onclick=()=>{const q=currentQuestion();if(!q)return;if(progress.favorites[q.id])delete progress.favorites[q.id];else progress.favorites[q.id]=true;saveProgress();$('#quiz-favorite').setAttribute('aria-pressed',String(Boolean(progress.favorites[q.id])));$('#quiz-favorite').setAttribute('aria-label',progress.favorites[q.id]?'お気に入りを解除':'お気に入りに追加');};
 $('#quiz-back').onclick=showHome;
 $('#quiz-prev').onclick=()=>{if(session.index>0){session.index--;saveSession();showQuestion();}};
