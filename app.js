@@ -68,7 +68,7 @@ document.addEventListener('visibilitychange',()=>{if(document.hidden)pauseSessio
 window.addEventListener('pagehide',pauseSessionClock);
 function stateOf(q){return progress.results[q.id]?.state || 'unseen';}
 function localDate(date=new Date()){return `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}-${String(date.getDate()).padStart(2,'0')}`;}
-function showDialog(heading,html){$('#dialog-title').textContent=heading;content.innerHTML=html;dialog.showModal();}
+function showDialog(heading,html){dialog.classList.toggle('settings-dialog',heading==='学習の準備');$('#dialog-title').textContent=heading;content.innerHTML=html;dialog.showModal();}
 function shuffle(items){for(let i=items.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[items[i],items[j]]=[items[j],items[i]];}return items;}
 function availableCount(n){return questions.filter(q=>q.chapter===n).length;}
 
@@ -121,17 +121,22 @@ document.querySelectorAll('[data-material]').forEach(button=>button.onclick=()=>
 
 function openSettings(chapterNumbers,target='all'){
  const scope=new Set(chapterNumbers);
- showDialog('学習の準備',`<p class="selected-scope">補助問題 <span>／ ${[...scope].sort().map(n=>`第${n}章`).join('・')}</span></p><fieldset class="target-fields"><legend>対象の問題</legend><div class="target-choices">${Object.entries(targetNames).map(([key,name])=>`<button data-target="${key}" aria-pressed="false">${name}<span data-total="${key}"></span></button>`).join('')}</div></fieldset><div class="filter-settings"><label>出題順<select id="filter-order"><option value="random">ランダム</option><option value="sequential">問題番号順</option></select></label><label>問題数<select id="filter-count"><option value="5">5問</option><option value="10" selected>10問</option><option value="20">20問</option><option value="50">50問</option><option value="all">すべて</option></select></label></div><p id="filter-summary" role="status"></p><button class="dialog-primary" id="filter-start">学習を始める</button>`);
+ showDialog('学習の準備',`<p class="selected-scope"><small>対象章</small><span>補助問題 · ${[...scope].sort((a,b)=>a-b).map(n=>`第${n}章 ${chapters[n-1].name}`).join(' / ')}</span></p><fieldset class="target-fields"><legend>どの問題を解く？</legend><div class="target-choices">${Object.entries(targetNames).map(([key,name])=>`<button type="button" data-target="${key}" aria-pressed="false"><span class="target-name">${name}</span><span class="target-total" data-total="${key}"></span></button>`).join('')}</div></fieldset><div class="filter-settings"><section aria-labelledby="filter-order-heading"><h3 id="filter-order-heading">出題順</h3><div class="filter-order-choices" role="group" aria-labelledby="filter-order-heading"><button type="button" data-order="random" aria-pressed="true">ランダム</button><button type="button" data-order="sequential" aria-pressed="false">問題番号順</button></div><select id="filter-order" hidden aria-hidden="true" tabindex="-1"><option value="random">ランダム</option><option value="sequential">問題番号順</option></select></section><section aria-labelledby="filter-count-heading"><h3 id="filter-count-heading">問題数</h3><div class="filter-count-choices" role="group" aria-labelledby="filter-count-heading">${[['5','5問'],['10','10問'],['20','20問'],['50','50問'],['all','すべて']].map(([value,label])=>`<button type="button" data-count="${value}" aria-pressed="${value==='10'}">${label}</button>`).join('')}</div><select id="filter-count" hidden aria-hidden="true" tabindex="-1"><option value="5">5問</option><option value="10" selected>10問</option><option value="20">20問</option><option value="50">50問</option><option value="all">すべて</option></select></section></div><p id="filter-summary" role="status"><strong id="filter-available"></strong><small id="filter-selected"></small></p><button class="dialog-primary" id="filter-start">この条件で学習を始める</button>`);
  const matches=(q,t)=>t==='all'||(t==='favorite'?Boolean(progress.favorites[q.id]):stateOf(q)===t);
  const pool=()=>questions.filter(q=>scope.has(q.chapter)&&matches(q,target));
  function refresh(){
   const inScope=questions.filter(q=>scope.has(q.chapter));
-  content.querySelectorAll('[data-target]').forEach(button=>{button.setAttribute('aria-pressed',String(button.dataset.target===target));button.querySelector('span').textContent=`${inScope.filter(q=>matches(q,button.dataset.target)).length}問`;});
-  const count=$('#filter-count').value,n=count==='all'?pool().length:Math.min(Number(count),pool().length);
-  $('#filter-summary').textContent=n?`${[...scope].sort().map(x=>`第${x}章`).join('・')} / ${targetNames[target]} / ${n}問`:'この条件に合う問題はありません';
-  $('#filter-start').disabled=!n;$('#filter-start').textContent=n?`${n}問を始める`:'条件を変更してください';
+  content.querySelectorAll('[data-target]').forEach(button=>{button.setAttribute('aria-pressed',String(button.dataset.target===target));button.querySelector('[data-total]').textContent=`${inScope.filter(q=>matches(q,button.dataset.target)).length}問`;});
+  content.querySelectorAll('[data-order]').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.order===$('#filter-order').value)));
+  content.querySelectorAll('[data-count]').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.count===$('#filter-count').value)));
+  const available=pool().length,count=$('#filter-count').value,n=count==='all'?available:Math.min(Number(count),available);
+  $('#filter-available').textContent=`この条件に合う問題：${available}問`;
+  $('#filter-selected').textContent=n?`今回は${n}問を解きます`:'対象や章を変更してください';
+  $('#filter-start').disabled=!n;
  }
  content.querySelectorAll('[data-target]').forEach(button=>button.onclick=()=>{target=button.dataset.target;refresh();});
+ content.querySelectorAll('[data-order]').forEach(button=>button.onclick=()=>{$('#filter-order').value=button.dataset.order;refresh();});
+ content.querySelectorAll('[data-count]').forEach(button=>button.onclick=()=>{$('#filter-count').value=button.dataset.count;refresh();});
  $('#filter-count').onchange=refresh;
  $('#filter-start').onclick=()=>{
   const selected=pool(),count=$('#filter-count').value,order=$('#filter-order').value;
