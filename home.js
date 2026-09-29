@@ -54,7 +54,7 @@ function renderWeekRecords(){
   const label=`${date.getMonth()+1}月${date.getDate()}日 ${day}曜日 ${future?'これから':count+'問'}`;
   const item=document.createElement('span');item.className=`home-week-day${active?' done':''}${future?' future':''}${isToday?' is-today':''}`;item.setAttribute('aria-label',label);
   item.innerHTML=`<b aria-hidden="true">${active?'✓':''}</b><span aria-hidden="true">${day}</span>`;home.append(item);
-  const old=document.createElement('span');old.setAttribute('aria-label',label);old.innerHTML=`${day}<b class="${active?(isToday?'today':'done'):''}" aria-hidden="true">${active?'✓':'·'}</b>`;record.append(old);
+  const old=document.createElement('span');old.setAttribute('aria-label',label);old.innerHTML=`${day}<b class="${active?(isToday?'today':'done'):''}" aria-hidden="true">${active?'✓':'·'}</b><small class="week-count">${count?`${count}問`:''}</small>`;record.append(old);
  });
  $('#home-week-count').textContent=weekCount;
  $('#home-week-message').textContent=activeDays?`今週は${activeDays}日学習。いいペースやね！`:'今日の一歩を、ここから。';

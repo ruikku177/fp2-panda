@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="question-redesign.css?v=2">
   <link rel="stylesheet" href="result-screen.css?v=1">
   <link rel="stylesheet" href="settings-redesign.css?v=1">
+  <link rel="stylesheet" href="record-redesign.css?v=1">
 </head>
 <body>
 <svg class="symbols" xmlns="http://www.w3.org/2000/svg"><defs>
@@ -75,11 +76,12 @@
   </div>
   <section id="record-view" hidden aria-labelledby="record-title">
     <div class="record-intro"><span class="eyebrow">YOUR STUDY RECORD</span><h1 id="record-title">学習の記録</h1><p>積み重ねた分だけ、少しずつ前へ。</p></div>
-    <div id="record-week-slot"><section class="record-card"><div class="card-heading"><h2>今週の積み重ね</h2><svg><use href="#leaf"/></svg></div><div class="week" id="week" aria-label="今週の学習記録"></div><p class="streak"><strong id="streak-count">0</strong> 日連続で学習中</p><div class="stats"><div><strong id="today-count">0<small>問</small></strong><span>今日解いた問題</span></div><div><strong id="accuracy-count">—<small>%</small></strong><span>選択式の正答率</span></div></div></section></div>
-    <div class="record-overview" id="record-overview"></div>
+    <div id="record-week-slot"><section class="record-card"><div class="card-heading"><h2>今週の積み重ね</h2><img class="record-panda" src="assets/fp-panda-v3/cheering.png" alt="応援するFPパンダ" width="94" height="94"></div><div class="week" id="week" aria-label="今週の学習記録"></div><p class="streak"><strong id="streak-count">0</strong> 日連続で学習中</p><h3 class="record-today-heading">今日の学習</h3><div class="stats"><div><strong id="today-count">0<small>問</small></strong><span>今日解いた問題</span></div><div><strong id="accuracy-count">—<small>%</small></strong><span>選択式の正答率</span></div></div></section></div>
+    <p id="record-empty" hidden>まだ学習記録がありません。問題を解くと、ここに記録がたまっていきます。</p>
+    <section class="record-status" aria-labelledby="record-status-title"><h2 id="record-status-title">学習状況</h2><div class="record-overview" id="record-overview"></div></section>
     <section class="record-panel" aria-labelledby="chapter-progress-title"><div class="record-panel-heading"><h2 id="chapter-progress-title">章ごとの進み具合</h2><span>補助問題</span></div><div id="record-chapters"></div></section>
     <section class="record-panel" aria-labelledby="calendar-title"><div class="record-panel-heading"><h2 id="calendar-title">学習カレンダー</h2><div class="calendar-controls"><button id="calendar-prev" aria-label="前の月">‹</button><span id="calendar-month"></span><button id="calendar-next" aria-label="次の月">›</button></div></div><div id="record-calendar"></div></section>
-    <section class="record-panel" aria-labelledby="focus-title"><div class="record-panel-heading"><h2 id="focus-title">これからの復習</h2></div><div id="record-focus"></div></section>
+    <section class="record-panel" aria-labelledby="focus-title"><div class="record-panel-heading"><h2 id="focus-title">復習する問題</h2></div><div id="record-focus"></div></section>
   </section>
   <section id="study-view" hidden aria-labelledby="study-title">
     <div id="study-domains">
@@ -103,5 +105,5 @@
 <dialog id="session-list-dialog" aria-labelledby="session-list-title"><div class="session-list-head"><h2 id="session-list-title">今回の問題一覧</h2><button id="session-list-close" type="button" aria-label="問題一覧を閉じる">×</button></div><div id="session-list-items"></div></dialog>
 <dialog id="dash-dialog" aria-labelledby="dash-title"><button class="dash-close" id="dash-close" type="button" aria-label="ゲームを閉じる">×</button><span class="eyebrow">SECRET PANDA GAME</span><h2 id="dash-title">電卓ダッシュ</h2><p class="dash-lead">パンダと笹の道を走ろう。障害物が来たらジャンプ！</p><div class="dash-scores"><span>距離 <strong id="dash-score">00000</strong> m</span><span>ベスト <strong id="dash-best">00000</strong> m</span></div><div class="dash-stage"><canvas id="dash-canvas" width="800" height="300" tabindex="0" aria-label="パンダが障害物をジャンプで避けるゲーム"></canvas><div class="dash-overlay" id="dash-overlay" role="status">スタートを押してね</div></div><div class="dash-actions"><button id="dash-start" type="button">スタート</button><button id="dash-jump" type="button" disabled>ジャンプ</button></div><p class="dash-help">短押しで低く、長押しで高くジャンプ。スマホは画面・ボタン、PCはスペース・↑キー</p></dialog>
 <div id="toast" role="status" aria-live="polite"></div>
-<script src="data.js"></script><script src="written.js?v=1"></script><script src="home.js?v=1"></script><script src="app.js?v=settings1"></script><script src="study.js?v=2"></script><script src="game.js?v=9"></script>
+<script src="data.js"></script><script src="written.js?v=1"></script><script src="home.js?v=record1"></script><script src="app.js?v=record1"></script><script src="study.js?v=2"></script><script src="game.js?v=9"></script>
 </body></html>

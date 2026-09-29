@@ -191,6 +191,7 @@ function renderRecord(){
  const solved=questions.filter(q=>stateOf(q)==='solved').length;
  const review=questions.filter(q=>stateOf(q)==='review');
  const recovered=questions.filter(q=>(progress.results[q.id]?.recovered||0)>0).length;
+ $('#record-empty').hidden=Boolean(solved+review.length||Object.values(progress.daily).some(Boolean));
  $('#record-overview').innerHTML=`<div><strong>${solved+review.length}<small>問</small></strong><span>学習済み</span></div><div><strong>${review.length}<small>問</small></strong><span>要復習</span></div><div><strong>${recovered}<small>問</small></strong><span>解き直して正解</span></div>`;
  $('#record-chapters').innerHTML=chapters.map(c=>{
   const pool=questions.filter(q=>q.chapter===c.n);

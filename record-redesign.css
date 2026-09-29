@@ -1,0 +1,81 @@
+/* The record page shares the home screen's warm study-notebook palette. */
+body:has(#record-view:not([hidden])){background:var(--fp-paper,#fbf6ee)}
+body:has(#record-view:not([hidden])) main{max-width:1140px}
+#record-view{max-width:880px;margin:4px auto 55px;color:var(--fp-text,#263a36);font-family:"Hiragino Sans","Yu Gothic UI","Yu Gothic",Meiryo,sans-serif}
+#record-view button:focus-visible{outline:3px solid #a47027;outline-offset:3px}
+.record-intro{margin:4px 0 20px;padding:0 2px}
+.record-intro .eyebrow{color:#668678;font-size:10px;letter-spacing:.13em}
+.record-intro h1{margin:7px 0 5px;color:var(--fp-ink,#173b36);font-size:30px;font-weight:750;line-height:1.35;letter-spacing:.02em}
+.record-intro p{color:#668078;font-size:14px;line-height:1.6}
+#record-week-slot .record-card,.record-status,#record-view .record-panel:not([aria-labelledby="focus-title"]){background:var(--fp-surface,#fffdfa);border:1px solid #efe5d7;border-radius:21px;box-shadow:0 3px 7px #6a482009}
+#record-week-slot .record-card{position:relative;margin:0 0 18px;padding:20px 22px 19px;overflow:hidden}
+#record-week-slot .card-heading{min-height:45px;align-items:flex-start;padding-right:80px}
+#record-week-slot .card-heading h2{color:var(--fp-ink,#173b36);font-size:20px;font-weight:750;line-height:1.45;letter-spacing:.02em}
+.record-panda{position:absolute;right:20px;top:8px;width:78px;height:78px;object-fit:contain}
+#record-week-slot .week{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px;margin-top:14px}
+#record-week-slot .week>span{display:flex;flex-direction:column;align-items:center;min-width:0;color:#687d73;font-size:12px;line-height:1.35}
+#record-week-slot .week b{display:grid;place-items:center;width:38px;height:38px;margin:8px 0 4px;border-radius:50%;background:#eff2ea;color:#a3afa4;font-size:19px;font-weight:600}
+#record-week-slot .week b.done{background:#4ba985;color:#fff}
+#record-week-slot .week b.today{background:var(--fp-green-700,#176957);color:#fff;outline:3px solid #d8ebde;outline-offset:1px}
+#record-week-slot .week-count{min-height:15px;color:#648575;font-size:10px;font-variant-numeric:tabular-nums}
+#record-week-slot .streak{margin:12px 0 0;color:#8b7045;font-size:12px;line-height:1.6}
+#record-week-slot .streak strong{margin-right:3px;color:#966b31;font-size:16px;font-weight:750}
+.record-today-heading{margin:17px 0 0;padding-top:17px;border-top:1px solid #ebe7de;color:var(--fp-ink,#173b36);font-size:16px;font-weight:750}
+#record-week-slot .stats{display:grid;grid-template-columns:1fr 1fr;gap:0;margin:12px 0 0;padding:0;border:0}
+#record-week-slot .stats>div{min-width:0;padding:0 14px 0 0}
+#record-week-slot .stats>div+div{padding:0 0 0 17px;border-left:1px solid #e8e4db}
+#record-week-slot .stats strong{color:var(--fp-green-700,#176957);font-family:inherit;font-size:31px;font-weight:800;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+#record-week-slot .stats strong small{font-family:inherit;font-size:14px;font-weight:700}
+#record-week-slot .stats span{margin-top:3px;color:#627b70;font-size:12px;line-height:1.5}
+#record-empty{margin:0 0 18px;padding:13px 16px;border-left:3px solid #a9cbb2;border-radius:0 10px 10px 0;background:#edf6ec;color:#426353;font-size:13px;line-height:1.7}
+.record-status{margin:0 0 19px;padding:18px 17px 16px}
+.record-status h2{margin:0 0 11px;color:var(--fp-ink,#173b36);font-size:18px;font-weight:750}
+#record-view .record-overview{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;margin:0;background:transparent;border:0}
+#record-view .record-overview>div{min-width:0;padding:8px 10px;text-align:center;background:transparent;border:0;border-radius:0}
+#record-view .record-overview>div+div{border-left:1px solid #ebe7de}
+#record-view .record-overview strong{color:#146651;font-family:inherit;font-size:27px;font-weight:800;font-variant-numeric:tabular-nums}
+#record-view .record-overview>div:nth-child(2) strong{color:#ba5752}
+#record-view .record-overview>div:nth-child(3) strong{color:#9b783f}
+#record-view .record-overview strong small{font-family:inherit;font-size:12px;font-weight:700}
+#record-view .record-overview span{margin-top:4px;color:#596f64;font-size:11px;font-weight:650;line-height:1.35}
+#record-view .record-panel{margin:0 0 19px;padding:21px 22px}
+#record-view .record-panel-heading{margin-bottom:13px}
+#record-view .record-panel-heading h2{color:var(--fp-ink,#173b36);font-size:18px;font-weight:750}
+#record-view .record-panel-heading>span{color:#7e9284;font-size:11px}
+#record-view .record-chapter{min-height:69px;padding:14px 0;border-color:#ece8df}
+#record-view .record-chapter:first-child{padding-top:3px}
+#record-view .record-chapter:not(.pending):hover .record-chapter-label span{color:#16805f}
+#record-view .record-chapter-label{color:#263a36;font-size:14px;line-height:1.5}
+#record-view .record-chapter-label small{color:#59756b;font-size:12px;font-weight:600;font-variant-numeric:tabular-nums}
+#record-view .record-chapter.pending{opacity:.65}
+#record-view .record-segments{height:8px;margin-top:9px;border-radius:9px;background:#edf0ec}
+#record-view .segment-solved{background:#56b28d}
+#record-view .segment-review{background:#dca49d}
+#record-view .record-chapter-counts{gap:14px;margin-top:7px;color:#6b8073;font-size:11px;line-height:1.5}
+#record-view .record-chapter-counts span:first-child{color:#187653}
+#record-view .record-chapter-counts span:nth-child(2){color:#b6534e}
+#record-view .calendar-controls{font-size:13px;color:#315447}
+#record-view .calendar-controls button{width:40px;height:40px;border-radius:11px;background:#eaf3eb;color:var(--fp-green-700,#176957);font-size:25px}
+#record-view .calendar-controls span{min-width:88px}
+#record-view .calendar-grid{gap:5px}
+#record-view .calendar-day-name{padding:6px 0;color:#73867a;font-size:11px;font-weight:650}
+#record-view .calendar-day{min-height:51px;padding:6px 7px;border-radius:9px;background:#f6f5ee;color:#495e52;font-size:13px;font-variant-numeric:tabular-nums}
+#record-view .calendar-day b{font-weight:650}
+#record-view .calendar-day small{margin-top:4px;color:inherit;font-size:10px}
+#record-view .calendar-day.level-1{background:#e8f3e8;color:#196a52}
+#record-view .calendar-day.level-2{background:#cbe9d4;color:#115a43}
+#record-view .calendar-day.level-3{background:#2f9b70;color:#fff}
+#record-view .calendar-day.is-today{outline:2px solid #bd9555;outline-offset:1px}
+#record-view .calendar-note{margin-top:14px;color:#6d8375;font-size:11px;line-height:1.5}
+#record-view .record-panel[aria-labelledby="focus-title"]{padding:13px 2px 10px;border:0;border-radius:0;background:transparent;box-shadow:none}
+#record-view .focus-summary,#record-view .focus-empty{color:#5f786a;font-size:13px;line-height:1.7}
+#record-view .focus-list{margin:10px 0 15px;border-top:1px solid #e4e5dc}
+#record-view .focus-list button{min-height:54px;margin:0;padding:12px 4px;border-bottom:1px solid #e4e5dc;border-radius:0;background:transparent;color:var(--fp-ink,#173b36);font-size:13px;line-height:1.5}
+#record-view .focus-list button:hover{background:#f4f8f2}
+#record-view .focus-list button small{color:#76887c;font-size:11px}
+#record-view .focus-list button span:last-child{color:var(--fp-green-700,#176957);font-size:18px}
+#record-view .focus-all{min-height:46px;padding:11px 17px;border-radius:11px;background:var(--fp-green-700,#176957);color:#fff;font-size:13px;font-weight:750}
+@media(max-width:900px){body:has(#record-view:not([hidden])) main{padding:16px 18px 90px}body:has(#record-view:not([hidden])) .topbar{display:none}#record-view{margin-top:0}}
+@media(max-width:570px){.record-intro{margin-bottom:16px}.record-intro h1{font-size:27px}.record-intro p{font-size:13px}#record-week-slot .record-card{padding:18px 16px 17px}.record-panda{right:12px;top:7px;width:69px;height:69px}#record-week-slot .card-heading h2{font-size:18px}#record-week-slot .week{gap:2px}#record-week-slot .week b{width:34px;height:34px;font-size:17px}#record-week-slot .week-count{font-size:9px}#record-week-slot .stats strong{font-size:28px}.record-status{padding:16px 11px}#record-view .record-overview>div{padding:6px 5px}#record-view .record-overview strong{font-size:23px}#record-view .record-overview span{font-size:10px}#record-view .record-panel{padding:18px 16px}#record-view .record-chapter-label{font-size:12px}#record-view .record-chapter-label small{font-size:11px}#record-view .record-chapter-counts{gap:10px;font-size:10px}#record-view .calendar-grid{gap:4px}#record-view .calendar-day{min-height:47px;padding:5px 4px;font-size:12px}#record-view .calendar-day small{font-size:9px}}
+@media(max-width:360px){body:has(#record-view:not([hidden])) main{padding-left:15px;padding-right:15px}#record-week-slot .week b{width:30px;height:30px}#record-view .record-overview strong{font-size:20px}#record-view .record-overview span{font-size:9px}#record-view .record-chapter-counts{gap:7px;font-size:9px}#record-view .calendar-day{min-height:43px;font-size:11px}#record-view .calendar-day small{font-size:8px}}
+@media(prefers-reduced-motion:reduce){#record-view *{scroll-behavior:auto!important;transition:none!important}}
