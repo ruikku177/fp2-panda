@@ -103,3 +103,24 @@ body.home-screen{background:var(--fp-paper)}
 @media(max-width:375px){.home-room{left:-16px;right:-16px}}
 /* Keep the weekday clear while bringing both the panda and speech fully on-screen. */
 @media(max-width:420px){.home-hero{min-height:340px}.home-panda{right:-5px}}
+/* Compact mobile hero: panda beside the date, speech immediately below it. */
+@media(max-width:570px){
+  .home-hero{height:205px;min-height:205px}
+  .home-room{bottom:-59px;background-size:cover;background-position:center center}
+  .home-today{margin-top:8px}
+  #home-year{font-size:13px;margin-bottom:0}
+  #home-date{font-size:clamp(28px,8vw,35px);line-height:1.12}
+  #home-date .home-weekday{margin-left:4px}
+  .home-panda{top:75px;right:4px;bottom:auto;width:130px;height:130px}
+  .home-panda img{width:130px;height:130px}
+  #home-view #panda-speech{top:78px;right:calc(100vw - 204px);bottom:auto;left:auto;width:160px;padding:7px 9px;font-size:11px;line-height:1.4;border-radius:17px 17px 5px 17px}
+  .home-start{min-height:56px;margin-bottom:8px;padding:8px 16px}
+  .home-start strong{font-size:18px}
+  .home-play{width:31px;height:31px;font-size:13px}
+  .home-todos{margin-top:8px}
+}
+@media(max-width:360px){
+  .home-panda{width:112px;height:112px;top:88px}
+  .home-panda img{width:112px;height:112px}
+  #home-view #panda-speech{top:67px;width:148px;right:calc(100vw - 192px)}
+}
