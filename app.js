@@ -47,6 +47,12 @@ let progress = load(progressKey,defaultProgress());
 if(!progress.results || !progress.favorites || !progress.daily)progress=defaultProgress();
 let session = load(sessionKey,null);
 if(session && (!Array.isArray(session.ids) || !session.ids.every(id=>questions.some(q=>q.id===id))))session=null;
+// 以前の判定保留回答は採点履歴に入っていない。該当問だけ未回答に戻して解き直せるようにする。
+const resolvedQuestionId='supplement:1:30';
+if(session?.ids.includes(resolvedQuestionId) && session.responses?.[resolvedQuestionId]?.pending){
+ delete session.responses[resolvedQuestionId];delete session.finishedAt;
+ localStorage.setItem(sessionKey,JSON.stringify(session));
+}
 let sessionActiveSince=null;
 let multiMode = false;
 const selectedChapters = new Set();
@@ -330,7 +336,6 @@ function displayResult(q,response){
    grid.append(row);
   });
   result.insertBefore(grid,result.querySelector('.explanation'));
-  if(response.pending){const note=document.createElement('p');note.className='written-pending-note';note.textContent='第1章・問30（ウ）は正解未確定です。登録済み解答を参考表示していますが、正誤・学習記録・結果の得点には反映しません。';result.insertBefore(note,result.querySelector('.explanation'));}
   $('#quiz-answer-area').querySelectorAll('input,.written-submit').forEach(control=>control.disabled=true);
   $('#quiz-answer-area').querySelectorAll('input').forEach((input,index)=>{input.value=response.selected.values[index]||'';});
  }

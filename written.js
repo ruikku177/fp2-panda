@@ -1,5 +1,5 @@
 // 入力式の採点設定。問題文・登録解答の正本は data.js / 問題バンク側に残す。
-// 第1章問30は登録解答の一部が未確定のため、入力のみで自動採点しない。
+// 第1章問30（ウ）は「含まれます」を正解とし、常体の「含まれる」も受け付ける。
 (() => {
   const number = (label, answer, unit) => ({label, answer, unit, kind:'number'});
   const decimal = (label, answer, unit) => ({label, answer, unit, kind:'decimal'});
@@ -11,8 +11,9 @@
       number('（1）',3219400,'円'),number('（2）',14365000,'円'),number('（3）',4525000,'円'),
       number('（4）',975000,'円'),number('（5）',477000,'円')
     ]},
-    'supplement:1:30': {pending:true,fields:[
-      {label:'（ア）',kind:'text'},{label:'（イ）',kind:'text'},{label:'（ウ）',kind:'text'}
+    'supplement:1:30': {fields:[
+      number('（ア）',130,'万円'),{label:'（イ）',answer:'2分の1',kind:'text'},
+      {label:'（ウ）',answer:'含まれます',kind:'included'}
     ]},
     'supplement:1:33': {fields:[
       {label:'（ア）支給開始日',answer:'1月21日',kind:'date'},
@@ -49,6 +50,7 @@
       text=text.replace(/[（()）\[\]、,，・/]/g,'');
       return /^[アイウエ]+$/.test(text) ? [...text].sort().join('') : null;
     }
+    if(field.kind==='included') return text==='含まれます'||text==='含まれる'?'含まれる':text;
     if(field.kind==='date'){
       text=text.replace(/[／/-]/g,'月').replace(/日$/,'');
       return text;
