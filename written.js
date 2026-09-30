@@ -2,6 +2,7 @@
 // 第1章問30は登録解答の一部が未確定のため、入力のみで自動採点しない。
 (() => {
   const number = (label, answer, unit) => ({label, answer, unit, kind:'number'});
+  const decimal = (label, answer, unit) => ({label, answer, unit, kind:'decimal'});
   const letter = (label, answer) => ({label, answer, kind:'letters'});
   const specs = {
     'supplement:1:5': {fields:[number('（ア）純資産',14690,'万円')]},
@@ -24,7 +25,12 @@
     'supplement:2:13': {fields:[number('適切な図の番号',3,'')]},
     'supplement:2:29': {fields:[number('入院給付金の対象日数',138,'日')]},
     'supplement:2:35': {fields:[number('年間の地震保険料',5110,'円')]},
-    'supplement:2:40': {fields:[letter('適切な記述（複数）','イエ')]}
+    'supplement:2:40': {fields:[letter('適切な記述（複数）','イエ')]},
+    'supplement:3:2': {fields:[number('（ア）',2,''),number('（イ）',5,''),number('（ウ）',7,''),number('（エ）',10,'')]},
+    'supplement:3:18': {fields:[decimal('最終利回り',0.148,'%')]},
+    'supplement:3:19': {fields:[decimal('所有期間利回り',0.95,'%')]},
+    'supplement:3:23': {fields:[letter('適切な記述','イ')]},
+    'supplement:3:65': {fields:[number('（ア）隆雄さん',940,'万円'),number('（イ）美也子さん',390,'万円')]}
   };
 
   const cleaned = value => String(value ?? '').normalize('NFKC').replace(/[\s\u3000]/g,'').trim();
@@ -34,6 +40,10 @@
       if(field.unit && text.endsWith(field.unit)) text=text.slice(0,-field.unit.length);
       text=text.replace(/[,，]/g,'');
       return /^\d+$/.test(text) ? String(Number(text)) : null;
+    }
+    if(field.kind==='decimal'){
+      if(field.unit && text.endsWith(field.unit)) text=text.slice(0,-field.unit.length);
+      return /^\d+(?:\.\d+)?$/.test(text) ? String(Number(text)) : null;
     }
     if(field.kind==='letters'){
       text=text.replace(/[（()）\[\]、,，・/]/g,'');
@@ -47,7 +57,7 @@
     return text;
   }
   function expected(field){
-    if(field.kind==='number') return `${Number(field.answer).toLocaleString('ja-JP')}${field.unit || ''}`;
+    if(field.kind==='number'||field.kind==='decimal') return `${Number(field.answer).toLocaleString('ja-JP')}${field.unit || ''}`;
     if(field.kind==='letters') return [...field.answer].map(x=>`（${x}）`).join('');
     return field.answer;
   }

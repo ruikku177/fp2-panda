@@ -272,8 +272,8 @@ function createWrittenForm(q){
   const label=document.createElement('label');label.className='written-field';
   const title=document.createElement('span');title.textContent=field.label;label.append(title);
   const row=document.createElement('span');row.className='written-input-row';
-  const input=document.createElement('input');input.type='text';input.autocomplete='off';input.inputMode=field.kind==='number'?'numeric':'text';input.dataset.writtenIndex=String(index);input.setAttribute('aria-label',field.label);
-  if(field.kind==='number')input.placeholder='数字を入力';else if(field.kind==='letters')input.placeholder='記号を入力';else input.placeholder='答えを入力';
+  const input=document.createElement('input');input.type='text';input.autocomplete='off';input.inputMode=field.kind==='number'?'numeric':field.kind==='decimal'?'decimal':'text';input.dataset.writtenIndex=String(index);input.setAttribute('aria-label',field.label);
+  if(field.kind==='number'||field.kind==='decimal')input.placeholder='数字を入力';else if(field.kind==='letters')input.placeholder='記号を入力';else input.placeholder='答えを入力';
   row.append(input);
   if(field.unit){const unit=document.createElement('span');unit.className='written-unit';unit.textContent=field.unit;row.append(unit);}
   label.append(row);grid.append(label);
