@@ -106,6 +106,10 @@ body:has(#study-view:not([hidden])) main{padding-top:20px}
 #study-view .study-lesson-body{font-size:15px;line-height:1.95;color:#243632}
 #study-view .study-lesson-body h3{margin:34px 0 10px;color:#104e40;font-size:19px;line-height:1.5}
 #study-view .study-lesson-body p{margin:0 0 17px}
+#study-view .study-formula{display:grid;gap:5px;margin:25px 0 23px;padding:21px 22px;border:1px solid #c9e0cf;border-left:5px solid #175748;border-radius:12px;background:#f0f7ed;color:#104e40}
+#study-view .study-formula strong{font-size:clamp(22px,5.5vw,28px);line-height:1.4}
+#study-view .study-formula span{font-size:clamp(17px,4.4vw,23px);font-weight:750;line-height:1.5;letter-spacing:-.025em}
+#study-view .study-formula small{margin-top:8px;color:#49665a;font-size:12px;line-height:1.6}
 #study-view .study-lesson-body ol,#study-view .study-lesson-body ul{margin:8px 0 22px;padding-left:1.5em}
 #study-view .study-lesson-body li{margin-bottom:10px}
 #study-view .study-lesson-body figure{margin:25px auto;text-align:center}
@@ -138,5 +142,6 @@ body:has(#study-view:not([hidden])) main{padding-top:20px}
   #study-view .study-lesson-paper{padding:24px 18px}
   #study-view .study-lesson-body{font-size:14px;line-height:1.85}
   #study-view .study-lesson-body h3{font-size:17px}
+  #study-view .study-formula{padding:17px 16px}
   #study-view .study-rule-grid{grid-template-columns:1fr}
 }
