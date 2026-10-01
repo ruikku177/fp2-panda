@@ -227,6 +227,7 @@ function showQuestion(){
  document.body.classList.toggle('quiz-reading-mode',readingLayout);
  $('#quiz-view').classList.toggle('quiz-reading-layout',readingLayout);
  $('#home-view').hidden=true;$('#record-view').hidden=true;$('#study-view').hidden=true;$('#quiz-view').hidden=false;$('.mobile-nav').hidden=true;$('.breadcrumb').textContent='問題を解く';
+ $('#study-return-lesson').hidden=!(window.fpStudyReturn && window.fpStudyReturn.createdAt===session.createdAt);
  $('#quiz-progress').textContent=`${session.index+1} / ${session.ids.length}${readingLayout?'':'問'}`;
  $('#quiz-track-fill').style.width=`${(session.index+1)/session.ids.length*100}%`;
  const paws=$('#quiz-paws');paws.replaceChildren();
@@ -375,6 +376,7 @@ function finishSession(){
  $('#result-review').hidden=!wrongIds.length;
  $('#result-review-label').textContent=`間違えた${wrongIds.length}問を復習する`;
  $('#result-list').classList.toggle('is-primary',!wrongIds.length);
+ $('#result-study-return').hidden=!(window.fpStudyReturn && window.fpStudyReturn.createdAt===session.createdAt);
  window.scrollTo(0,0);
 }
 function closeSessionResult(){session=null;saveSession();showHome();}

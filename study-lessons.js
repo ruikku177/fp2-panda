@@ -8,7 +8,7 @@ const studyLessonContent = [
       <p><strong>説明 → データ収集 → 現状分析 → 提案書作成 → 実行支援 → 見直し</strong>の順番を押さえよう。</p>
       <h3>相談の6ステップ</h3>
       <figure><img src="assets/study/consultation-steps.svg" alt="説明、データ収集、現状分析、提案書作成、実行支援、見直しの順に進む図" width="360" height="500"><figcaption>試験の並べ替え問題で使う6ステップ</figcaption></figure>
-      <ol><li><strong>説明</strong>：業務範囲・責任・報酬を説明し、顧客との関係を築く。</li><li><strong>データ収集</strong>：家族構成、収支、資産・負債などを集め、目標を明確にする。</li><li><strong>現状分析</strong>：家計やキャッシュフローを分析・評価し、課題を見つける。</li><li><strong>提案書作成</strong>：課題へのプランを作り、提案書として提示・説明する。</li><li><strong>実行支援</strong>：決めたプランの実行を援助し、必要なら専門家につなぐ。</li><li><strong>見直し</strong>：家族や仕事、制度の変化に合わせて定期的に点検する。</li></ol>
+      <details><summary>各ステップを詳しく読む</summary><ol><li><strong>説明</strong>：業務範囲・責任・報酬を説明し、顧客との関係を築く。</li><li><strong>データ収集</strong>：家族構成、収支、資産・負債などを集め、目標を明確にする。</li><li><strong>現状分析</strong>：家計やキャッシュフローを分析・評価し、課題を見つける。</li><li><strong>提案書作成</strong>：課題へのプランを作り、提案書として提示・説明する。</li><li><strong>実行支援</strong>：決めたプランの実行を援助し、必要なら専門家につなぐ。</li><li><strong>見直し</strong>：家族や仕事、制度の変化に合わせて定期的に点検する。</li></ol></details>
       <p>大切なのは、<strong>提案より先に「目標」と「現状」の確認がある</strong>こと。子どもの年齢や希望進路、現在の貯蓄を知らなければ、教育費の準備額は考えられない。</p>
       <details><summary>もう少し詳しく</summary><p>6ステップは一度きりの直線ではない。転職や出産、制度改正があれば、情報を集め直して提案を修正する。また「実行支援」はFPがあらゆる契約を代理できるという意味ではない。資格や登録が必要な業務は専門家・事業者につなぐ。</p></details>
       <aside class="study-tip"><h3>🐾 解くときのコツ</h3><p>並べ替えでは、最初の<strong>説明</strong>、データ収集の後の<strong>現状分析</strong>、その後の<strong>提案書作成</strong>、最後の<strong>見直し</strong>を先に置こう。</p><p><strong>落とし穴：</strong>データ収集より前に業務範囲や責任の説明がある。現状分析より先に提案書を作ることもない。</p></aside>
@@ -20,7 +20,7 @@ const studyLessonContent = [
     html: `
       <p>FPは幅広い分野を知っている。でも、<strong>FPの資格だけで何でもできるわけではない</strong>。「仕組みを説明する」と「その人のために専門的な業務をする」は別と考えよう。</p>
       <figure><img src="assets/study/professional-boundaries.svg" alt="実際の行為、資格・登録、契約内容の3点から業務の線引きを考える図" width="360" height="380"><figcaption>料金だけで決めず、行為の中身を見る</figcaption></figure>
-      <div class="study-table-scroll" tabindex="0" role="region" aria-label="FPの説明と資格が必要な業務の比較。横にスクロールできます"><table><thead><tr><th>場面</th><th>一般的な説明・試算の例</th><th>線引きに注意する行為</th></tr></thead><tbody><tr><th>税金</th><td>控除の仕組みや一般的な要件の説明</td><td>個別の税務相談や申告書の作成を業として行う</td></tr><tr><th>投資</th><td>資産運用やリスク分散の基本の説明</td><td>登録を要する投資助言業として個別銘柄を助言する</td></tr><tr><th>保険</th><td>必要保障額の試算や一般的な活用方法</td><td>登録を要する保険募集に当たる行為</td></tr><tr><th>年金</th><td>公的年金制度の説明や受給見込み額の試算</td><td>社労士の独占業務に当たる書類作成・提出代行など</td></tr></tbody></table></div>
+      <div class="study-boundaries"><div><h3>税金</h3><p><strong>一般説明：</strong>控除の仕組みや一般的な要件</p><p><strong>注意する行為：</strong>個別の税務相談や申告書作成を業として行う</p></div><div><h3>投資</h3><p><strong>一般説明：</strong>分散投資やリスクの基本</p><p><strong>注意する行為：</strong>登録を要する投資助言業として個別銘柄を助言する</p></div><div><h3>保険</h3><p><strong>一般説明：</strong>必要保障額の試算や一般的な活用方法</p><p><strong>注意する行為：</strong>登録を要する保険募集に当たる行為</p></div><div><h3>年金</h3><p><strong>一般説明：</strong>公的年金制度や受給見込み額の試算</p><p><strong>注意する行為：</strong>社労士の独占業務に当たる書類作成・提出代行など</p></div></div>
       <h3>試験で大事な線引き</h3><p><strong>「無料なら何でもできる」は誤り。</strong>税理士業務に当たる税務相談を無資格者が業として行うことは、無料でも認められない。反対に「有料なら一般的な説明もすべて禁止」も誤り。次の3点を見る。</p>
       <ol><li><strong>何をしたか：</strong>一般説明・試算か、個別の助言・申告・募集・代理か。</li><li><strong>資格・登録：</strong>税理士、投資助言業、保険募集人、社会保険労務士など。</li><li><strong>行い方：</strong>業務として行ったか、契約内容は何か。</li></ol>
       <h3>具体例で考える</h3><ul><li>配偶者控除と配偶者特別控除の一般的な違いを説明する：制度の説明。</li><li>相談者の具体的な相続税額を計算して税務相談に応じる：FP資格だけで業として行えると考えない。無料相談会でも同じ。</li><li>未登録で投資顧問契約を結び、個別株の購入を助言する：FP資格だけではできない。</li><li>家族状況から必要保障額を試算する：それだけで保険募集とは限らない。ただし個別商品の勧誘は別に判断する。</li></ul>

@@ -101,6 +101,17 @@ const studyThemes = [
 const studyLessonCount = studyThemes.reduce((total, theme) => total + theme.lessons.length, 0);
 const studyContentByTheme = [studyLessonContent, ...studyThemes.slice(1).map((_, index) => studyExtraLessons[index + 1] || [])];
 const studyPublishedCount = studyContentByTheme.reduce((total, lessons) => total + lessons.filter(Boolean).length, 0);
+const studyKeyPoints = {
+  0: ['提案の前に説明・データ収集・現状分析','業務の線引きは行為の中身で判断する','個人情報と著作権は別々に確認する'],
+  1: ['年収から直接税と社会保険料を引く','家族の予定を年ごとの収支につなげる','支出の変動率と貯蓄の運用利率を分ける','資産から負債を引いて純資産を出す'],
+  2: ['今ある一括資金の将来額には終価係数','将来の一括目標額を現在に戻すなら現価係数','毎年の積立額と将来の目標額で係数が変わる','受取額から元本なら年金現価、元本から受取額なら資本回収','出発点と求める額を矢印で結んで選ぶ'],
+  3: [,,, '元利均等と元金均等を区別し、同じ期間の返済額を比べる',, '繰上返済は返済後残高の差で上限を確認する'],
+  8: ['B/Sは一時点、P/LとC/Fは一定期間','売上総利益→営業利益→経常利益の順に追う','分割は支払回数、リボは残高に応じた毎月の支払額','ショッピングとキャッシングは規制と利息を分けて考える']
+};
+function nextPublishedStudyLesson(themeIndex, lessonIndex){
+  const next=studyContentByTheme[themeIndex].findIndex((lesson,index)=>index>lessonIndex && Boolean(lesson));
+  return next<0?null:next;
+}
 
 $('#study-domain-grid').innerHTML = chapters.map(chapter =>
   `<button type="button" class="study-domain" data-study-chapter="${chapter.n}" style="--study-icon:${chapter.color};--study-tint:${chapter.tint}">
@@ -170,9 +181,10 @@ function showStudyLesson(themeIndex, index){
   $('#study-lesson-heading').textContent = studyThemes[themeIndex].lessons[index];
   $('.study-lesson-hero .study-chapter-badge').textContent = `CHAPTER 01 · テーマ${String(themeIndex+1).padStart(2,'0')}`;
   $('#study-lesson-panda').textContent = `🐼「${lesson.panda}」`;
-  $('#study-lesson-body').innerHTML = lesson.html;
+  const keyPoint=studyKeyPoints[themeIndex]?.[index];
+  $('#study-lesson-body').innerHTML = `${keyPoint?`<div class="study-focus"><small>このレッスンで覚えること</small><strong>${keyPoint}</strong></div>`:''}${lesson.html}`;
   $('#study-related-questions').textContent = `関連する補助問題（問${lesson.questionNumbers.join('・')}）を解く`;
-  $('#study-next-lesson').hidden = !studyContentByTheme[themeIndex][index+1];
+  $('#study-next-lesson').hidden = nextPublishedStudyLesson(themeIndex,index)===null;
   $('.breadcrumb').textContent = `パンダと勉強 / 第1章 / ${studyThemes[themeIndex].title}`;
   window.scrollTo(0,0);
 }
@@ -195,15 +207,28 @@ $('#study-topic-list').addEventListener('click', event => {
   button.setAttribute('aria-expanded', String(!expanded));
   detail.hidden = expanded;
 });
-$('#study-next-lesson').addEventListener('click', () => showStudyLesson(activeStudyTheme, activeStudyLesson+1));
+$('#study-next-lesson').addEventListener('click', () => {
+  const next=nextPublishedStudyLesson(activeStudyTheme,activeStudyLesson);
+  if(next!==null) showStudyLesson(activeStudyTheme,next);
+});
 $('#study-related-questions').addEventListener('click', () => {
   const ids = studyContentByTheme[activeStudyTheme][activeStudyLesson].questionNumbers.map(number => `supplement:1:${number}`).filter(id => byId.has(id));
   if(!ids.length) return;
   if(session && Object.keys(session.responses||{}).length && !window.confirm('進行中の問題演習があります。新しい演習を始めますか？')) return;
   session = {ids,index:0,responses:{},createdAt:Date.now(),activeMs:0,scope:[1],target:'all',order:'sequential',count:String(ids.length)};
+  window.fpStudyReturn={themeIndex:activeStudyTheme,lessonIndex:activeStudyLesson,scrollY:window.scrollY,createdAt:session.createdAt};
   saveSession();
   showQuestion();
 });
+function returnToStudyLesson(){
+  const saved=window.fpStudyReturn;
+  if(!saved || !session || saved.createdAt!==session.createdAt) return;
+  showStudy();
+  showStudyLesson(saved.themeIndex,saved.lessonIndex);
+  requestAnimationFrame(()=>window.scrollTo(0,saved.scrollY));
+}
+$('#study-return-lesson').addEventListener('click',returnToStudyLesson);
+$('#result-study-return').addEventListener('click',returnToStudyLesson);
 
 const studyParams = new URLSearchParams(window.location.search);
 if(studyParams.get('tab') === 'study'){
