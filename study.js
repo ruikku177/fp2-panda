@@ -112,6 +112,7 @@ $('#study-domain-grid').innerHTML = chapters.map(chapter =>
 function showStudyDomains(){
   $('#study-domains').hidden = false;
   $('#study-themes').hidden = true;
+  $('#study-lesson-view').hidden = true;
   $('#study-back').hidden = true;
   $('.breadcrumb').textContent = 'パンダと勉強';
   window.scrollTo(0,0);
@@ -122,6 +123,7 @@ function showStudyChapter(number){
   if(!chapter) return;
   $('#study-domains').hidden = true;
   $('#study-themes').hidden = false;
+  $('#study-lesson-view').hidden = true;
   $('#study-back').hidden = false;
   $('.study-chapter-intro').classList.toggle('is-pending', number !== 1);
   $('#study-chapter-no').textContent = `CHAPTER 0${number}`;
@@ -135,7 +137,7 @@ function showStudyChapter(number){
   $('#study-summary-status').textContent = '教材作成中';
   $('#study-topics-heading').textContent = number === 1 ? `テーマ一覧（全${studyThemes.length}テーマ）` : 'この分野の教材';
   $('#study-topic-list').innerHTML = number === 1
-    ? studyThemes.map((theme,index) => `<div class="study-topic"><button type="button" data-study-topic="${index}" aria-expanded="false" aria-controls="study-lessons-${index}"><span class="study-topic-no">${String(index+1).padStart(2,'0')}</span><span class="study-topic-title">${theme.title}</span><span class="study-topic-status">${theme.lessons.length}レッスン</span><span class="study-topic-arrow" aria-hidden="true">›</span></button><div class="study-topic-detail" id="study-lessons-${index}" hidden><div class="study-topic-pending"><span aria-hidden="true">ⓘ</span><p>このテーマの教材は現在準備中です。<br>レッスン内容は順次追加していきます。</p></div><h3>レッスン一覧</h3><ol class="study-lesson-list">${theme.lessons.map((lesson, lessonIndex) => `<li class="study-lesson"><span class="study-lesson-no">${String(lessonIndex+1).padStart(2,'0')}</span><span class="study-lesson-title">${lesson}</span></li>`).join('')}</ol></div></div>`).join('')
+    ? studyThemes.map((theme,index) => `<div class="study-topic"><button type="button" data-study-topic="${index}" aria-expanded="false" aria-controls="study-lessons-${index}"><span class="study-topic-no">${String(index+1).padStart(2,'0')}</span><span class="study-topic-title">${theme.title}</span><span class="study-topic-status">${theme.lessons.length}レッスン${index===0?' · 公開中':''}</span><span class="study-topic-arrow" aria-hidden="true">›</span></button><div class="study-topic-detail" id="study-lessons-${index}" hidden>${index===0?'':'<div class="study-topic-pending"><span aria-hidden="true">ⓘ</span><p>このテーマの教材は現在準備中です。<br>レッスン内容は順次追加していきます。</p></div>'}<h3>レッスン一覧</h3><ol class="study-lesson-list">${theme.lessons.map((lesson, lessonIndex) => `<li class="study-lesson">${index===0?`<button type="button" data-study-lesson="${lessonIndex}"><span class="study-lesson-no">${String(lessonIndex+1).padStart(2,'0')}</span><span class="study-lesson-title">${lesson}</span><span aria-hidden="true">›</span></button>`:`<span class="study-lesson-no">${String(lessonIndex+1).padStart(2,'0')}</span><span class="study-lesson-title">${lesson}</span>`}</li>`).join('')}</ol></div></div>`).join('')
     : '<div class="study-empty"><img src="assets/fp-panda-v3/normal.png" alt="勉強中のFPパンダ" width="128" height="121"><strong>教材を準備中です</strong><p>この分野も順次追加していきます。</p></div>';
   $('.breadcrumb').textContent = `パンダと勉強 / 第${number}章`;
   window.scrollTo(0,0);
@@ -145,14 +147,52 @@ $('#study-domain-grid').addEventListener('click', event => {
   const button = event.target.closest('[data-study-chapter]');
   if(button) showStudyChapter(Number(button.dataset.studyChapter));
 });
-$('#study-back').addEventListener('click', showStudyDomains);
+let activeStudyLesson = 0;
+function showStudyLesson(index){
+  const lesson = studyLessonContent[index];
+  if(!lesson) return;
+  activeStudyLesson = index;
+  $('#study-domains').hidden = true;
+  $('#study-themes').hidden = true;
+  $('#study-lesson-view').hidden = false;
+  $('#study-back').hidden = false;
+  $('#study-back').setAttribute('aria-label','テーマ一覧に戻る');
+  $('#study-lesson-index').textContent = `レッスン ${String(index+1).padStart(2,'0')} / ${studyLessonContent.length}`;
+  $('#study-lesson-heading').textContent = studyThemes[0].lessons[index];
+  $('#study-lesson-panda').textContent = `🐼「${lesson.panda}」`;
+  $('#study-lesson-body').innerHTML = lesson.html;
+  $('#study-related-questions').textContent = `関連する補助問題（問${lesson.questionNumbers.join('・')}）を解く`;
+  $('#study-next-lesson').hidden = index === studyLessonContent.length-1;
+  $('.breadcrumb').textContent = `パンダと勉強 / 第1章 / ${studyThemes[0].title}`;
+  window.scrollTo(0,0);
+}
+$('#study-back').addEventListener('click', () => {
+  if(!$('#study-lesson-view').hidden){
+    showStudyChapter(1);
+    const topic = $('#study-topic-list [data-study-topic="0"]');
+    topic.setAttribute('aria-expanded','true');
+    topic.nextElementSibling.hidden = false;
+    $('#study-back').setAttribute('aria-label','6分野に戻る');
+  }else showStudyDomains();
+});
 $('#study-topic-list').addEventListener('click', event => {
+  const lessonButton = event.target.closest('[data-study-lesson]');
+  if(lessonButton){showStudyLesson(Number(lessonButton.dataset.studyLesson));return;}
   const button = event.target.closest('[data-study-topic]');
   if(!button) return;
   const detail = button.nextElementSibling;
   const expanded = button.getAttribute('aria-expanded') === 'true';
   button.setAttribute('aria-expanded', String(!expanded));
   detail.hidden = expanded;
+});
+$('#study-next-lesson').addEventListener('click', () => showStudyLesson(activeStudyLesson+1));
+$('#study-related-questions').addEventListener('click', () => {
+  const ids = studyLessonContent[activeStudyLesson].questionNumbers.map(number => `supplement:1:${number}`).filter(id => byId.has(id));
+  if(!ids.length) return;
+  if(session && Object.keys(session.responses||{}).length && !window.confirm('進行中の問題演習があります。新しい演習を始めますか？')) return;
+  session = {ids,index:0,responses:{},createdAt:Date.now(),activeMs:0,scope:[1],target:'all',order:'sequential',count:String(ids.length)};
+  saveSession();
+  showQuestion();
 });
 
 const studyParams = new URLSearchParams(window.location.search);

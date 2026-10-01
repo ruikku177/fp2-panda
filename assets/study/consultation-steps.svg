@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="360" height="500" viewBox="0 0 360 500" role="img" aria-labelledby="title desc">
+  <title id="title">FP相談の6ステップ</title>
+  <desc id="desc">説明、データ収集、現状分析、提案書作成、実行支援、見直しの順に進む。</desc>
+  <rect width="360" height="500" rx="20" fill="#fbf8f0"/>
+  <style>text{font-family:'Noto Sans JP','Yu Gothic',sans-serif} .num{font-size:16px;font-weight:700;fill:#fff;text-anchor:middle} .main{font-size:17px;font-weight:700;fill:#183d36} .sub{font-size:12px;fill:#52625d} .arrow{font-size:16px;fill:#639981;text-anchor:middle}</style>
+  <text x="24" y="34" class="main">相談はこの順番</text>
+  <g fill="#fff" stroke="#d5e3d8" stroke-width="1.5"><rect x="24" y="48" width="312" height="57" rx="12"/><rect x="24" y="124" width="312" height="57" rx="12"/><rect x="24" y="200" width="312" height="57" rx="12"/><rect x="24" y="276" width="312" height="57" rx="12"/><rect x="24" y="352" width="312" height="57" rx="12"/><rect x="24" y="428" width="312" height="57" rx="12"/></g>
+  <g fill="#176752"><circle cx="56" cy="76" r="18"/><circle cx="56" cy="152" r="18"/><circle cx="56" cy="228" r="18"/><circle cx="56" cy="304" r="18"/><circle cx="56" cy="380" r="18"/><circle cx="56" cy="456" r="18"/></g>
+  <g class="num"><text x="56" y="82">1</text><text x="56" y="158">2</text><text x="56" y="234">3</text><text x="56" y="310">4</text><text x="56" y="386">5</text><text x="56" y="462">6</text></g>
+  <g class="main"><text x="90" y="74">説明</text><text x="90" y="150">データ収集</text><text x="90" y="226">現状分析</text><text x="90" y="302">提案書作成</text><text x="90" y="378">実行支援</text><text x="90" y="454">見直し</text></g>
+  <g class="sub"><text x="90" y="93">業務範囲・責任・報酬を説明</text><text x="90" y="169">顧客情報と目標を明確に</text><text x="90" y="245">状況を評価し、課題を探す</text><text x="90" y="321">プランを作り、提示する</text><text x="90" y="397">プランの実行を援助する</text><text x="90" y="473">定期的に点検・修正する</text></g>
+  <g class="arrow"><text x="180" y="120">↓</text><text x="180" y="196">↓</text><text x="180" y="272">↓</text><text x="180" y="348">↓</text><text x="180" y="424">↓</text></g>
+</svg>

@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="360" height="380" viewBox="0 0 360 380" role="img" aria-labelledby="title desc">
+  <title id="title">FPの業務の線引き</title>
+  <desc id="desc">業務の可否は料金だけで決めず、実際の行為、資格や登録、契約内容を確認する。</desc>
+  <rect width="360" height="380" rx="20" fill="#fbf8f0"/>
+  <style>text{font-family:'Noto Sans JP','Yu Gothic',sans-serif} .head{font-size:18px;font-weight:700;fill:#183d36;text-anchor:middle} .label{font-size:15px;font-weight:700;fill:#183d36} .small{font-size:12px;fill:#52625d} .arrow{font-size:18px;fill:#639981;text-anchor:middle}</style>
+  <text x="180" y="36" class="head">「無料・有料」だけで決めない</text>
+  <g fill="#fff" stroke="#d5e3d8" stroke-width="1.5"><rect x="24" y="55" width="312" height="62" rx="12"/><rect x="24" y="127" width="312" height="62" rx="12"/><rect x="24" y="199" width="312" height="62" rx="12"/></g>
+  <g fill="#176752"><circle cx="52" cy="86" r="16"/><circle cx="52" cy="158" r="16"/><circle cx="52" cy="230" r="16"/></g>
+  <g font-size="15" font-weight="700" fill="#fff" text-anchor="middle"><text x="52" y="92">1</text><text x="52" y="164">2</text><text x="52" y="236">3</text></g>
+  <text x="80" y="81" class="label">実際に何をする？</text><text x="80" y="102" class="small">一般説明／試算／個別の助言・代理</text>
+  <text x="80" y="153" class="label">必要な資格・登録は？</text><text x="80" y="174" class="small">税理士・投資助言業・保険募集など</text>
+  <text x="80" y="225" class="label">どんな契約・業務形態？</text><text x="80" y="246" class="small">契約内容や業として行うかを確認</text>
+  <text x="180" y="282" class="arrow">↓</text>
+  <rect x="24" y="296" width="312" height="62" rx="12" fill="#e4f1e8" stroke="#b8d8c6"/>
+  <text x="180" y="322" class="head" font-size="16">行為の内容で線引きする</text>
+  <text x="180" y="343" class="small" text-anchor="middle">迷ったら専門家・所管機関に確認</text>
+</svg>
