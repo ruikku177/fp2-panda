@@ -1,5 +1,30 @@
 // 第1回授業レジュメを参考に、補助問題と一次資料で照合して独自に構成した教材。
 // 配列のキーは studyThemes の0始まりのテーマ番号。未収録レッスンは空欄のまま。
+// 係数図はレジュメの「現在と将来を3段で対応させる」考え方を、スマホ向けに描き直したもの。
+const coefficientDiagramRows = [
+  {id:'lump',title:'一括のお金',left:['現在の','一括額'],right:['将来の','一括額'],forward:'終価係数',backward:'現価係数'},
+  {id:'saving',title:'毎年の積立',left:['毎年の','積立額'],right:['将来の','目標額'],forward:'年金終価係数',backward:'減債基金係数'},
+  {id:'receiving',title:'毎年の受取・返済',left:['現在の','元本・借入額'],right:['毎年の','受取・返済額'],forward:'資本回収係数',backward:'年金現価係数'}
+];
+function coefficientDiagram(focus){
+  const activeRow = {future:'lump',present:'lump',saving:'saving',receiving:'receiving'}[focus];
+  const rows = activeRow ? coefficientDiagramRows.filter(row=>row.id===activeRow) : coefficientDiagramRows;
+  const emphasized = {future:'終価係数',present:'現価係数'}[focus];
+  const focusText = {future:'終価係数',present:'現価係数',saving:'年金終価係数と減債基金係数',receiving:'年金現価係数と資本回収係数'}[focus];
+  const pill = (x,y,label,direction) => {
+    const selected = !emphasized || emphasized===label;
+    return `<rect x="${x}" y="${y}" width="141" height="32" rx="7" fill="${selected?'#176752':'#e9f0ea'}"/><text x="${x+70.5}" y="${y+21}" text-anchor="middle" fill="${selected?'#fff':'#52665a'}" font-size="12.5" font-weight="700">${direction} ${label}</text>`;
+  };
+  const lanes = rows.map((row,index)=>{
+    const y=11+(activeRow?0:38)+index*162;
+    return `<g transform="translate(0 ${y})"><rect x="1" y="0" width="318" height="152" rx="13" fill="#fbfdf9" stroke="#d9e7dc"/><text x="16" y="23" fill="#104e40" font-size="14" font-weight="700">${coefficientDiagramRows.indexOf(row)+1} ${row.title}</text><rect x="12" y="34" width="137" height="58" rx="8" fill="#e8f1f5"/><rect x="171" y="34" width="137" height="58" rx="8" fill="#fbefe4"/><text x="80.5" y="59" text-anchor="middle" fill="#234a57" font-size="13" font-weight="700">${row.left[0]}</text><text x="80.5" y="77" text-anchor="middle" fill="#234a57" font-size="13" font-weight="700">${row.left[1]}</text><text x="239.5" y="59" text-anchor="middle" fill="#6b4d2e" font-size="13" font-weight="700">${row.right[0]}</text><text x="239.5" y="77" text-anchor="middle" fill="#6b4d2e" font-size="13" font-weight="700">${row.right[1]}</text><text x="160" y="69" text-anchor="middle" fill="#176752" font-size="19" font-weight="700">⇄</text>${pill(12,107,row.backward,'←')}${pill(167,107,row.forward,'→')}</g>`;
+  }).join('');
+  const title = focusText ? `このレッスンは「${focusText}」に注目` : '現在と将来をつなぐ6つの係数';
+  const description=rows.map(row=>`${row.left.join('')}から${row.right.join('')}へは${row.forward}、逆は${row.backward}`).join('。');
+  const header=activeRow?'':'<rect x="12" y="6" width="137" height="30" rx="15" fill="#e8f1f5"/><rect x="171" y="6" width="137" height="30" rx="15" fill="#fbefe4"/><text x="80.5" y="26" text-anchor="middle" fill="#234a57" font-size="14" font-weight="700">現在側</text><text x="239.5" y="26" text-anchor="middle" fill="#6b4d2e" font-size="14" font-weight="700">将来側</text>';
+  const note=activeRow?'左と右のどちらの金額が分かっていて、どちらを求めるかを先に決めよう。':'左側を求めるなら左の係数、右側を求めるなら右の係数。3段のどの金額の組かも確認しよう。';
+  return `<figure class="study-coefficient-diagram" data-focus="${focus}"><figcaption>${title}</figcaption><svg viewBox="0 0 320 ${rows.length*162+11+(activeRow?0:38)}" role="img" aria-label="${description}" xmlns="http://www.w3.org/2000/svg">${header}${lanes}</svg><p>${note}</p></figure>`;
+}
 const studyExtraLessons = {
   1: [
     {
@@ -45,7 +70,7 @@ const studyExtraLessons = {
     {
       questionNumbers: [9, 11, 12],
       panda: 'いま持っているお金を運用したら、将来はいくらになるかな？',
-      html: `<p><strong>複利</strong>では、増えた利息にも次の期間の利息が付く。いまの元本を将来の金額に直すときは<strong>終価係数</strong>を使う。</p>
+      html: `<p><strong>複利</strong>では、増えた利息にも次の期間の利息が付く。いまの元本を将来の金額に直すときは<strong>終価係数</strong>を使う。</p>${coefficientDiagram('future')}
         <table class="study-mini-table"><caption>元本100万円・年2％の例</caption><thead><tr><th>時点</th><th>計算</th><th>残高</th></tr></thead><tbody><tr><td>はじめ</td><td>―</td><td>100万円</td></tr><tr><td>1年後</td><td>100×1.02</td><td>102万円</td></tr><tr><td>2年後</td><td>102×1.02</td><td>104.04万円</td></tr></tbody></table><p>2年目は増えた2万円にも利息が付く。係数表がある試験では<strong>元本×その年数・利率の終価係数</strong>で計算する。</p>
         <aside class="study-tip"><h3>🐾 解くときのコツ</h3><p>「いま一括で持っているお金→将来の一括額」は終価係数。毎年の積立なら別の係数を使う。</p></aside>
         <section class="study-check"><h3>30秒チェック</h3><p>問12（2）のように退職金をまとめて運用し、10年後の額を求める係数は？</p><details><summary>答えと理由を見る</summary><p>終価係数。今の一括資金から将来の一括額を求めるから。</p></details></section>`
@@ -53,7 +78,7 @@ const studyExtraLessons = {
     {
       questionNumbers: [8, 11, 12],
       panda: '「10年後の目標額」を「いま必要な元本」に戻すこともできるよ。',
-      html: `<p>将来の一括額から、いま必要な一括額へ戻すときは<strong>現価係数</strong>。問12（3）は「10年後に500万円ほしい。いまいくら必要？」だから、500万円に10年の現価係数を掛ける。</p>
+      html: `<p>将来の一括額から、いま必要な一括額へ戻すときは<strong>現価係数</strong>。問12（3）は「10年後に500万円ほしい。いまいくら必要？」だから、500万円に10年の現価係数を掛ける。</p>${coefficientDiagram('present')}
         <div class="study-rule-grid"><div><strong>今 → 将来</strong><span>終価係数</span></div><div><strong>将来 → 今</strong><span>現価係数</span></div><div><strong>共通点</strong><span>どちらも一括のお金</span></div></div>
         <div class="study-example"><strong>問12（3）の条件で計算</strong><p>10年後に500万円必要。10年・1％の現価係数0.905を掛ける。</p><p><strong>500万円×0.905＝452.5万円</strong>を現在用意する。</p></div>
         <p>係数の数字が1より大きいか小さいかも目安になる。ただし必ず<strong>出発点と求めたい時点</strong>を文章から確認しよう。</p>
@@ -63,7 +88,7 @@ const studyExtraLessons = {
     {
       questionNumbers: [8, 9, 10, 12],
       panda: '毎年こつこつ積み立てる場合は、いま一括で預ける場合と違うよ。',
-      html: `<p>毎年一定額を積み立てたら将来いくらになるかは<strong>年金終価係数</strong>。逆に、将来の目標額を作るため毎年いくら積み立てるかは<strong>減債基金係数</strong>。</p>
+      html: `<p>毎年一定額を積み立てたら将来いくらになるかは<strong>年金終価係数</strong>。逆に、将来の目標額を作るため毎年いくら積み立てるかは<strong>減債基金係数</strong>。</p>${coefficientDiagram('saving')}
         <div class="study-rule-grid"><div><strong>毎年の積立額 → 将来の合計</strong><span>年金終価係数</span></div><div><strong>将来の目標額 → 毎年の積立額</strong><span>減債基金係数</span></div><div><strong>問12（1）</strong><span>前者の例</span></div></div>
         <p><strong>分かっている額 → 求める額</strong>を矢印にしてから係数を選ぶ。「毎年20万円を積み立てる→15年後の合計」は年金終価係数。「15年後に1,000万円ほしい→毎年の積立額」は減債基金係数。</p>
         <p>問10（イ）は15年後に1,000万円を準備するための<strong>毎年の積立額</strong>。係数表の15年・2％の減債基金係数0.0578を使い、1,000万円×0.0578＝57.8万円と求める。</p>
@@ -73,7 +98,7 @@ const studyExtraLessons = {
     {
       questionNumbers: [8, 9, 10, 11, 12],
       panda: '毎年「受け取る」側なら、必要な元本と受取額のどちらを求めたい？',
-      html: `<p>一定期間、毎年同額を受け取るために<strong>いま必要な元本</strong>は<strong>年金現価係数</strong>で求める。一方、まとまった元本を運用しながら<strong>毎年いくら受け取れるか</strong>は<strong>資本回収係数</strong>。住宅ローンの元利均等返済額にも後者を使う。</p>
+      html: `<p>一定期間、毎年同額を受け取るために<strong>いま必要な元本</strong>は<strong>年金現価係数</strong>で求める。一方、まとまった元本を運用しながら<strong>毎年いくら受け取れるか</strong>は<strong>資本回収係数</strong>。住宅ローンの元利均等返済額にも後者を使う。</p>${coefficientDiagram('receiving')}
         <div class="study-rule-grid"><div><strong>毎年の受取額 → 必要な元本</strong><span>年金現価係数</span></div><div><strong>元本 → 毎年の受取額</strong><span>資本回収係数</span></div><div><strong>借入額 → 毎年の返済額</strong><span>資本回収係数</span></div></div>
         <div class="study-example"><strong>受取額から元本を求める</strong><p>問10（ア）：毎年200万円を5年間受け取る。200万円×年金現価係数4.7135＝<strong>942.7万円</strong>。</p></div><p>これと逆に、問12（4）は元本から毎年の取崩額を求めるので資本回収係数。問12（5）も借入額から毎年の返済額を求めるので資本回収係数。</p>
         <aside class="study-tip"><h3>🐾 解くときのコツ</h3><p>「借入可能額」は返済額から元本への逆算なので年金現価係数。問8の正しい選択肢はこの対応を問う。</p></aside>
@@ -82,8 +107,7 @@ const studyExtraLessons = {
     {
       questionNumbers: [8, 9, 10, 11, 12],
       panda: '6つの係数は暗記だけやなくて、矢印の向きで選べるようにしよう。',
-      html: `<p>まず<strong>一括か、毎年か</strong>。次に<strong>今から将来か、将来から今か</strong>を見る。係数名の「年金」は公的年金だけを意味せず、毎年の一定額を扱う印だ。</p>
-        <figure class="study-visual"><figcaption>6つの係数は「何から何を求めるか」で3組にする</figcaption><div class="study-coefficient-map"><section><h3>① 一括 ↔ 一括</h3><div><span>今の一括額 → 将来の一括額</span><strong>終価係数</strong></div><div><span>将来の一括額 → 今の一括額</span><strong>現価係数</strong></div></section><section><h3>② 毎年積立 ↔ 将来の目標</h3><div><span>毎年の積立額 → 将来の合計額</span><strong>年金終価係数</strong></div><div><span>将来の目標額 → 毎年の積立額</span><strong>減債基金係数</strong></div></section><section><h3>③ 毎年の受取・返済 ↔ 今の元本</h3><div><span>毎年の受取・返済額 → 今の元本</span><strong>年金現価係数</strong></div><div><span>今の元本・借入額 → 毎年の受取・返済額</span><strong>資本回収係数</strong></div></section></div></figure>
+      html: `<p>まず<strong>一括か、毎年か</strong>。次に<strong>今から将来か、将来から今か</strong>を見る。係数名の「年金」は公的年金だけを意味せず、毎年の一定額を扱う印だ。</p>${coefficientDiagram('all')}
         <aside class="study-tip"><h3>🐾 解くときのコツ</h3><p>係数表の利率・年数が問題条件と一致する行を見る。問12は（1）〜（5）で矢印の向きが変わる。単位と端数処理も最後に確認。</p></aside>
         <section class="study-check"><h3>30秒チェック</h3><p>毎年の取崩額から必要元本を逆算するなら？</p><details><summary>答えと理由を見る</summary><p>年金現価係数。毎年の受取額から現在必要な元本を求めるから。</p></details></section>`
     }
