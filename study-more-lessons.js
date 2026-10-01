@@ -27,7 +27,7 @@ const studyExtraLessons = {
       panda: '将来の生活費と将来の貯蓄、似ているけど計算は別なんやで。',
       html: `<h3>① 将来の生活費</h3><div class="study-equation">n年後の支出＝基準年の支出×（1＋変動率）ⁿ</div><p>基準年の生活費が200万円で毎年1％増えるなら、3年後は<strong>200×1.01³＝206.0602万円</strong>。</p>
         <h3>② 年末の貯蓄残高</h3><div class="study-equation">今年末の残高＝前年末の残高×（1＋運用利率）＋今年の年間収支<small>年間収支＝今年の収入合計−支出合計</small></div>
-        <div class="study-example"><strong>架空例：前年末100万円、利率1％</strong><p>まず前年の貯蓄を運用：100×1.01＝101万円</p><p>今年の収支：300−280＝＋20万円</p><p><strong>今年末の貯蓄：101＋20＝121万円</strong></p></div><p>端数処理の指定があれば、問題文の順序に従う。</p>
+        <figure class="study-visual"><figcaption>架空例：年末の貯蓄が変わる道筋</figcaption><div class="study-money-flow"><div><small>前年末の貯蓄</small><strong>100万円</strong></div><span aria-hidden="true">×1.01</span><div><small>運用後</small><strong>101万円</strong></div><span aria-hidden="true">＋20万円</span><div class="is-final"><small>今年末の貯蓄</small><strong>121万円</strong></div></div><p>今年の年間収支は、収入300万円−支出280万円＝<strong>＋20万円</strong>。</p></figure><p>端数処理の指定があれば、問題文の順序に従う。</p>
         <aside class="study-tip"><h3>🐾 解くときのコツ</h3><p>問6は「基準年→3年後」の増加と「3年後末→4年後末」の残高更新を分ける。残高に掛ける利率と支出に掛ける変動率を混ぜない。</p></aside>
         <section class="study-check"><h3>30秒チェック</h3><p>前年末100万円、利率2％、今年の収支＋20万円なら今年末は？</p><details><summary>答えを見る</summary><p>100×1.02＋20＝122万円。前年末の残高に利率を掛けてから今年の収支を足す。</p></details></section>`
     },
@@ -83,7 +83,7 @@ const studyExtraLessons = {
       questionNumbers: [8, 9, 10, 11, 12],
       panda: '6つの係数は暗記だけやなくて、矢印の向きで選べるようにしよう。',
       html: `<p>まず<strong>一括か、毎年か</strong>。次に<strong>今から将来か、将来から今か</strong>を見る。係数名の「年金」は公的年金だけを意味せず、毎年の一定額を扱う印だ。</p>
-        <div class="study-coefficients" aria-label="6つの係数の使い分け"><div><span>今の一括額 → 将来の一括額</span><strong>終価係数</strong></div><div><span>将来の一括額 → 今の一括額</span><strong>現価係数</strong></div><div><span>毎年の積立額 → 将来の合計額</span><strong>年金終価係数</strong></div><div><span>将来の目標額 → 毎年の積立額</span><strong>減債基金係数</strong></div><div><span>毎年の受取・返済額 → 今の元本</span><strong>年金現価係数</strong></div><div><span>今の元本・借入額 → 毎年の受取・返済額</span><strong>資本回収係数</strong></div></div>
+        <figure class="study-visual"><figcaption>6つの係数は「何から何を求めるか」で3組にする</figcaption><div class="study-coefficient-map"><section><h3>① 一括 ↔ 一括</h3><div><span>今の一括額 → 将来の一括額</span><strong>終価係数</strong></div><div><span>将来の一括額 → 今の一括額</span><strong>現価係数</strong></div></section><section><h3>② 毎年積立 ↔ 将来の目標</h3><div><span>毎年の積立額 → 将来の合計額</span><strong>年金終価係数</strong></div><div><span>将来の目標額 → 毎年の積立額</span><strong>減債基金係数</strong></div></section><section><h3>③ 毎年の受取・返済 ↔ 今の元本</h3><div><span>毎年の受取・返済額 → 今の元本</span><strong>年金現価係数</strong></div><div><span>今の元本・借入額 → 毎年の受取・返済額</span><strong>資本回収係数</strong></div></section></div></figure>
         <aside class="study-tip"><h3>🐾 解くときのコツ</h3><p>係数表の利率・年数が問題条件と一致する行を見る。問12は（1）〜（5）で矢印の向きが変わる。単位と端数処理も最後に確認。</p></aside>
         <section class="study-check"><h3>30秒チェック</h3><p>毎年の取崩額から必要元本を逆算するなら？</p><details><summary>答えと理由を見る</summary><p>年金現価係数。毎年の受取額から現在必要な元本を求めるから。</p></details></section>`
     }
@@ -127,7 +127,7 @@ const studyExtraLessons = {
       questionNumbers: [15, 16],
       panda: '「営業利益」と「経常利益」の間には何が入るかな？',
       html: `<p>損益計算書では、売上から何を引き、何を足したかで利益の名前が変わる。</p>
-        <ol class="study-steps"><li><strong>売上総利益</strong>＝売上高−売上原価</li><li><strong>営業利益</strong>＝売上総利益−販売費及び一般管理費</li><li><strong>経常利益</strong>＝営業利益＋営業外収益−営業外費用</li><li><strong>税引前当期純利益</strong>＝経常利益＋特別利益−特別損失</li></ol><div class="study-example"><strong>架空例：利益を順に追う</strong><p>売上1,000−売上原価600＝売上総利益400</p><p>400−販管費250＝営業利益150</p><p>150＋営業外収益10−営業外費用20＝経常利益140</p><p>140＋特別利益5−特別損失15＝<strong>税引前当期純利益130</strong></p></div>
+        <figure class="study-visual"><figcaption>架空例：利益を上から順に計算する（単位：万円）</figcaption><ol class="study-profit-ladder"><li><small>売上高1,000 − 売上原価600</small><strong>売上総利益 <em>400</em></strong></li><li><small>− 販売費及び一般管理費250</small><strong>営業利益 <em>150</em></strong></li><li><small>＋ 営業外収益10 − 営業外費用20</small><strong>経常利益 <em>140</em></strong></li><li><small>＋ 特別利益5 − 特別損失15</small><strong>税引前当期純利益 <em>130</em></strong></li></ol></figure>
         <p>問15では、「営業利益に特別損益を加減して経常利益」とする説明が誤り。特別損益を入れるのは<strong>経常利益の後</strong>だ。問16でも売上総利益・営業利益・税引前当期純利益の順序を確かめる。</p>
         <aside class="study-tip"><h3>🐾 解くときのコツ</h3><p>「営業外」は経常利益まで、「特別」はその次、と階段を一段ずつ追う。</p></aside>
         <section class="study-check"><h3>30秒チェック</h3><p>営業利益に営業外収益・費用を加減すると？</p><details><summary>答えと理由を見る</summary><p>経常利益。特別損益を加減するのは、その次の段階。</p></details></section>`
@@ -136,8 +136,7 @@ const studyExtraLessons = {
       questionNumbers: [70, 71, 72],
       panda: '分割払いとリボ払い、毎月払う点は似ていても決め方が違うよ。',
       html: `<p><strong>分割払い</strong>は買うときに支払回数を決める。<strong>リボ払い</strong>は利用残高に対し、毎月の支払額を一定などの方式で決める。リボで新たに買い物をすると残高が増え、支払期間が延びることがある。</p>
-        <div class="study-rule-grid"><div><strong>分割</strong><span>買い物ごとに回数を決める</span></div><div><strong>リボ</strong><span>残高に応じ毎月の支払額を決める</span></div><div><strong>確認</strong><span>手数料・残高・完済時期</span></div></div>
-        <div class="study-example"><strong>同じ6万円の買い物でも</strong><p><strong>分割払い：</strong>購入時に「3回払い」と決め、原則3回に分けて払う。</p><p><strong>リボ払い：</strong>契約した方式に従い、利用残高に対して毎月の支払額が決まる。新たな利用があれば残高や完済時期も変わり得る。</p><p>実際の支払額・手数料は契約条件による。</p></div>
+        <figure class="study-visual"><figcaption>同じ6万円の買い物でも「決めるもの」が違う</figcaption><div class="study-payment-compare"><div><strong>分割払い</strong><span>購入時</span><p>この買い物を<strong>3回</strong>で払うと決める</p><small>買い物ごとに支払回数を決める</small></div><div><strong>リボ払い</strong><span>利用残高</span><p>契約した方式に沿って<strong>毎月の支払額</strong>を決める</p><small>買い物が増えると残高・完済時期も変わり得る</small></div></div><p>実際の支払額・手数料は契約条件による。</p></figure>
         <p>問70の「定額リボは買う時点で回数を決める」は、分割払いの説明と入れ替わっている。具体的な手数料や方式はカード契約の条件を確認する。</p>
         <aside class="study-tip"><h3>🐾 解くときのコツ</h3><p>「回数を決める」なら分割、「残高を基準に毎月の額を決める」ならリボ、と見分ける。</p></aside>
         <section class="study-check"><h3>30秒チェック</h3><p>買い物のたびに支払回数を決めるのは？</p><details><summary>答えと理由を見る</summary><p>分割払い。リボ払いは利用残高に応じて毎月の支払額が決まる。</p></details></section>`
