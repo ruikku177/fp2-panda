@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 500" role="img" aria-labelledby="title desc">
+  <title id="title">第6章 問55 甲宅地の資料図</title>
+  <desc id="desc">Aさん所有の甲宅地内に長男所有の乙建物があり、公道に面している。相続人は妻と長男。甲宅地は使用貸借で長男に貸し付け、乙建物は相続開始時に長男が居住。</desc>
+  <rect width="1400" height="500" fill="white"/>
+  <g fill="none" stroke="#111" stroke-width="2.5">
+    <rect x="235" y="45" width="430" height="260"/>
+    <rect x="330" y="100" width="240" height="155"/>
+    <path d="M70 310H830 M70 365H830"/>
+  </g>
+  <g fill="#111" font-family="'Yu Gothic','Meiryo',sans-serif" font-size="24">
+    <text x="450" y="82" text-anchor="middle">甲宅地（Aさん所有）</text>
+    <text x="450" y="163" text-anchor="middle">乙建物</text>
+    <text x="450" y="201" text-anchor="middle">（長男所有）</text>
+    <text x="450" y="350" text-anchor="middle">公道</text>
+    <text x="55" y="415">※Aさんの相続人は、妻および長男の合計2名である。</text>
+    <text x="55" y="450">※甲宅地は、使用貸借契約により長男に貸し付けられており、長男が所有する建物の敷地の用に供されている。</text>
+    <text x="55" y="485">※乙建物は、相続開始時において、長男の居住の用に供されている。</text>
+  </g>
+</svg>

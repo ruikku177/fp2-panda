@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 330" role="img" aria-labelledby="title desc">
+<title id="title">第6章 問42 親族関係図</title><desc id="desc">原本の親族関係、婚姻、死亡および相続放棄を再作図。図の下の文字資料にも全関係を記載。</desc>
+<rect width="760" height="330" fill="white"/>
+<g font-family="'Yu Gothic','Meiryo',sans-serif" fill="#111">
+<path d="M145 108V203 M152 108V203 M152 155H450V85H485 M450 155V245H485" fill="none" stroke="#222" stroke-width="2.5"/><rect x="45" y="55" width="200" height="54" fill="white" stroke="#222" stroke-width="2.5"/><text x="145" y="92" font-size="24" text-anchor="middle">被相続人</text><text x="145" y="238" font-size="24" text-anchor="middle">配偶者</text><text x="550" y="94" font-size="24" text-anchor="middle">長男</text><text x="550" y="254" font-size="24" text-anchor="middle">長女</text>
+</g></svg>

@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 430" role="img" aria-labelledby="title desc">
+  <title id="title">問41 資料図</title>
+  <desc id="desc">面積120平方メートル、間口12メートル、奥行10メートルの敷地が幅員6メートルの市道に接する。第二種住居地域、防火地域、建蔽率60パーセント、容積率400パーセント、前面道路幅員に対する法定乗数4/10。</desc>
+  <rect width="900" height="430" fill="#fff"/>
+  <g fill="none" stroke="#111" stroke-width="2">
+    <rect x="62" y="100" width="300" height="250"/>
+    <path d="M362 100V350 M512 100V350"/>
+    <path d="M362 225H512" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
+    <rect x="560" y="70" width="300" height="290"/>
+    <path d="M62 77H362" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
+    <path d="M40 100V350" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
+  </g>
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto-start-reverse"><path d="M0 0L8 4L0 8" fill="none" stroke="#111" stroke-width="1.2"/></marker>
+  </defs>
+  <g fill="#111" font-family="system-ui, 'Yu Gothic', 'Meiryo', sans-serif">
+    <text x="212" y="220" text-anchor="middle" font-size="24">敷地</text>
+    <text x="212" y="258" text-anchor="middle" font-size="24">120m²</text>
+    <text x="212" y="67" text-anchor="middle" font-size="20">12m</text>
+    <text x="24" y="230" text-anchor="middle" font-size="20" transform="rotate(-90 24 230)">10m</text>
+    <text x="437" y="179" text-anchor="middle" font-size="18">幅員6m</text>
+    <text x="437" y="207" text-anchor="middle" font-size="18">市道</text>
+    <text x="437" y="285" text-anchor="middle" font-size="15">前面道路</text>
+    <text x="584" y="112" font-size="19">・第二種住居地域</text>
+    <text x="584" y="151" font-size="19">・防火地域</text>
+    <text x="584" y="190" font-size="19">・建蔽率　60%</text>
+    <text x="584" y="229" font-size="19">・容積率　400%</text>
+    <text x="584" y="268" font-size="17">・前面道路幅員に対する</text>
+    <text x="610" y="302" font-size="17">法定乗数　4/10</text>
+  </g>
+</svg>

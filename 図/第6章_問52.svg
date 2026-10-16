@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1300 430" role="img" aria-labelledby="title desc">
+  <title id="title">第6章 問52 土地図</title>
+  <desc id="desc">路線価200Dの道路に面する間口15メートル、奥行20メートル、面積300平方メートルの土地。奥行補正率1.00、借地権割合60パーセント、借家権割合30パーセント。</desc>
+  <rect width="1300" height="430" fill="white"/>
+  <g fill="none" stroke="#111" stroke-width="2.5" stroke-linecap="square">
+    <path d="M80 54H510 M80 112H510"/>
+    <path d="M110 112V335H410V112"/>
+    <path d="M95 117v210 M95 117l-12 24 M95 117l12 24 M95 327l-12-24 M95 327l12-24"/>
+    <path d="M110 355H410 M110 355l22-10 M110 355l22 10 M410 355l-22-10 M410 355l-22 10"/>
+    <path d="M100 80H490 M100 80l18-9 M100 80l18 9 M490 80l-18-9 M490 80l-18 9"/>
+  </g>
+  <g fill="#111" font-family="'Yu Gothic','Meiryo',sans-serif" font-size="24">
+    <rect x="245" y="63" width="100" height="35" fill="white"/>
+    <text x="295" y="93" text-anchor="middle">200D</text>
+    <text x="255" y="230" text-anchor="middle">300㎡</text>
+    <text x="72" y="230" text-anchor="middle" transform="rotate(-90 72 230)">20m</text>
+    <text x="260" y="390" text-anchor="middle">15m</text>
+    <text x="550" y="170">注1：奥行価格補正率（20m以上24m未満）1.00</text>
+    <text x="550" y="215">注2：借地権割合 60%</text>
+    <text x="550" y="260">注3：借家権割合 30%</text>
+    <text x="550" y="315">※その他の記載のない条件は一切考慮しないこと。</text>
+  </g>
+</svg>

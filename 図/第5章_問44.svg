@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 440" role="img" aria-labelledby="title desc">
+  <title id="title">問44 資料図</title>
+  <desc id="desc">敷地面積240平方メートル。準住居地域180平方メートルと近隣商業地域60平方メートルに分かれ、幅員6メートルの市道に接する。建蔽率は準住居地域6/10、近隣商業地域8/10。</desc>
+  <rect width="900" height="440" fill="#fff"/>
+  <g fill="none" stroke="#111" stroke-width="2">
+    <rect x="80" y="70" width="330" height="280"/>
+    <path d="M80 265H410" stroke-dasharray="7 6"/>
+    <path d="M80 350H410 M80 410H410"/>
+    <rect x="500" y="105" width="340" height="210"/>
+  </g>
+  <g fill="#111" font-family="system-ui, 'Yu Gothic', 'Meiryo', sans-serif">
+    <text x="245" y="48" text-anchor="middle" font-size="20">敷地面積 240m²</text>
+    <text x="245" y="160" text-anchor="middle" font-size="22">準住居地域</text>
+    <text x="245" y="198" text-anchor="middle" font-size="21">180m²</text>
+    <text x="245" y="300" text-anchor="middle" font-size="21">近隣商業地域</text>
+    <text x="245" y="333" text-anchor="middle" font-size="20">60m²</text>
+    <text x="245" y="390" text-anchor="middle" font-size="19">幅員6m市道</text>
+    <text x="670" y="150" text-anchor="middle" font-size="20">都市計画により定められた建蔽率</text>
+    <text x="535" y="205" font-size="19">準住居地域　6/10</text>
+    <text x="535" y="250" font-size="19">近隣商業地域　8/10</text>
+  </g>
+</svg>

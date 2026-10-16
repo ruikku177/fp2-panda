@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" role="img" aria-labelledby="title desc">
+  <title id="title">問42 資料図</title>
+  <desc id="desc">面積130平方メートル、間口13メートル、奥行10メートルの敷地。右側に幅員5メートルの市道、下側に幅員4メートルの市道が接する。第一種住居地域、指定建蔽率60パーセント、指定容積率300パーセント、前面道路幅員に対する法定乗数4/10。</desc>
+  <rect width="900" height="500" fill="#fff"/>
+  <g fill="none" stroke="#111" stroke-width="2">
+    <rect x="75" y="100" width="300" height="230"/>
+    <path d="M375 100V330 M475 100V330"/>
+    <path d="M75 330H475 M75 410H475"/>
+    <path d="M75 78H375" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
+    <path d="M52 100V330" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
+    <path d="M400 330V410" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
+    <path d="M375 215H475" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
+    <rect x="540" y="90" width="310" height="250"/>
+  </g>
+  <defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto-start-reverse"><path d="M0 0L8 4L0 8" fill="none" stroke="#111" stroke-width="1.2"/></marker></defs>
+  <g fill="#111" font-family="system-ui, 'Yu Gothic', 'Meiryo', sans-serif">
+    <text x="225" y="208" text-anchor="middle" font-size="23">敷地　130m²</text>
+    <text x="225" y="60" text-anchor="middle" font-size="20">13m</text>
+    <text x="35" y="220" text-anchor="middle" font-size="20" transform="rotate(-90 35 220)">10m</text>
+    <text x="425" y="175" text-anchor="middle" font-size="17">幅員</text>
+    <text x="425" y="201" text-anchor="middle" font-size="17">5m市道</text>
+    <text x="230" y="375" text-anchor="middle" font-size="17">幅員4m市道</text>
+    <text x="565" y="135" font-size="20">第一種住居地域</text>
+    <text x="565" y="180" font-size="19">指定建蔽率　60%</text>
+    <text x="565" y="225" font-size="19">指定容積率　300%</text>
+    <text x="565" y="270" font-size="17">前面道路幅員に対する</text>
+    <text x="595" y="305" font-size="17">法定乗数　4/10</text>
+  </g>
+</svg>

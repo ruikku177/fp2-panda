@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 540" role="img" aria-labelledby="title desc">
+  <title id="title">問43 資料図</title>
+  <desc id="desc">甲土地は360平方メートル、間口20メートル、奥行18メートル。幅員3メートルの市道を挟んで乙土地が向かい合う。両土地ともセットバックを要し、道路中心線は現況道路の中心。幅員6メートル指定区域ではない。甲土地は第一種住居地域、建蔽率60パーセント、容積率200パーセント、前面道路幅員に対する法定乗数4/10。</desc>
+  <rect width="1000" height="540" fill="#fff"/>
+  <g fill="none" stroke="#111" stroke-width="2">
+    <rect x="70" y="90" width="360" height="250"/>
+    <rect x="130" y="430" width="240" height="75"/>
+    <path d="M30 340H480 M30 395H480"/>
+    <path d="M70 65H430" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
+    <path d="M450 90V340" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
+    <path d="M500 340V395" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
+    <rect x="560" y="55" width="390" height="430"/>
+  </g>
+  <defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto-start-reverse"><path d="M0 0L8 4L0 8" fill="none" stroke="#111" stroke-width="1.2"/></marker></defs>
+  <g fill="#111" font-family="system-ui, 'Yu Gothic', 'Meiryo', sans-serif">
+    <text x="250" y="210" text-anchor="middle" font-size="24">甲土地</text>
+    <text x="250" y="248" text-anchor="middle" font-size="22">360m²</text>
+    <text x="250" y="50" text-anchor="middle" font-size="20">20m</text>
+    <text x="475" y="220" text-anchor="middle" font-size="20" transform="rotate(-90 475 220)">18m</text>
+    <text x="250" y="478" text-anchor="middle" font-size="22">乙土地</text>
+    <text x="505" y="370" text-anchor="middle" font-size="16">幅員3m市道</text>
+    <text x="755" y="92" text-anchor="middle" font-size="21">甲土地の条件</text>
+    <text x="585" y="135" font-size="18">・第一種住居地域</text>
+    <text x="585" y="176" font-size="18">・建蔽率　60%</text>
+    <text x="585" y="217" font-size="18">・容積率　200%</text>
+    <text x="585" y="258" font-size="16">・前面道路幅員に対する</text>
+    <text x="612" y="290" font-size="16">法定乗数　4/10</text>
+    <text x="585" y="333" font-size="15">甲土地・乙土地が面する道路は</text>
+    <text x="585" y="360" font-size="15">建築基準法第42条第2項道路。</text>
+    <text x="585" y="390" font-size="15">両土地ともセットバックを要する。</text>
+    <text x="585" y="420" font-size="15">道路中心線は現況道路の中心。</text>
+    <text x="585" y="450" font-size="15">幅員6m指定区域ではない。</text>
+  </g>
+</svg>

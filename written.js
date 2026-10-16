@@ -31,14 +31,30 @@
     'supplement:3:18': {fields:[decimal('最終利回り',0.148,'%')]},
     'supplement:3:19': {fields:[decimal('所有期間利回り',0.95,'%')]},
     'supplement:3:23': {fields:[letter('適切な記述','イ')]},
-    'supplement:3:65': {fields:[number('（ア）隆雄さん',940,'万円'),number('（イ）美也子さん',390,'万円')]}
+    'supplement:3:65': {fields:[number('（ア）隆雄さん',940,'万円'),number('（イ）美也子さん',390,'万円')]},
+    'supplement:4:14': {fields:[number('不動産所得の金額',36,'万円')]},
+    'supplement:4:15': {fields:[number('減価償却費',75,'万円')]},
+    'supplement:4:16': {fields:[number('事業所得の金額',120,'万円')]},
+    'supplement:4:17': {fields:[number('退職一時金に係る所得税額',1158000,'円')]},
+    'supplement:4:26': {fields:[number('総所得金額',90,'万円')]},
+    'supplement:4:32': {fields:[number('給与所得と損益通算できる損失',45,'万円')]},
+    'supplement:4:36': {fields:[number('社会保険料控除額',54,'万円')]},
+    'supplement:5:14': {fields:[number('土地の価格',1800,'万円')]},
+    'supplement:5:20': {fields:[number('（ア）語群の番号',3,''),number('（イ）語群の番号',2,''),number('（ウ）語群の番号',6,''),number('（エ）語群の番号',5,'')]},
+    'supplement:5:27': {fields:[number('（ア）語群の番号',1,''),number('（イ）語群の番号',2,''),number('（ウ）語群の番号',4,''),number('（エ）語群の番号',5,'')]},
+    'supplement:5:42': {fields:[number('延べ面積の最高限度',260,'㎡')]},
+    'supplement:5:43': {fields:[number('建築面積の最高限度',210,'㎡')]},
+    'supplement:5:44': {fields:[number('建築面積の最高限度',156,'㎡')]},
+    'supplement:5:51': {fields:[number('（ア）語群の番号',2,''),number('（イ）語群の番号',6,''),number('（ウ）語群の番号',9,''),number('（エ）語群の番号',10,'')]},
+    'supplement:5:62': {fields:[decimal('実質利回り（年利）',3.52,'%')]}
   };
 
   const cleaned = value => String(value ?? '').normalize('NFKC').replace(/[\s\u3000]/g,'').trim();
   function normalized(value, field) {
     let text=cleaned(value);
     if(field.kind==='number'){
-      if(field.unit && text.endsWith(field.unit)) text=text.slice(0,-field.unit.length);
+      const unit=cleaned(field.unit || '');
+      if(unit && text.endsWith(unit)) text=text.slice(0,-unit.length);
       text=text.replace(/[,，]/g,'');
       return /^\d+$/.test(text) ? String(Number(text)) : null;
     }

@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 480" role="img" aria-labelledby="title desc">
+<title id="title">第6章 問43 親族関係図</title><desc id="desc">原本の親族関係、婚姻、死亡および相続放棄を再作図。図の下の文字資料にも全関係を記載。</desc>
+<rect width="1000" height="480" fill="white"/>
+<g font-family="'Yu Gothic','Meiryo',sans-serif" fill="#111">
+<path d="M500 67H620 M500 74H620 M560 74V165 M350 165H820 M350 165V210 M600 165V210 M820 165V210 M180 244H285 M180 251H285 M235 251V350 M100 350H350 M100 350V390 M350 350V390" fill="none" stroke="#222" stroke-width="2.5"/><rect x="290" y="40" width="210" height="56" fill="white" stroke="#222" stroke-width="2.5"/><text x="395" y="78" font-size="24" text-anchor="middle">被相続人Aさん</text><text x="685" y="78" font-size="24" text-anchor="middle">妻Bさん</text><text x="350" y="247" font-size="24" text-anchor="middle">実子Cさん</text><text x="350" y="281" font-size="21" text-anchor="middle">（すでに死亡）</text><text x="125" y="247" font-size="24" text-anchor="middle">妻</text><text x="600" y="247" font-size="24" text-anchor="middle">実子Dさん</text><text x="820" y="247" font-size="24" text-anchor="middle">養子Eさん</text><text x="820" y="281" font-size="21" text-anchor="middle">（相続放棄）</text><text x="100" y="428" font-size="24" text-anchor="middle">孫Fさん</text><text x="350" y="428" font-size="24" text-anchor="middle">孫Gさん</text>
+</g></svg>
