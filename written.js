@@ -4,7 +4,12 @@
   const number = (label, answer, unit) => ({label, answer, unit, kind:'number'});
   const decimal = (label, answer, unit) => ({label, answer, unit, kind:'decimal'});
   const letter = (label, answer) => ({label, answer, kind:'letters'});
+  const wordbank = (answers, choices) => ({fields:answers.map((answer,index)=>({label:`（${'アイウ'[index]}）`,answer,kind:'wordbank',choices:choices.split('、')}))});
   const specs = {
+    'supplement:6:12': wordbank(['1/2','なし','1/4'],'なし、1/2、1/3、1/4、1/6、1/8、1/10、2/3、3/4、1/12'),
+    'supplement:6:21': wordbank(['ゼロ','1/4','1/8'],'ゼロ、1/2、1/3、1/4、1/6、1/8、2/3、1/12、1/16'),
+    'supplement:6:22': wordbank(['3/4','1/16','なし'],'なし、1/2、1/3、1/4、1/6、1/8、1/12、1/16、2/3、3/4'),
+    'supplement:6:23': wordbank(['2/3','なし','1/6'],'なし、1/2、1/3、1/4、1/6、1/8、1/9、2/3、3/4'),
     'supplement:1:5': {fields:[number('（ア）純資産',14690,'万円')]},
     'supplement:1:6': {fields:[number('（1）基本生活費',202,'万円'),number('（2）金融資産残高',878,'万円')]},
     'supplement:1:12': {fields:[

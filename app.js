@@ -270,9 +270,26 @@ function showQuestion(){
  $('#quiz-next').textContent=session.index===session.ids.length-1?'結果を見る →':'次の問題 →';
  window.scrollTo(0,0);
 }
+function openWordbank(field,input,trigger){
+ const dialog=document.createElement('dialog');dialog.className='wordbank-dialog';dialog.setAttribute('aria-labelledby','wordbank-title');
+ const header=document.createElement('div');header.className='wordbank-header';
+ const title=document.createElement('h2');title.id='wordbank-title';title.textContent=`${field.label}の答えを選ぶ`;
+ const close=document.createElement('button');close.type='button';close.textContent='閉じる';close.onclick=()=>dialog.close();header.append(title,close);
+ const note=document.createElement('p');note.textContent='同じ語を何度でも選べます。';
+ const choices=document.createElement('div');choices.className='wordbank-choices';
+ if(field.choices.some(value=>value.length>8))choices.classList.add('is-long');
+ field.choices.forEach(value=>{
+  const button=document.createElement('button');button.type='button';button.textContent=value;button.dataset.wordbankValue=value;button.setAttribute('aria-pressed',String(input.value===value));
+  button.onclick=()=>{input.value=value;trigger.textContent=value+' ▾';dialog.close();};choices.append(button);
+ });
+ const clear=document.createElement('button');clear.type='button';clear.className='wordbank-clear';clear.textContent='選択をクリア';clear.onclick=()=>{input.value='';trigger.textContent='答えを選ぶ ▾';dialog.close();};
+ dialog.append(header,note,choices,clear);document.body.append(dialog);
+ dialog.addEventListener('close',()=>{dialog.remove();trigger.focus({preventScroll:true});},{once:true});
+ dialog.showModal();
+}
 function createWrittenForm(q){
  const spec=window.FP_WRITTEN.specs[q.id],form=document.createElement('form');form.className='written-answer-form';form.noValidate=true;
- const heading=document.createElement('p');heading.className='written-intro';heading.textContent='答えを入力してから確認しましょう。空欄のままでも提出できます。';form.append(heading);
+ const heading=document.createElement('p');heading.className='written-intro';heading.textContent=spec.fields.some(field=>field.kind==='wordbank')?'空欄を押して語群から選び、最後に「解答する」を押しましょう。同じ語も選べます。':'答えを入力してから確認しましょう。空欄のままでも提出できます。';form.append(heading);
  if(spec.pending){const note=document.createElement('p');note.className='written-pending-note';note.textContent='この問題は解答の一部が要確認のため、入力後も自動採点しません。';form.append(note);}
  const grid=document.createElement('div');grid.className='written-field-grid';
  spec.fields.forEach((field,index)=>{
@@ -282,6 +299,11 @@ function createWrittenForm(q){
   const input=document.createElement('input');input.type='text';input.autocomplete='off';input.inputMode=field.kind==='number'?'numeric':field.kind==='decimal'?'decimal':'text';input.dataset.writtenIndex=String(index);input.setAttribute('aria-label',field.label);
   if(field.kind==='number'||field.kind==='decimal')input.placeholder='数字を入力';else if(field.kind==='letters')input.placeholder='記号を入力';else input.placeholder='答えを入力';
   row.append(input);
+  if(field.kind==='wordbank'){
+   input.type='hidden';row.classList.add('wordbank-input-row');
+   const trigger=document.createElement('button');trigger.type='button';trigger.className='wordbank-trigger';trigger.dataset.wordbankIndex=String(index);trigger.textContent='答えを選ぶ ▾';trigger.setAttribute('aria-label',`${field.label}の答えを選ぶ`);trigger.setAttribute('aria-haspopup','dialog');
+   trigger.onclick=()=>openWordbank(field,input,trigger);row.append(trigger);
+  }
   if(field.unit){const unit=document.createElement('span');unit.className='written-unit';unit.textContent=field.unit;row.append(unit);}
   label.append(row);grid.append(label);
  });
@@ -326,6 +348,7 @@ function displayResult(q,response){
  result.querySelector('.result-label').textContent=response.pending?'判定保留':response.correct?'正解！':'要復習';
  result.querySelector('.official-answer').textContent=`${response.pending?'登録済み解答（要確認）':'正解'}: ${q.answer}`;
  result.querySelector('.explanation').innerHTML=q.explanation;
+ window.FP_AI_QUESTION.append(result,q,response);
  if(response.selected?.type==='written'){
   const grid=document.createElement('div');grid.className='written-breakdown';
   response.selected.fields.forEach(field=>{
@@ -337,8 +360,9 @@ function displayResult(q,response){
    grid.append(row);
   });
   result.insertBefore(grid,result.querySelector('.explanation'));
-  $('#quiz-answer-area').querySelectorAll('input,.written-submit').forEach(control=>control.disabled=true);
+  $('#quiz-answer-area').querySelectorAll('input,.written-submit,.wordbank-trigger').forEach(control=>control.disabled=true);
   $('#quiz-answer-area').querySelectorAll('input').forEach((input,index)=>{input.value=response.selected.values[index]||'';});
+  $('#quiz-answer-area').querySelectorAll('.wordbank-trigger').forEach(button=>{button.textContent=response.selected.values[Number(button.dataset.wordbankIndex)]||'（空欄）';});
  }
  if(q.format==='self-check' && window.FP_WRITTEN?.specs[q.id] && response.selected?.type!=='written'){
   $('#quiz-answer-area').querySelectorAll('input,.written-submit').forEach(control=>control.disabled=true);

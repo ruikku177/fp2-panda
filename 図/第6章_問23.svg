@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 470" role="img" aria-labelledby="title desc">
+<title id="title">第6章 問23 親族関係図</title><desc id="desc">原本の親族関係、婚姻、死亡および相続放棄を再作図。図の下の文字資料にも全関係を記載。</desc>
+<rect width="1000" height="470" fill="white"/>
+<g font-family="'Yu Gothic','Meiryo',sans-serif" fill="#111">
+<path d="M330 67H520 M330 74H520 M425 74V165 M180 165H550 M180 165V218 M550 165V208 M640 234H800 M640 241H800 M720 241V355" fill="none" stroke="#222" stroke-width="2.5"/><text x="280" y="78" font-size="24" text-anchor="middle">父</text><text x="280" y="114" font-size="20" text-anchor="middle">（すでに死亡）</text><text x="565" y="78" font-size="24" text-anchor="middle">母</text><text x="180" y="244" font-size="24" text-anchor="middle">兄</text><rect x="460" y="208" width="180" height="52" fill="white" stroke="#222" stroke-width="2.5"/><text x="550" y="244" font-size="24" text-anchor="middle">被相続人</text><text x="855" y="244" font-size="24" text-anchor="middle">配偶者</text><text x="720" y="390" font-size="24" text-anchor="middle">子</text><text x="720" y="424" font-size="21" text-anchor="middle">（相続放棄）</text>
+</g></svg>
