@@ -37,7 +37,12 @@
    }
    if(copied)note.textContent='コピーしました。使いたいAIに貼り付けて質問してください。';else manual(value,button);
   };
-  section.append(button,note);container.append(section);
+  section.append(button);
+  if(window.FP_QUESTION_IMAGE?.needsImage(q)){
+   const imageButton=document.createElement('button');imageButton.type='button';imageButton.className='save-question-image';imageButton.textContent='問題を画像で保存';imageButton.onclick=()=>window.FP_QUESTION_IMAGE.open(q,imageButton);section.append(imageButton);
+   note.textContent='文章をコピーし、図・表は「問題を画像で保存」からAIに添付できます。';
+  }
+  section.append(note);container.append(section);
  }
  window.FP_AI_QUESTION={text,append};
 })();
