@@ -29,13 +29,29 @@
   const section=document.createElement('div');section.className='ai-question-actions';
   const button=document.createElement('button');button.type='button';button.className='copy-ai-question';button.textContent='AIに質問（コピー）';
   const note=document.createElement('p');note.setAttribute('role','status');note.textContent='問題・自分の回答・解説をコピーして、使いたいAIに貼り付けられます。';
+  let copying=false,resetTimer;
+  function feedback(state,label,message){
+   button.dataset.copyState=state;button.textContent=label;note.textContent=message;
+   button.setAttribute('aria-busy',String(state==='busy'));
+   button.setAttribute('aria-disabled',String(state==='busy'));
+  }
   button.onclick=async()=>{
+   if(copying)return;
+   copying=true;clearTimeout(resetTimer);
+   feedback('busy','コピー中…','質問文をコピーしています。');
    const value=text(q,response);let copied=false;
    try{await navigator.clipboard.writeText(value);copied=true;}catch{
     const area=document.createElement('textarea');area.value=value;area.style.cssText='position:fixed;left:-9999px;top:0';document.body.append(area);area.select();
     try{copied=document.execCommand('copy');}catch{}finally{area.remove();button.focus({preventScroll:true});}
    }
-   if(copied)note.textContent='コピーしました。使いたいAIに貼り付けて質問してください。';else manual(value,button);
+   copying=false;
+   if(copied){
+    feedback('success','✓ コピーしました','AIのチャットに貼り付けて質問できます。');
+    resetTimer=setTimeout(()=>{if(button.isConnected){button.dataset.copyState='idle';button.textContent='AIに質問（コピー）';}},2500);
+   }else{
+    feedback('error','コピーできませんでした','手動コピーの画面から文章をコピーしてください。もう一度ボタンを押すと再試行できます。');
+    if(button.isConnected)manual(value,button);
+   }
   };
   section.append(button);
   if(window.FP_QUESTION_IMAGE?.needsImage(q)){
