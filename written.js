@@ -54,6 +54,22 @@
     'supplement:5:62': {fields:[decimal('実質利回り（年利）',3.52,'%')]}
   };
 
+  // Presentation only: retain numeric/letter grading and saved values for old sessions.
+  for(const id of ['supplement:1:41','supplement:2:40','supplement:3:23']){
+    Object.assign(specs[id].fields[0],{ui:'choices',choices:[...'アイウエ'],multiple:id==='supplement:2:40'});
+  }
+  Object.assign(specs['supplement:2:13'].fields[0],{ui:'choices',choices:['1','2','3','4']});
+  const banks={
+    'supplement:1:36':['国','都道府県','市町村および特別区','60歳','65歳','75歳','保険給付の対象外','身体障害者手帳が交付された者','老化に伴う特定疾病を原因として、要介護（要支援）状態と認定された者'],
+    'supplement:1:61':['18歳','20歳','60歳','65歳','70歳','遺族基礎年金','経過的寡婦加算','中高齢寡婦加算','遺族厚生年金（義博さんの報酬比例部分の年金額の3分の2相当額）','遺族厚生年金（義博さんの報酬比例部分の年金額の4分の3相当額）'],
+    'supplement:3:2':['名目','実質','金融庁','財務省','日本銀行','毎月','四半期ごとに','半期ごとに','景気ウォッチャー調査','景気動向指数','業況判断指数・DI'],
+    'supplement:5:20':['10','30','50','70','制限なし','特約は公正証書等の書面で行う','設定を目的とする契約は公正証書で行う'],
+    'supplement:5:27':['制限はない','公正証書等の書面による','賃貸人に正当事由がない限り更新される','期間満了により終了し、更新されない','期間の定めのない契約とみなされる','1年未満の契約期間も有効である'],
+    'supplement:5:51':['市町村','都道府県','国税局','公示地価','相続税評価額','固定資産税評価額','売買','贈与','相続','1,200万円','1,300万円','1,500万円']
+  };
+  for(const [id,labels] of Object.entries(banks))for(const field of specs[id].fields){
+    Object.assign(field,{ui:'wordbank',choices:labels.map((_,i)=>String(i+1)),choiceLabels:labels.map((label,i)=>`${i+1}. ${label}`)});
+  }
   const cleaned = value => String(value ?? '').normalize('NFKC').replace(/[\s\u3000]/g,'').trim();
   function normalized(value, field) {
     let text=cleaned(value);
