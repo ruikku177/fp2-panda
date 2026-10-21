@@ -297,6 +297,15 @@ function createWrittenForm(q){
   const title=document.createElement('span');title.textContent=field.label;label.append(title);
   const row=document.createElement('span');row.className='written-input-row';
   const input=document.createElement('input');input.type='text';input.autocomplete='off';input.inputMode=field.kind==='number'?'numeric':field.kind==='decimal'?'decimal':'text';input.dataset.writtenIndex=String(index);input.setAttribute('aria-label',field.label);
+  input.id=`written-${q.id.replaceAll(':','-')}-${index}`;label.htmlFor=input.id;
+  if(field.kind!=='wordbank'){
+   // Keep focus inside the user's tap event, including taps on padding/units.
+   // Do not defer focus: mobile browsers may then refuse to open the keyboard.
+   row.addEventListener('click',event=>{
+    if(event.target===input||input.disabled||input.readOnly)return;
+    event.preventDefault();input.focus();
+   });
+  }
   if(field.kind==='number'||field.kind==='decimal')input.placeholder='数字を入力';else if(field.kind==='letters')input.placeholder='記号を入力';else input.placeholder='答えを入力';
   row.append(input);
   if(field.kind==='wordbank'){
@@ -366,6 +375,10 @@ function displayResult(q,response){
  }
  if(q.format==='self-check' && window.FP_WRITTEN?.specs[q.id] && response.selected?.type!=='written'){
   $('#quiz-answer-area').querySelectorAll('input,.written-submit').forEach(control=>control.disabled=true);
+ }
+ if(q.format==='self-check' && window.FP_WRITTEN?.specs[q.id]){
+  const intro=$('#quiz-answer-area .written-intro');
+  if(intro)intro.textContent='回答済みです。この画面では入力できません。もう一度解く場合は、新しく演習を始めてください。';
  }
  if(q.format==='choice'){
   document.querySelectorAll('.answer-choice').forEach(button=>{const n=button.dataset.option;button.disabled=true;if(n===q.answer)button.classList.add('correct');if(response.selected===Number(n)&&!response.correct)button.classList.add('incorrect');});
