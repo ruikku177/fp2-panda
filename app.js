@@ -243,6 +243,7 @@ function showQuestion(){
  $('#quiz-source').textContent=`補助問題 · 第${q.chapter}章 ${q.chapterName}`;
  $('#quiz-title').textContent=`問${q.number}`;
  $('#quiz-question').innerHTML=q.body;
+ $('#quiz-question').dataset.questionId=q.id;
  $('#quiz-favorite').setAttribute('aria-pressed',String(Boolean(progress.favorites[q.id])));
  $('#quiz-favorite').setAttribute('aria-label',progress.favorites[q.id]?'お気に入りを解除':'お気に入りに追加');
  const answerArea=$('#quiz-answer-area');answerArea.innerHTML='';

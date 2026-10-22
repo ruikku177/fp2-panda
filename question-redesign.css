@@ -95,6 +95,10 @@ body.quiz-reading-mode .topbar{display:none}
 .quiz-reading-layout .quiz-controls button:disabled{border-color:#e4e5e1;background:#e4e5e1;color:#999f9d;opacity:1;cursor:not-allowed}
 
 @media(max-width:570px){
+ /* Q18 is a two-column text table, not a wide numeric comparison table. */
+ .quiz-reading-layout #quiz-question[data-question-id="supplement:1:18"] table{min-width:0;width:100%;table-layout:fixed;line-height:1.65}
+ .quiz-reading-layout #quiz-question[data-question-id="supplement:1:18"] th,.quiz-reading-layout #quiz-question[data-question-id="supplement:1:18"] td{padding:7px 8px;overflow-wrap:anywhere}
+ .quiz-reading-layout #quiz-question[data-question-id="supplement:1:18"] th:first-child{width:32%}
  body.quiz-reading-mode main{padding:20px 16px 50px}
  .quiz-reading-layout{padding-bottom:0}
  .quiz-reading-layout .quiz-card{padding:0 0 12px}
