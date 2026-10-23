@@ -5,6 +5,14 @@
   box.querySelectorAll('script,style').forEach(el=>el.remove());
   box.querySelectorAll('img').forEach(el=>el.replaceWith(document.createTextNode(`\n［図：${el.alt||'問題の図'}］\n`)));
   box.querySelectorAll('br').forEach(el=>el.replaceWith(document.createTextNode('\n')));
+  // List markers are not part of textContent; keep the original option numbers.
+  box.querySelectorAll('ol').forEach(list=>{
+   let number=Number(list.getAttribute('start')||1);
+   [...list.children].filter(el=>el.tagName==='LI').forEach(item=>{
+    if(item.hasAttribute('value'))number=Number(item.getAttribute('value'));
+    item.prepend(document.createTextNode(`${number}. `));number++;
+   });
+  });
   box.querySelectorAll('th,td').forEach(el=>el.append(document.createTextNode(' ｜ ')));
   box.querySelectorAll('p,div,li,tr,h1,h2,h3,h4').forEach(el=>el.append(document.createTextNode('\n')));
   return box.textContent.replace(/[ \t]+\n/g,'\n').replace(/\n{3,}/g,'\n\n').trim();
