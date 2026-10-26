@@ -15,7 +15,9 @@ body.quiz-reading-mode .topbar{display:none}
 .quiz-reading-layout .quiz-paws{display:grid;grid-template-columns:repeat(var(--paw-count),minmax(0,1fr));align-items:center;gap:4px;max-width:450px;margin:auto}
 .quiz-reading-layout .quiz-paw{display:grid;place-items:center;min-width:0;color:#d7e2db}
 .quiz-reading-layout .quiz-paw.is-complete{color:var(--fp-green-700,#176957)}
-.quiz-reading-layout .quiz-paw svg{width:27px;height:27px;fill:currentColor;stroke:none}
+.quiz-reading-layout .quiz-paw svg{display:block;width:100%;max-width:27px;height:auto;aspect-ratio:1;fill:currentColor;stroke:none}
+.quiz-reading-layout .quiz-paw.is-current svg{filter:drop-shadow(0 2px 0 #9cc9ae)}
+.quiz-reading-layout #quiz-paw-range{display:block;margin-top:8px;text-align:center;color:#687d73;font-size:11px;line-height:1.5}
 
 .quiz-reading-layout .quiz-card{padding:0 0 18px;border:0;border-radius:0;box-shadow:none;background:transparent}
 .quiz-reading-layout .quiz-heading{display:flex;align-items:center;gap:12px;padding-right:4px;color:#6c8586;font-size:15px;line-height:1.5}

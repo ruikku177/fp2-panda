@@ -231,13 +231,19 @@ function showQuestion(){
  $('#quiz-progress').textContent=`${session.index+1} / ${session.ids.length}${readingLayout?'':'問'}`;
  $('#quiz-track-fill').style.width=`${(session.index+1)/session.ids.length*100}%`;
  const paws=$('#quiz-paws');paws.replaceChildren();
+ $('#quiz-paw-range')?.remove();
  if(readingLayout){
-  const count=Math.min(session.ids.length,10),filled=Math.ceil((session.index+1)/session.ids.length*count);
+  const start=Math.floor(session.index/10)*10;
+  const count=Math.min(session.ids.length-start,10),filled=session.index-start+1;
   paws.style.setProperty('--paw-count',String(count));
   for(let index=0;index<count;index++){
-   const paw=document.createElement('span');paw.className=`quiz-paw${index<filled?' is-complete':''}`;
+   const paw=document.createElement('span');paw.className=`quiz-paw${index<filled?' is-complete':''}${index===filled-1?' is-current':''}`;
    paw.innerHTML='<svg viewBox="0 0 32 32" aria-hidden="true"><use href="#paw"></use></svg>';
    paws.append(paw);
+  }
+  if(session.ids.length>10){
+   const range=document.createElement('small');range.id='quiz-paw-range';range.textContent=`${start+1}〜${start+count}問目の進み具合`;
+   paws.after(range);
   }
  }
  $('#quiz-source').textContent=`補助問題 · 第${q.chapter}章 ${q.chapterName}`;
