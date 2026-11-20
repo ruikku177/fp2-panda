@@ -160,10 +160,10 @@
     return s+text(180,420,'円での損益：−2,100円',20,'middle',C.red,true);
   });
   define('bond-cash','利子と償還差益を、1年分にそろえる',396,'額面100円、年利子2円、購入98円、5年後100円償還の架空例。利子と償還差益を年換算し、購入価格で割る。',()=>{
-    let s=axis(28,127,304,'時間 →');
+    let s=axis(28,127,304,'');
     for(let i=0;i<6;i++){const x=31+i*57;s+=line(x,119,x,134,C.slate)+text(x,159,i?`${i}年`:'購入',15,'middle');
       if(i){s+=arrow(x,116,x,73)+text(x,53,i===5?'102':'2',18,'middle',C.green,true);}
-      else s+=arrow(x,138,x,192)+text(x+5,219,'−98',18,'start',C.red,true);
+      else s+=arrow(x,138,x,192)+text(x-18,219,'−98',18,'start',C.red,true);
     }
     s+=text(180,26,'受取り：年利子2円、最後は利子＋償還金',15,'middle');
     s+=box(66,190,275,58,['償還差益 100−98＝2円','5年で割る → 年0.4円'],C.gold);

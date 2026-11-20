@@ -255,6 +255,18 @@ body:has(#study-view:not([hidden])) main{padding-top:20px}
 #study-diagram-dialog .study-diagram-zoom-scroll{max-height:calc(100dvh - 190px);overflow:auto;overscroll-behavior:contain;padding:12px;box-sizing:border-box}
 #study-diagram-dialog .study-diagram-zoom-scroll svg{display:block;width:100%;min-width:640px;height:auto;background:#fffefa}
 #study-diagram-dialog :focus-visible{outline:3px solid #24745a;outline-offset:2px}
+/* 説明の深さを増やしても、本文を大きいカードの連続にしない。 */
+#study-view .study-depth-intro{margin:26px 0}
+#study-view .study-depth-intro>h3{margin-top:0}
+#study-view .study-depth-intro p{margin-bottom:16px}
+#study-view .study-reading-guide{margin:22px 0 30px;padding:0 0 0 14px;border-left:2px solid #bfd8c8}
+#study-view .study-reading-guide>h3{margin:0 0 8px;font-size:17px}
+#study-view .study-reading-guide p{font-size:15px;line-height:1.9;margin:0}
+#study-view .study-walkthrough{margin:24px 0 30px}
+#study-view .study-walkthrough>h3{font-size:18px;margin:0 0 10px}
+#study-view .study-walkthrough ol{padding-left:1.5em}
+#study-view .study-walkthrough li{padding-left:3px;margin:0 0 10px;line-height:1.9}
+#study-view .study-depth-more p{font-size:15px;line-height:1.9}
 @media(max-width:570px){
   #study-view .study-lesson-view{margin:0}
   #study-view .study-lesson-hero{min-height:185px;padding:21px 19px 27px}
