@@ -172,7 +172,7 @@ function showStudyChapter(number){
       const published = studyContentByTheme[index].filter(Boolean).length;
       const status = published === theme.lessons.length ? ' · 公開中' : published ? ` · ${published}本公開` : '';
       const pending = published === 0 ? '<div class="study-topic-pending"><span aria-hidden="true">ⓘ</span><p>このテーマの教材は現在準備中です。<br>レッスン内容は順次追加していきます。</p></div>' : '';
-      return `<div class="study-topic"><button type="button" data-study-topic="${index}" aria-expanded="false" aria-controls="study-lessons-${index}"><span class="study-topic-no">${String(index+1).padStart(2,'0')}</span><span class="study-topic-title">${theme.title}</span><span class="study-topic-status">${theme.lessons.length}レッスン${status}</span><span class="study-topic-arrow" aria-hidden="true">›</span></button><div class="study-topic-detail" id="study-lessons-${index}" hidden>${pending}<h3>レッスン一覧</h3><ol class="study-lesson-list">${theme.lessons.map((lesson, lessonIndex) => `<li class="study-lesson">${studyContentByTheme[index][lessonIndex] ? `<button type="button" data-study-lesson="${lessonIndex}" data-study-theme="${index}"><span class="study-lesson-no">${String(lessonIndex+1).padStart(2,'0')}</span><span class="study-lesson-title">${lesson}</span><span aria-hidden="true">›</span></button>` : `<span class="study-lesson-no">${String(lessonIndex+1).padStart(2,'0')}</span><span class="study-lesson-title">${lesson}（教材作成中）</span>`}</li>`).join('')}</ol></div></div>`;
+      return `<div class="study-topic"><button type="button" data-study-topic="${index}" aria-expanded="false" aria-controls="study-lessons-${index}"><span class="study-topic-no">${String(index+1).padStart(2,'0')}</span><span class="study-topic-title">${theme.title}</span><span class="study-topic-status">${theme.lessons.length}レッスン${status}</span><span class="study-topic-arrow" aria-hidden="true">›</span></button><div class="study-topic-detail" id="study-lessons-${index}" hidden>${pending}${studyGlossaryThemeButton(number,index)}<h3>レッスン一覧</h3><ol class="study-lesson-list">${theme.lessons.map((lesson, lessonIndex) => `<li class="study-lesson">${studyContentByTheme[index][lessonIndex] ? `<button type="button" data-study-lesson="${lessonIndex}" data-study-theme="${index}"><span class="study-lesson-no">${String(lessonIndex+1).padStart(2,'0')}</span><span class="study-lesson-title">${lesson}</span><span aria-hidden="true">›</span></button>` : `<span class="study-lesson-no">${String(lessonIndex+1).padStart(2,'0')}</span><span class="study-lesson-title">${lesson}（教材作成中）</span>`}</li>`).join('')}</ol></div></div>`;
     }).join('')
     : '<div class="study-empty"><img src="assets/fp-panda-v3/normal.png" alt="勉強中のFPパンダ" width="128" height="121"><strong>教材を準備中です</strong><p>この分野も順次追加していきます。</p></div>';
   $('.breadcrumb').textContent = `パンダと勉強 / 第${number}章`;
@@ -189,6 +189,7 @@ function showStudyLesson(themeIndex, index){
   const lesson = studyContentByTheme[themeIndex]?.[index];
   if(!lesson) return;
   activeStudyTheme = themeIndex;
+    updateStudyGlossaryLessonButton(activeStudyChapter,themeIndex,index);
   activeStudyLesson = index;
   $('#study-domains').hidden = true;
   $('#study-themes').hidden = true;
