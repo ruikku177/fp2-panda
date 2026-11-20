@@ -115,9 +115,10 @@ const studyExtraLessons = {
   3: [
     null, null, null,
     {
-      questionNumbers: [13],
+      questionNumbers: [13, 24],
       panda: '借換えで毎年の返済額がどう変わるか、同じ期間で比べよう。',
       html: `<p>ローンでは金利に加え、<strong>毎回いくら返すか</strong>を決める返済方法を確認する。</p><div class="study-coefficients"><div><span>元利均等返済</span><strong>元金＋利息の合計が原則一定</strong></div><div><span>元金均等返済</span><strong>返す元金が一定。利息が減るにつれ毎回の返済額も減少</strong></div></div>
+        <table class="study-mini-table"><caption>金利の決め方も先に確認する</caption><thead><tr><th>金利の型</th><th>変わる範囲</th></tr></thead><tbody><tr><td>全期間固定</td><td>原則として完済まで同じ金利</td></tr><tr><td>固定期間選択</td><td>固定期間の終了後に金利・返済額を再設定</td></tr><tr><td>変動金利</td><td>契約に従い金利を見直す。返済額の見直しとは別</td></tr></tbody></table><p>5年ルール・125％ルールはすべての変動金利商品にあるわけではない。適用される契約でも、利息増加が免除される仕組みではない。</p>
         <p>問13は旧・新とも借入額1,500万円、返済期間10年の元利均等返済。旧金利2％の資本回収係数0.1113、新金利1％の0.1056を使う。</p>
         <div class="study-equation">10年間の返済軽減額＝旧年返済額×10−新年返済額×10</div><div class="study-example"><p>旧：1,500万円×0.1113＝166.95万円／年</p><p>新：1,500万円×0.1056＝158.4万円／年</p><p><strong>（166.95−158.4）×10＝85.5万円</strong></p></div><p>問13では手数料を考慮しない。実際の借換えでは諸費用も確認する。</p>
         <aside class="study-tip"><h3>🐾 解くときのコツ</h3><p>資本回収係数は「借入額→毎年の返済額」。総額を比べるなら、両方に同じ10年を掛ける。減債基金係数と取り違えない。</p></aside>
@@ -169,6 +170,7 @@ const studyExtraLessons = {
       questionNumbers: [70, 71, 72],
       panda: '買い物の後払いと現金の借入れは、同じカードでもルールが違うよ。',
       html: `<h3>ショッピングとキャッシング</h3><p><strong>ショッピング</strong>は商品・サービス代金の後払い、<strong>キャッシング</strong>は現金の借入れ。貸金業法の<strong>総量規制</strong>では、カード会社のショッピングは対象外だが、キャッシングは原則として対象になる。</p>
+        <table class="study-mini-table"><caption>同じカードの2つの機能</caption><thead><tr><th>機能</th><th>何をする？</th><th>総量規制</th></tr></thead><tbody><tr><td>ショッピング</td><td>商品代金等の後払い</td><td>対象外</td></tr><tr><td>キャッシング</td><td>現金の借入れ</td><td>原則対象</td></tr></tbody></table>
         <h3>キャッシングの利息</h3><p>翌月一括返済でも利息が発生する。問71は「一括なら利息なし」と思い込ませる問題。実際の利率・計算方法は契約条件を確認する。</p>
         <h3>本人利用と信用情報</h3><p>カードは<strong>券面の会員本人が使う</strong>。家族にも貸さない。信用情報は所定の手続で本人が開示請求できる。</p>
         <aside class="study-tip"><h3>🐾 解くときのコツ</h3><p>問72は「ショッピングもキャッシングも総量規制の対象外」という一括りが誤り。どちらの機能について述べているかに線を引こう。</p></aside>

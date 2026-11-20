@@ -206,6 +206,37 @@ body:has(#study-view:not([hidden])) main{padding-top:20px}
 .study-return-lesson{display:block;width:max-content;max-width:calc(100% - 32px);min-height:44px;margin:9px 16px 14px;padding:8px 12px;border:1px solid #b8d5c1;border-radius:9px;background:#f4faf2;color:#104e40;font-size:14px;font-weight:700;text-align:left}
 .study-return-lesson[hidden]{display:none}
 #result-study-return{width:calc(100% - 32px);margin:16px auto}
+/* 講義教材の図表。画面全体ではなく本文の幅に収める。 */
+#study-view .study-comparison{margin:24px 0}
+#study-view .study-comparison table{width:100%;table-layout:fixed;overflow-wrap:anywhere}
+#study-view .study-comparison th:first-child{width:34%}
+#study-view .study-comparison tbody th{text-align:left;vertical-align:top;color:#175748;font-weight:700;background:#f1f6ef}
+#study-view .study-comparison td,#study-view .study-comparison th{padding:12px 10px;line-height:1.65}
+#study-view .study-lesson-body .study-path{list-style:none;counter-reset:study-step;display:grid;gap:0;margin:14px 0 0;padding:0}
+#study-view .study-path li{position:relative;counter-increment:study-step;display:grid;gap:5px;min-height:70px;margin:0;padding:4px 0 25px 42px}
+#study-view .study-path li::before{content:counter(study-step);position:absolute;left:0;top:2px;display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:#dcefe2;color:#175748;font-size:14px;font-weight:750}
+#study-view .study-path li:not(:last-child)::after{content:'';position:absolute;left:13px;top:34px;bottom:5px;border-left:2px solid #cbded0}
+#study-view .study-path strong{color:#175748;font-size:17px}
+#study-view .study-path span{font-size:15px;line-height:1.75}
+#study-view .study-line-chart svg{display:block;max-width:100%;width:400px;height:auto;margin:auto}
+#study-view .study-line-chart svg text{fill:#123d36;stroke:none;font-size:13px}
+#study-view .study-bars{display:grid;gap:16px;margin:20px 0}
+#study-view .study-bars>div{display:grid;gap:5px}
+#study-view .study-bar-track{display:block;height:16px;background:#e8eae1;border-radius:4px;overflow:hidden}
+#study-view .study-bar-track i{display:block;height:100%;background:#378767}
+#study-view .study-bars>div:nth-child(2) i{background:#be8a42}
+#study-view .study-levels{display:grid;gap:0;padding:8px 0}
+#study-view .study-levels>div{display:grid;grid-template-columns:1fr auto;gap:7px;padding:18px 12px;border-top:3px solid #82b896}
+#study-view .study-levels>div:nth-child(2){border-color:#b58443;background:#fcf6e7}
+#study-view .study-levels small{grid-column:1/-1;line-height:1.7}
+#study-view .study-split{display:flex;gap:3px;margin:18px 0;border-radius:7px;overflow:hidden}
+#study-view .study-split>span{min-width:0;text-align:center;padding:15px 5px;background:#deeee1;color:#174d40;font-size:14px;line-height:1.6}
+#study-view .study-split>span+span{background:#fae9c9;color:#765524}
+#study-view .study-split strong{font-size:20px}
+#study-view .study-sources{font-size:13px}
+#study-view .study-sources a{color:#175748;text-decoration:underline;text-underline-offset:3px;overflow-wrap:anywhere}
+#study-view .study-sources li{margin:8px 0}
+#study-view .study-period-note{font-size:13px;line-height:1.7;color:#576b61;border-left:2px solid #c3d6c8;padding-left:12px;margin:18px 0 24px}
 @media(max-width:570px){
   #study-view .study-lesson-view{margin:0}
   #study-view .study-lesson-hero{min-height:185px;padding:21px 19px 27px}
