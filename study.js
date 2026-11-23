@@ -202,7 +202,7 @@ function showStudyLesson(themeIndex, index){
   $('#study-lesson-panda').textContent = `🐼「${lesson.panda}」`;
   const keyPoint=lesson.point || (activeStudyChapter===1 ? studyKeyPoints[themeIndex]?.[index] : null);
   const periodNote=activeStudyChapter===4 ? '<p class="study-period-note">税制は2026年分（改正後）を基本に説明。補助問題は、出題年・問題で指定された条件で解いてください。</p>' : '';
-  $('#study-lesson-body').innerHTML = `${keyPoint?`<div class="study-focus"><small>このレッスンで覚えること</small><strong>${keyPoint}</strong></div>`:''}${periodNote}${lesson.html}`;
+  $('#study-lesson-body').innerHTML = `${keyPoint?`<div class="study-focus"><small>最重要ポイント｜このレッスンで覚えること</small><strong>${keyPoint}</strong></div>`:''}${periodNote}${applyStudyEmphasis(activeStudyChapter,themeIndex,index,lesson.html)}`;
   $('#study-related-questions').textContent = `関連する補助問題（問${lesson.questionNumbers.join('・')}）を解く`;
   $('#study-next-lesson').hidden = nextPublishedStudyLesson(themeIndex,index)===null;
   $('.breadcrumb').textContent = `パンダと勉強 / 第${activeStudyChapter}章 / ${studyThemes[themeIndex].title}`;

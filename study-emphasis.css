@@ -1,0 +1,9 @@
+/* 赤字＝暗記・判断の要点。太字・下線も併用し、色だけで重要度を伝えない。 */
+#study-view{--study-essential:#a12d38}
+#study-view .study-focus{border-left-color:var(--study-essential)}
+#study-view .study-focus small{color:var(--study-essential)}
+#study-view .study-focus strong{color:var(--study-essential);font-weight:800}
+#study-view .study-lesson-body .study-essential{color:var(--study-essential);font-weight:800;text-decoration-line:underline;text-decoration-color:#d99ba0;text-decoration-thickness:1px;text-underline-offset:3px}
+#study-view .study-lesson-body .study-essential strong,#study-view .study-lesson-body .study-essential em{color:inherit;font-weight:inherit}
+#study-view .study-formula>strong,#study-view .study-formula>span{color:var(--study-essential)}
+#study-view .study-equation{color:var(--study-essential)}
