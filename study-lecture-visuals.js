@@ -377,6 +377,12 @@
     item.html=old?item.html.replace(old[0],`${diagrams}<details class="study-diagram-reference"><summary>説明・比較を文章でも確認</summary>${old[0]}</details>`):diagrams+item.html;
   }
   window.FP_STUDY_VISUALS=Object.freeze({diagrams:Object.keys(D),lessons:[...grouped.values()].map(x=>({chapter:x.chapter,theme:x.theme,lesson:x.lesson,ids:x.ids}))});
+  // 後続の授業教材でも、同じ図解・拡大ダイアログを利用する。
+  window.registerStudyDiagram=(id,title,height,description,draw)=>{
+    if(D[id])throw new Error(`Duplicate study diagram ${id}`);
+    define(id,title,height,description,draw);
+    return render(id);
+  };
 
   document.body.insertAdjacentHTML('beforeend',`<dialog id="study-diagram-dialog" aria-labelledby="study-diagram-dialog-title"><header><h2 id="study-diagram-dialog-title"></h2><button type="button" autofocus aria-label="図を閉じる">×</button></header><p class="study-diagram-zoom-help">図の中を左右にスクロールできます。</p><div class="study-diagram-zoom-scroll" tabindex="0" role="region" aria-label="拡大した図"></div></dialog>`);
   const dialog=document.getElementById('study-diagram-dialog');let opener=null;
